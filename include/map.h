@@ -18,16 +18,7 @@ struct Gamemap
     {
         floor = 0,
         parede = 1,
-        enemy = 2,
-        item,
-        chest,
-        mimic,
-        fakewall = 11,
-        portaSupInf = 91,
-        portaLat = 92,
         vazio = 9,
-        armadilha = 21,
-        escada,
     };
     entities entity;
     static const DWORD padrao = (0 << 4) | 7;    /* Define o mapa para printar fundo preto e escrita branca */
