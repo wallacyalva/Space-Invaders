@@ -7,8 +7,9 @@ void cleanmenu(short int pos)
     setlocale(LC_ALL, "pt_BR.UTF-8");
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 17});
     cout << "Iniciar   \n";
-    cout << "Informações   \n";
-    cout << "Podio      \n";
+    cout << "Como Jogar   \n";
+    cout << "Score      \n";
+    cout << "Sobre   \n";
     cout << "Sair   \n";
     cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
     pos += 17;
@@ -42,23 +43,8 @@ int mainMenu()
     do
     {
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n";
-        SetConsoleTitle("RogueLike Game - Menu");
+
+        SetConsoleTitle("Space Invaders - Menu");
         if (option == 0)
         {
             cleanmenu(0);
@@ -71,13 +57,17 @@ int mainMenu()
             break;
         case 1:
             cleanmenu(position);
-            cout << "> Informações \n";
+            cout << "> Como Jogar \n";
             break;
         case 2:
             cleanmenu(position);
-            cout << "> Podio \n";
+            cout << "> Score \n";
             break;
         case 3:
+            cleanmenu(position);
+            cout << "> Sobre \n";
+            break;
+        case 4:
             cleanmenu(position);
             cout << "> Sair \n";
             break;
@@ -97,7 +87,7 @@ int mainMenu()
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Up";
-            position <= 0 ? position = 3 : position--;
+            position <= 0 ? position = 4 : position--;
             break;
         case 80:
         case 's':
@@ -105,7 +95,7 @@ int mainMenu()
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Down";
-            position >= 3 ? position = 0 : position++;
+            position >= 4 ? position = 0 : position++;
             break;
         case 75:
         case 'a':
@@ -133,6 +123,9 @@ int mainMenu()
                 break;
             case 3:
                 return 3;
+                break;
+            case 4:
+                return 4;
                 break;
             }
             break;

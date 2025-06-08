@@ -1,4 +1,4 @@
-#include "./map.h"
+#include "./gameMap.h"
 #include <windows.h>
 #include <ctime>
 #include <iostream>
