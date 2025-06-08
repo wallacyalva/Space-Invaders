@@ -1,14 +1,16 @@
-const maxEnemies = 50;
+const int maxEnemies = 50;
 
-struct GameElements {
+struct GameElements
+{
     char person = 'A';
     char enemy = 'W';
 };
 
-struct Enemy {
+struct Enemy
+{
     int x;
     int y;
     bool active = true;
-}
+};
 
-Enemies Enemy[maxEnemies];
+Enemy Enemies[maxEnemies];

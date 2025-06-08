@@ -88,7 +88,6 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 void mapa(Gamemap &newMap, short int mapSelect)
 {
     // newMap.spawnPos[Gamemap::bottom] = {5, 5};
-    newMap.enemy; // Inimigo = Número 2
 
     short int Template[33][23] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
