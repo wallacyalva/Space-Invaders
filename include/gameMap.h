@@ -35,14 +35,8 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 // Criação dos mapas, matriz mãe.
 void mapa(Gamemap &newMap, short int mapSelect)
 {
-<<<<<<<< HEAD:include/map/maps.h
-    // newMap.spawnPos[Gamemap::bottom] = {5, 5};
-
-    short int Template[33][23] = {
-========
     mapSelect = 1; // Seleciona o mapa a ser printado
     short int Template[GameElements::columnMap][GameElements::lineMap] = {
->>>>>>>> 517013ceeab86fb20fdd0fe90b88f1f91decaab5:include/gameMap.h
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
