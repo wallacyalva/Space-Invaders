@@ -25,6 +25,37 @@ struct Enemy
     COORD position = {0, 0};
     bool active = true;
 };
+struct Player
+{
+    COORD position = {0, 0};
+    Inventory inventory;
+    char projetil = '|';
+    int health = 3, shield = 0, damage = 1, maxhealth = 3;
+    char playerChar = 'A';
+    DWORD color = (0 << 4) | 7;
+    void setPosition(int x, int y)
+    {
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+        cout << " ";
+        position.X = x;
+        position.Y = y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+        cout << playerChar;
+    }
+
+    void setRelativePosition(int x, int y)
+    {
+        if ((position.X + x) >= 0 && (position.Y + y) >= 0)
+        {
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+            cout << " ";
+            position.X += x;
+            position.Y += y;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+            cout << playerChar;
+        }
+    }
+};
 struct Game
 {
     Player player;

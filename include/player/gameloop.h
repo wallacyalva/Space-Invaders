@@ -51,6 +51,7 @@ uint64_t timeMillis()
 }
 void GameLoop()
 {
+    SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
     Player player;
     Projectile *projectiles = nullptr;
@@ -59,13 +60,11 @@ void GameLoop()
     player.position.Y = SCREEN_HEIGHT - 2;
     player.position.X = SCREEN_WIDTH / 2;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player.position);
-    cout << player.playerChar;
     int projectilesinGame = 0;
     int nextUpdate = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player.position);
     cout << player.playerChar;
 
     do
