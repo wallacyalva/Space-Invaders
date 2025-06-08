@@ -15,10 +15,11 @@ int main()
             GameLoop();
             break;
         case 1:
+            system("cls");
             cout << "Como Jogar:\n\n";
             cout << "Use as teclas 'A' e 'D' para mover o player.\n";
             cout << "Use a tecla 'ESPAÇO' para atirar.\n";
-            cout << "Use a tecla 'ESC' para sair do jogo.\n";
+            cout << "Use a tecla 'ESC' para sair do jogo.\n\n";
             cout << "Pontuação:\n\n";
             cout << "Você ganha pontos ao matar inimigos.\n";
             cout << "Você ganha mais pontos se for rápido ao passar na fase\n";
@@ -30,6 +31,7 @@ int main()
             /* Score*/
             break;
         case 3:
+            system("cls");
             cout << "Sobre:\n\n";
             cout << "Space Invaders é um jogo de tiro inspirado no clássico jogo de arcade.\n";
             cout << "O objetivo é destruir todos os inimigos antes que eles cheguem ao chão.\n";
