@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "./gameElements.h"
+#include "../basicStructures/gameElements.h"
 using namespace std;
 
 // Toda a criação do tipo map

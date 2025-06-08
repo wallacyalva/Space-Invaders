@@ -8,9 +8,9 @@ using namespace std;
 void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 {
     SetConsoleTextAttribute(hConsole, mapCurrent.themeColor); // Define a cor tema
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < GameElements::columnMap; i++)
     {
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < GameElements::lineMap; j++)
         {
             switch (mapCurrent.map[i][j])
             {
@@ -76,8 +76,19 @@ void mapa(Gamemap &newMap, short int mapSelect)
     switch (mapSelect)
     {
     case 1:
-        printMap(newMap, Template);
+    {
+        Gamemap mapCurrent;
+        for (int i = 0; i < GameElements::columnMap; i++)
+        {
+            for (int j = 0; j < GameElements::lineMap; j++)
+            {
+                mapCurrent.map[i][j] = Template[i][j];
+            }
+        }
+
+        printMap(mapCurrent, GetStdHandle(STD_OUTPUT_HANDLE));
         break;
+    }
     default:
         break;
     }
