@@ -36,7 +36,7 @@ struct Player
             cout << playerChar;
         }
     }
-    char playerChar = '^';
+    char playerChar = GameElements::person;
     DWORD color = (0 << 4) | 7;
 };
 // function SavedGame(Game &game)
