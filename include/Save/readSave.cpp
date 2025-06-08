@@ -244,7 +244,7 @@ int readSave(Game &game)
                         // }
                     }
             }
-            else if (actualSession == "[Game]")
+            else if (actualSession == "[Points]")
             {
                 valueType type;
                 bool isValue = false;
@@ -259,9 +259,6 @@ int readSave(Game &game)
                     {
                         switch (type)
                         {
-                        case valueType::seed:
-                            game.seed = stoi(value);
-                            break;
                         case valueType::ReturnType:
                             game.returnType = static_cast<Game::ReturnTypes>(stoi(value));
                             break;
@@ -285,12 +282,7 @@ int readSave(Game &game)
                             break;
                         }
                     }
-                    if (value == "Seed")
-                    {
-                        isValue = true;
-                        type = valueType::seed;
-                    }
-                    else if (value == "ReturnType")
+                    if (value == "ReturnType")
                     {
                         isValue = true;
                         type = valueType::ReturnType;
