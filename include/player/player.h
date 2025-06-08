@@ -10,7 +10,7 @@ struct Player
     COORD position = {0, 0};
     Inventory inventory;
     char projetil = '|';
-    int health = 100, shield = 0, damage = 10, maxhealth = 100;
+    int health = 3, shield = 0, damage = 1, maxhealth = 3;
     void setPosition(int x, int y)
     {
         // functions to sound
