@@ -43,22 +43,7 @@ int mainMenu()
     do
     {
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n";
-        cout << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n"
-             << "\n";
+
         SetConsoleTitle("Space Invaders - Menu");
         if (option == 0)
         {

@@ -1,6 +1,9 @@
+#ifndef player_h
+#define player_h
 #include <thread>
 #include <windows.h>
-#include "../include/player/items.h"
+#include "./items.h"
+// #include "../basicStructures/gameElements.h"
 using namespace std;
 struct Player
 {
@@ -13,15 +16,32 @@ struct Player
         // functions to sound
         //  thread Steep(SteepSound);
         //  Steep.detach();
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+        cout << " ";
         position.X = x;
         position.Y = y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+        cout << playerChar;
     }
 
-    void setRelativePosition(int &x, int &y)
+    void setRelativePosition(int x, int y)
     {
-        position.X += x;
-        position.Y += y;
+        if ((position.X + x) >= 0 && (position.Y + y) >= 0)
+        {
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+            cout << " ";
+            position.X += x;
+            position.Y += y;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+            cout << playerChar;
+        }
     }
     char playerChar = '^';
     DWORD color = (0 << 4) | 7;
 };
+// function SavedGame(Game &game)
+// {
+//     Player * = game.player;
+// }
+
+#endif
