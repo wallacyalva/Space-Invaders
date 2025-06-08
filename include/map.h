@@ -1,11 +1,12 @@
 #include <windows.h>
+#include "./gameElements.h"
 using namespace std;
 
 // Toda a criação do tipo map
 struct Gamemap
 {
     // Tamanho máximo do mapa e outras funções sobre
-    int map[33][23] = {};
+    int map[GameElements::columnMap][GameElements::lineMap] = {};
     enum mapSpawnPositions
     {
         top,
