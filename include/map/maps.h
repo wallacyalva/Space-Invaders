@@ -8,9 +8,9 @@ using namespace std;
 void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 {
     SetConsoleTextAttribute(hConsole, mapCurrent.themeColor); // Define a cor tema
-    for (int i = 0; i < GameElements::columnMap; i++)
+    for (int i = 0; i < GameElements::lineMap; i++)
     {
-        for (int j = 0; j < GameElements::lineMap; j++)
+        for (int j = 0; j < GameElements::columnMap; j++)
         {
             switch (mapCurrent.map[i][j])
             {
@@ -37,7 +37,7 @@ void mapa(Gamemap &newMap, int mapSelect)
 {
     // newMap.spawnPos[Gamemap::bottom] = {5, 5};
     mapSelect = 1; // Seleciona o mapa a ser printado
-    int Template[GameElements::columnMap][GameElements::lineMap] = {
+    int Template[GameElements::lineMap][GameElements::columnMap] = {
 
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -68,9 +68,9 @@ void mapa(Gamemap &newMap, int mapSelect)
     case 1:
     {
         Gamemap mapCurrent;
-        for (int i = 0; i < GameElements::columnMap; i++)
+        for (int i = 0; i < GameElements::lineMap; i++)
         {
-            for (int j = 0; j < GameElements::lineMap; j++)
+            for (int j = 0; j < GameElements::columnMap; j++)
             {
                 mapCurrent.map[i][j] = Template[i][j];
             }

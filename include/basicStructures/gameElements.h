@@ -16,8 +16,8 @@ struct GameElements
 {
     char person = 'A';
     char enemy = 'W';
-    static const int columnMap = 23;
-    static const int lineMap = 33;
+    static const int columnMap = 33;
+    static const int lineMap = 23;
 };
 
 struct Enemy
