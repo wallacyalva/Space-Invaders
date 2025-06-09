@@ -12,26 +12,28 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
     {
         for (int j = 0; j < GameElements::columnMap; j++)
         {
-            switch (mapCurrent.map[i][j])
-            {
+            string typeCout = types[mapCurrent.map[i][j]];
+            switch (mapCurrent.map[i][j]){
             // desenhando piso
-            case 0:
-                cout << " ";
-                break;
             case mapCurrent.entities::parede:
                 SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
-                cout << "\u2588";
-                break;
-            case mapCurrent.entities::vazio:
-                cout << " ";
                 break;
             default:
                 break;
             }
+            cout << typeCout;
         }
         cout << endl;
     }
 }
+
+// Responsável por renderizar os inimigos no mapa
+void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
+    for (int i = 0; i < maxEnemies; i++){
+        Template[game.enemies[i].position.X][game.enemies[i].position.Y] = 3;
+    }
+}
+
 // Criação dos mapas, matriz mãe.
 void mapa(Gamemap &newMap, int mapSelect)
 {
@@ -63,6 +65,8 @@ void mapa(Gamemap &newMap, int mapSelect)
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
     // Seleção da matriz mapa para printar no terminal
+    renderEnemy(Template);
+
     switch (mapSelect)
     {
     case 1:
