@@ -16,7 +16,7 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
             {
             // desenhando piso
             case 0:
-                cout << "9";
+                cout << " ";
                 break;
             case mapCurrent.entities::parede:
                 SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
