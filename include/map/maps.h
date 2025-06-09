@@ -19,8 +19,9 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
                 cout << " ";
                 break;
             case mapCurrent.entities::parede:
-                SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
+                SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
                 cout << "\u2588";
+                SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
                 break;
             case mapCurrent.entities::vazio:
                 cout << " ";
