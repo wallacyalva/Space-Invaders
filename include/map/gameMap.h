@@ -6,7 +6,7 @@ using namespace std;
 struct Gamemap
 {
     // Tamanho máximo do mapa e outras funções sobre
-    int map[GameElements::lineMap][GameElements::columnMap] = {};
+    int map[GameElements::columnMap][GameElements::lineMap] = {};
     enum mapSpawnPositions
     {
         top,
