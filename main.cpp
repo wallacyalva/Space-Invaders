@@ -45,5 +45,6 @@ int main()
             break;
         }
     } while (option != 4);
+    system("cls");
     return 0;
 }
