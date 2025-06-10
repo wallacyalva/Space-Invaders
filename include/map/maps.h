@@ -16,12 +16,14 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
             switch (mapCurrent.map[i][j]){
             // desenhando piso
             case mapCurrent.entities::parede:
-                SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
+                SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
                 break;
             default:
                 break;
             }
             cout << typeCout;
+            SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
+
         }
         cout << endl;
     }
