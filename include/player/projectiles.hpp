@@ -43,7 +43,7 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
             cout << " ";
             projectiles[i].position.Y--;
-            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::enemy)
+            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo)
             {
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
                 SetConsoleCursorPosition(hConsole, projectiles[i].position);
