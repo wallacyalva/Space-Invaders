@@ -1,3 +1,5 @@
+#ifndef Gamemap_h
+#define Gamemap_h
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
 using namespace std;
@@ -30,3 +32,4 @@ struct Gamemap
     static const DWORD vermelho = (0 << 4) | 12; /* Define o mapa para printar fundo preto e escrita vermelha */
     DWORD themeColor = padrao;                   /* Define para começar na cor padrão */
 };
+#endif

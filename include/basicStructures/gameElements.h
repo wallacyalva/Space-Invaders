@@ -15,8 +15,8 @@ void getConsoleSize()
 }
 struct GameElements
 {
-    char person = 'A';
-    char enemy = 'W';
+    static const char person = 'A';
+    static const char enemy = 'W';
     static const int columnMap = 33;
     static const int lineMap = 23;
 };
@@ -46,7 +46,8 @@ struct Player
 
     void setRelativePosition(int x, int y)
     {
-        if ((position.X + x) >= 0 && (position.Y + y) >= 0)
+        if (((position.X + x) >= 1 && (position.Y + y) >= 1) &&
+            ((position.X + x) <= GameElements::columnMap - 2 && (position.Y + y) <= GameElements::lineMap - 2))
         {
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
             cout << " ";
