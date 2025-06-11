@@ -17,23 +17,28 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
             {
             // desenhando piso
             case mapCurrent.entities::parede:
-                SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
+                SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
+                break;
+            case mapCurrent.entities::inimigo:
+                SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
                 break;
             default:
                 break;
             }
             cout << typeCout;
+            SetConsoleTextAttribute(hConsole, mapCurrent.themeColor);
+
         }
         cout << endl;
     }
 }
 
 // Responsável por renderizar os inimigos no mapa
-void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap])
-{
-    for (int i = 0; i < maxEnemies; i++)
-    {
-        Template[game.enemies[i].position.X][game.enemies[i].position.Y] = 3;
+void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
+    for (int i = 0; i < maxEnemies; i++){
+        if(game.enemies[i].active){
+            Template[game.enemies[i].position.X][game.enemies[i].position.Y] = 3;
+        }
     }
 }
 

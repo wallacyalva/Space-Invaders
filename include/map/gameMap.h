@@ -21,7 +21,7 @@ struct Gamemap
     {
         floor = 0,
         parede = 1,
-        enemy = 3,
+        inimigo = 3,
         vazio = 9,
     };
     entities entity;
