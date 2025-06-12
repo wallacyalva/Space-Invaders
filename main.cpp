@@ -13,6 +13,8 @@ int main()
     int option = -1;
     do
     {
+        if (game.player.health <= 0)
+            game.player.health = 3;
         option = mainMenu();
         switch (option)
         {
@@ -57,6 +59,8 @@ int main()
             break;
         }
     } while (option != 4);
+    if (game.player.health <= 0)
+        game.player.health = 3;
     saveGame(game);
     system("cls");
     return 0;
