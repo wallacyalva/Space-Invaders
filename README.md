@@ -1,25 +1,32 @@
-# Space Invaders (Versão Console)
+# 🚀 Space Invaders (Versão Console)
 
-Jogo estilo Space Invaders desenvolvido em **C++** com interface baseada em **terminal (CMD)**.  
-Este projeto foi desenvolvido em equipe, com foco na modularização do código e nas funcionalidades clássicas do gênero.
+Jogo inspirado no clássico **Space Invaders**, desenvolvido em **C++** com interface no **terminal (CMD)**.  
+Este projeto foi feito em equipe, com foco em aprendizado, modularização e fidelidade à mecânica original.
+
+---
+
+## 🎮 Sobre o Jogo
+
+O jogador controla uma nave que se move lateralmente e dispara projéteis contra ondas de inimigos. O objetivo é sobreviver, derrotar os inimigos e alcançar a maior pontuação possível.
+
+---
 
 ## 📦 Funcionalidades principais
 
 - Menu principal com opções: jogar, instruções e sobre
-- Impressão do mapa em formato grid, com paredes e área jogável
-- Controle do jogador: movimentação lateral e disparo de projétil (1 por vez)
-- Geração e movimentação de inimigos no mapa
-- Colisão entre tiros e inimigos (eliminação dos inimigos)
-- Feedback visual com cores (ex: inimigos destacados em vermelho)
-- Redução de vida do jogador ao ser atingido por projéteis
+- Impressão do mapa em grid com paredes e área jogável
+- Controle da nave: movimentação lateral e disparo (1 tiro por vez)
+- Geração e movimentação dos inimigos no mapa
+- Colisões entre tiros e inimigos (inimigos eliminados)
+- Redução de vida ao ser atingido por projéteis inimigos
 - Fim de jogo ao perder todas as vidas
-- Salvamento do score em arquivo local
+- Exibição de **HUD com score e número de vidas**
+- Feedback visual com cores (ex: inimigos em vermelho)
+- Salvamento automático do score em arquivo
 - Exibição de ranking ordenado por pontuação e nome
-- Limpeza do terminal ao encerrar o jogo
-- Interface de ajuda com instruções básicas
+- Interface “Como jogar” com instruções básicas
 - Código modular (mapa, jogador, inimigos, sistema de save etc.)
-
-> **Nota:** A lógica de vidas e fim de jogo está implementada, mas a **HUD com número de vidas e score em tempo real** ainda será adicionada.
+- Limpeza do terminal ao encerrar o jogo
 
 ---
 
@@ -32,7 +39,7 @@ Este projeto foi desenvolvido em equipe, com foco na modularização do código 
 | Inimigos se movem em grupo                                                    | ❌       |
 | Inimigos mudam de direção e descem ao chegar nas bordas                       | ❌       |
 | Inimigos atiram projéteis                                                     | ❌       |
-| Score é exibido e atualizado em tempo real                                    | ❌       |
+| Score é exibido e atualizado em tempo real                                    | ✅       |
 | Jogador perde vida ao ser atingido; jogo termina ao perder todas ou vencer    | ✅       |
 | Menu com instruções, score, autores e opção de jogar                          | ✅       |
 | Nave e inimigos visualmente distintos                                         | ✅       |
@@ -41,19 +48,20 @@ Este projeto foi desenvolvido em equipe, com foco na modularização do código 
 | O jogo salva o score em arquivo                                               | ✅       |
 | Exibição do ranking ordenado por score e nome                                 | ✅       |
 | Tempo de jogo visível na tela                                                 | ❌       |
-| Início com 3 vidas e exibição de vidas na tela                                | ❌       |
+| Início com 3 vidas e exibição de vidas na tela                                | ✅       |
 
-**Total implementado:** 8 de 15  
-**Progresso:** 53%
-
----
-
-## 👨‍💻 Contribuidores principais
-
-- Erick Marlon Mafra (`Erick Mafra`)
-- Rodrigo Buratto Ribas
-- Wallacy Alvarenga
+**Total implementado:** 9 de 15  
+**Progresso:** 60%
 
 ---
 
-## 📁 Estrutura de diretórios (exemplo)
+## 👨‍💻 Contribuidores
+
+- **Erick Marlon Mafra** (`Erick Mafra`)
+- **Rodrigo Buratto Ribas**
+- **Wallacy Alvarenga**
+
+---
+
+## 📁 Estrutura do Projeto (exemplo)
+
