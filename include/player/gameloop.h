@@ -2,48 +2,7 @@
 #include "./player.h"
 #include "../basicStructures/gameElements.h"
 #include "../map/maps.h"
-struct Projectile
-{
-    COORD position = {0, 0};
-    int speed = 1;
-    char projectileChar = '|';
-};
-
-void UpdateProjectiles(Projectile *projectiles, int projectilesinGame)
-{
-    for (int i = 0; i < projectilesinGame; i++)
-    {
-        if (projectiles[i].position.Y > 0)
-        {
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
-            cout << " ";
-            projectiles[i].position.Y--;
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
-            cout << projectiles[i].projectileChar;
-        }
-    }
-}
-void CreateProjectiles(Projectile *&projectiles, Projectile projectile, int &projectilesInGame)
-{
-    // Aloca novo array com +1
-    Projectile *newProjectiles = new Projectile[projectilesInGame + 1];
-
-    // Copia projéteis antigos
-    for (int i = 0; i < projectilesInGame; i++)
-    {
-        newProjectiles[i] = projectiles[i];
-    }
-
-    // Adiciona novo projétil
-    newProjectiles[projectilesInGame] = projectile;
-
-    // Libera o antigo
-    delete[] projectiles;
-
-    // Atualiza ponteiro e contador
-    projectiles = newProjectiles;
-    projectilesInGame++;
-}
+#include "./projectiles.hpp"
 uint64_t timeMillis()
 {
     using namespace std::chrono;
