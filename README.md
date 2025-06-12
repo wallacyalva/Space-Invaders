@@ -1,22 +1,27 @@
 # Space Invaders (Versão Console)
 
-Jogo estilo Space Invaders desenvolvido em C++ com interface baseada em terminal (CMD).  
-Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com funcionalidades como movimentação de jogador, inimigos no mapa, sistema de tiro e interface básica.
+Jogo estilo Space Invaders desenvolvido em **C++** com interface baseada em **terminal (CMD)**.  
+Este projeto foi desenvolvido em equipe, com foco na modularização do código e nas funcionalidades clássicas do gênero.
 
 ## 📦 Funcionalidades principais
 
-- Menu principal com opções de jogo, instruções e sobre
-- Impressão do mapa em grid, com paredes e áreas jogáveis
+- Menu principal com opções: jogar, instruções e sobre
+- Impressão do mapa em formato grid, com paredes e área jogável
+- Controle do jogador: movimentação lateral e disparo de projétil (1 por vez)
 - Geração e movimentação de inimigos no mapa
-- Controle do jogador com movimentação e disparo de projéteis
-- Colisão entre tiros e inimigos (eliminação de inimigos)
-- Feedback visual com cores (ex: inimigos em vermelho)
-- Redução de vida do jogador ao ser atingido e encerramento do jogo ao morrer
+- Colisão entre tiros e inimigos (eliminação dos inimigos)
+- Feedback visual com cores (ex: inimigos destacados em vermelho)
+- Redução de vida do jogador ao ser atingido por projéteis
+- Fim de jogo ao perder todas as vidas
+- Salvamento do score em arquivo local
+- Exibição de ranking ordenado por pontuação e nome
 - Limpeza do terminal ao encerrar o jogo
-- Interface de "Como jogar" com instruções básicas
-- Código modular com arquivos separados para mapa, jogador, inimigos etc.
+- Interface de ajuda com instruções básicas
+- Código modular (mapa, jogador, inimigos, sistema de save etc.)
 
-> ℹ️ **Nota:** A lógica de perda de vidas já está implementada, mas **a exibição das vidas (HUD)** ainda não foi desenvolvida.
+> **Nota:** A lógica de vidas e fim de jogo está implementada, mas a **HUD com número de vidas e score em tempo real** ainda será adicionada.
+
+---
 
 ## ✅ Checklist de funcionalidades avaliativas
 
@@ -33,13 +38,15 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 | Nave e inimigos visualmente distintos                                         | ✅       |
 | Jogo não pisca ou apresenta problemas visuais                                 | ✅       |
 | Velocidade dos inimigos aumenta conforme quantidade diminui                   | ❌       |
-| O jogo salva o score em arquivo                                               | ❌       |
-| Exibição do ranking ordenado por score e nome                                 | ❌       |
+| O jogo salva o score em arquivo                                               | ✅       |
+| Exibição do ranking ordenado por score e nome                                 | ✅       |
 | Tempo de jogo visível na tela                                                 | ❌       |
 | Início com 3 vidas e exibição de vidas na tela                                | ❌       |
 
-**Total implementado:** 6 de 15  
-**Progresso:** 40%
+**Total implementado:** 8 de 15  
+**Progresso:** 53%
+
+---
 
 ## 👨‍💻 Contribuidores principais
 
@@ -47,4 +54,6 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 - Rodrigo Buratto Ribas
 - Wallacy Alvarenga
 
-## 📁 Estrutura (exemplo)
+---
+
+## 📁 Estrutura de diretórios (exemplo)
