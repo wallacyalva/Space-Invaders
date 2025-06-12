@@ -47,7 +47,7 @@ O jogador controla uma nave que se move lateralmente e dispara projéteis contra
 | Velocidade dos inimigos aumenta conforme quantidade diminui                   | ❌       |
 | O jogo salva o score em arquivo                                               | ✅       |
 | Exibição do ranking ordenado por score e nome                                 | ✅       |
-| Tempo de jogo visível na tela                                                 | ❌       |
+| Tempo de jogo visível na tela                                                 | ✅       |
 | Início com 3 vidas e exibição de vidas na tela                                | ✅       |
 
 **Total implementado:** 9 de 15  
