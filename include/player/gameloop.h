@@ -3,11 +3,13 @@
 #include "../basicStructures/gameElements.h"
 #include "../map/maps.h"
 #include "./projectiles.hpp"
+#include "./gameover.cpp"
 uint64_t timeMillis()
 {
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
+bool infiniteShots = false;
 void GameLoop()
 {
     SetConsoleOutputCP(CP_UTF8);
@@ -53,7 +55,7 @@ void GameLoop()
             Projectile actualProjectile;
             actualProjectile.position.X = player.position.X;
             actualProjectile.position.Y = player.position.Y - 1;
-            if (projectilesinGame < 1)
+            if (projectilesinGame < 1 || infiniteShots)
             {
                 CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
             }
@@ -64,6 +66,30 @@ void GameLoop()
             gameexit = false;
             /*escape*/
             break;
+        /*game over screen test*/
+        case 'c':
+        case 'C':
+        {
+            int cheatCode = getch();
+            switch (cheatCode)
+            {
+            /*game over*/
+            case 'g':
+            case 'G':
+                showGameOverScreen();
+                gameexit = false;
+                break;
+            case 'k':
+            case 'K':
+                player.health--;
+                break;
+            case 'i':
+            case 'I':
+                // infiniteShots = true;
+                break;
+            }
+            break;
+        }
         }
         if (projectiles != nullptr)
         {
@@ -76,4 +102,8 @@ void GameLoop()
         }
 
     } while (player.health > 0 && gameexit);
+    if (player.health <= 0)
+    {
+        showGameOverScreen();
+    }
 }

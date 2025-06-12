@@ -1,6 +1,11 @@
 #ifndef gameElements
+#include <windows.h>
+#include <iostream>
+#include <conio.h>
 #define gameElements
 #include "../player/player.h"
+using namespace std;
+
 const int maxEnemies = 50;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
