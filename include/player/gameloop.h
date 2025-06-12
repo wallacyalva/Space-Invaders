@@ -52,7 +52,8 @@ void GameLoop()
             Projectile actualProjectile;
             actualProjectile.position.X = player.position.X;
             actualProjectile.position.Y = player.position.Y - 1;
-            CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+            if (projectilesinGame == 0)
+                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
             break;
         }
         /*game Exit*/
@@ -67,7 +68,7 @@ void GameLoop()
             {
                 // 60 fps test 1 second/60 frames * lowspeed
                 nextUpdate = (INT)(timeMillis()) + (1000 / 60) * 2.5;
-                UpdateProjectiles(projectiles, projectilesinGame);
+                UpdateProjectiles(projectiles, projectilesinGame, gamemap);
             }
         }
 
