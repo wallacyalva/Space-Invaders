@@ -11,9 +11,12 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 - Controle do jogador com movimentação e disparo de projéteis
 - Colisão entre tiros e inimigos (eliminação de inimigos)
 - Feedback visual com cores (ex: inimigos em vermelho)
+- Redução de vida do jogador ao ser atingido e encerramento do jogo ao morrer
 - Limpeza do terminal ao encerrar o jogo
 - Interface de "Como jogar" com instruções básicas
 - Código modular com arquivos separados para mapa, jogador, inimigos etc.
+
+> ℹ️ **Nota:** A lógica de perda de vidas já está implementada, mas **a exibição das vidas (HUD)** ainda não foi desenvolvida.
 
 ## ✅ Checklist de funcionalidades avaliativas
 
@@ -25,7 +28,7 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 | Inimigos mudam de direção e descem ao chegar nas bordas                       | ❌       |
 | Inimigos atiram projéteis                                                     | ❌       |
 | Score é exibido e atualizado em tempo real                                    | ❌       |
-| Jogador perde vida ao ser atingido; jogo termina ao perder todas ou vencer    | ❌       |
+| Jogador perde vida ao ser atingido; jogo termina ao perder todas ou vencer    | ✅       |
 | Menu com instruções, score, autores e opção de jogar                          | ✅       |
 | Nave e inimigos visualmente distintos                                         | ✅       |
 | Jogo não pisca ou apresenta problemas visuais                                 | ✅       |
@@ -35,8 +38,8 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 | Tempo de jogo visível na tela                                                 | ❌       |
 | Início com 3 vidas e exibição de vidas na tela                                | ❌       |
 
-**Total implementado:** 5 de 15  
-**Progresso:** 33%
+**Total implementado:** 6 de 15  
+**Progresso:** 40%
 
 ## 👨‍💻 Contribuidores principais
 
@@ -45,4 +48,3 @@ Este projeto é fruto de uma colaboração entre diversos desenvolvedores, com f
 - Wallacy Alvarenga
 
 ## 📁 Estrutura (exemplo)
-

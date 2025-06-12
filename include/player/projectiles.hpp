@@ -27,7 +27,7 @@ Enemy *searchEnemy(COORD position)
     }
     return nullptr;
 }
-void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap &gamemap)
+void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap &gamemap, Game &game, int indexNick)
 {
     for (int i = 0; i < projectilesinGame; i++)
     {
@@ -45,6 +45,7 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             projectiles[i].position.Y--;
             if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo)
             {
+                game.score[indexNick]++;
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
                 SetConsoleCursorPosition(hConsole, projectiles[i].position);
                 cout << " ";

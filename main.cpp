@@ -2,8 +2,13 @@
 #include <iostream>
 #include "./include/player/gameloop.h"
 #include "./include/menu.cpp"
+#include "./include/player/convert.cpp"
+#include "./include/Save/writeSave.cpp"
+#include "./include/Save/readSave.cpp"
 int main()
 {
+
+    int indexNick = readSave(game);
     int option = -1;
     do
     {
@@ -12,7 +17,11 @@ int main()
         {
         case 0:
             /* Play Game*/
-            GameLoop();
+            game.nick[indexNick] = SetNick();
+            system("cls");
+            cout << indexNick;
+            getch();
+            GameLoop(indexNick);
             break;
         case 1:
             system("cls");
@@ -45,6 +54,7 @@ int main()
             break;
         }
     } while (option != 4);
+    saveGame(game);
     system("cls");
     return 0;
 }

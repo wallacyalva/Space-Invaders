@@ -10,7 +10,7 @@ uint64_t timeMillis()
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 bool infiniteShots = false;
-void GameLoop()
+void GameLoop(int indexNick)
 {
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
@@ -87,6 +87,10 @@ void GameLoop()
             case 'I':
                 // infiniteShots = true;
                 break;
+            case 's':
+            case 'S':
+                cout << game.score;
+                break;
             }
             break;
         }
@@ -97,7 +101,7 @@ void GameLoop()
             {
                 // 60 fps test 1 second/60 frames * lowspeed
                 nextUpdate = (INT)(timeMillis()) + (1000 / 60) * 2.5;
-                UpdateProjectiles(projectiles, projectilesinGame, gamemap);
+                UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
 
