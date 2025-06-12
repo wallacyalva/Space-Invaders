@@ -5,6 +5,7 @@
 #include "./include/player/convert.cpp"
 #include "./include/Save/writeSave.cpp"
 #include "./include/Save/readSave.cpp"
+#include "./include/scoreScreen.hpp"
 int main()
 {
 
@@ -38,6 +39,8 @@ int main()
             break;
         case 2:
             /* Score*/
+            system("cls");
+            showScoreboard(game, indexNick);
             break;
         case 3:
             system("cls");
