@@ -9,6 +9,20 @@ uint64_t timeMillis()
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
+int startTime;
+string convertTimetoText(int seconds){
+    string segundos = to_string(seconds%60);
+    if (seconds%60 < 10)
+    {
+        segundos = "0"+segundos;
+    }
+    string minutos = to_string(seconds/60);
+    if (seconds/60 < 10)
+    {
+        minutos = "0"+minutos;
+    }
+    return minutos+":"+segundos;
+}
 void hudPrint(Game &game, int indexNick)
 {
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 0});
@@ -25,10 +39,13 @@ void hudPrint(Game &game, int indexNick)
     }
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 1});
     cout << "Score: " << game.score[indexNick];
+    SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 2});
+    cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
 }
 bool infiniteShots = false;
-void GameLoop(int indexNick)
+void GameLoop(int &indexNick)
 {
+    startTime = timeMillis()/1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
     Player *player;
@@ -132,6 +149,7 @@ void GameLoop(int indexNick)
     if (player->health <= 0)
     {
         showGameOverScreen();
+        indexNick++;
     }
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
