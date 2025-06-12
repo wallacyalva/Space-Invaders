@@ -16,14 +16,15 @@ void GameLoop()
     Projectile *projectiles = nullptr;
     int input = 0;
     getConsoleSize();
-    player.position.Y = SCREEN_HEIGHT - 2;
-    player.position.X = SCREEN_WIDTH / 2;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player.position);
+    player.position.Y = GameElements::lineMap - 2;
+    player.position.X = GameElements::columnMap / 2;
+    player.playerChar = GameElements::person;
     int projectilesinGame = 0;
     int nextUpdate = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player.position);
     cout << player.playerChar;
 
     do
@@ -52,8 +53,10 @@ void GameLoop()
             Projectile actualProjectile;
             actualProjectile.position.X = player.position.X;
             actualProjectile.position.Y = player.position.Y - 1;
-            if (projectilesinGame == 0)
+            if (projectilesinGame < 1)
+            {
                 CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+            }
             break;
         }
         /*game Exit*/

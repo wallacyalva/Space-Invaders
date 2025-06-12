@@ -13,7 +13,8 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
         for (int j = 0; j < GameElements::columnMap; j++)
         {
             string typeCout = types[mapCurrent.map[i][j]];
-            switch (mapCurrent.map[i][j]){
+            switch (mapCurrent.map[i][j])
+            {
             // desenhando piso
             case mapCurrent.entities::parede:
                 SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
@@ -78,16 +79,15 @@ void mapa(Gamemap &newMap, int mapSelect)
     {
     case 1:
     {
-        Gamemap mapCurrent;
         for (int i = 0; i < GameElements::lineMap; i++)
         {
             for (int j = 0; j < GameElements::columnMap; j++)
             {
-                mapCurrent.map[i][j] = Template[i][j];
+                newMap.map[i][j] = Template[i][j];
             }
         }
 
-        printMap(mapCurrent, GetStdHandle(STD_OUTPUT_HANDLE));
+        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
         break;
     }
     default:

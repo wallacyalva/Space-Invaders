@@ -1,5 +1,5 @@
-#ifndef gameMap_h
-#define gameMap_h
+#ifndef Gamemap_h
+#define Gamemap_h
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
 using namespace std;
