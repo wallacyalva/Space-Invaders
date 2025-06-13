@@ -21,7 +21,7 @@ void getConsoleSize()
 struct GameElements
 {
     static const char person = 'A';
-    static const char enemy = 'W';
+    static const int enemy = 3;
     static const int columnMap = 33;
     static const int lineMap = 23;
 };
@@ -73,7 +73,12 @@ struct Game
     int score[10] = {};
     Nick nick[10] = {};
     Enemy enemies[maxEnemies] = {
-        {{1, 7}, true}, {{1, 9}, true}, {{1, 11}, true}, {{1, 13}, true}, {{1, 15}, true}, {{1, 17}, true}, {{1, 19}, true}, {{1, 21}, true}, {{1, 23}, true}, {{1, 25}, true}, {{2, 7}, true}, {{2, 9}, true}, {{2, 11}, true}, {{2, 13}, true}, {{2, 15}, true}, {{2, 17}, true}, {{2, 19}, true}, {{2, 21}, true}, {{2, 23}, true}, {{2, 25}, true}, {{3, 7}, true}, {{3, 9}, true}, {{3, 11}, true}, {{3, 13}, true}, {{3, 15}, true}, {{3, 17}, true}, {{3, 19}, true}, {{3, 21}, true}, {{3, 23}, true}, {{3, 25}, true}, {{4, 7}, true}, {{4, 9}, true}, {{4, 11}, true}, {{4, 13}, true}, {{4, 15}, true}, {{4, 17}, true}, {{4, 19}, true}, {{4, 21}, true}, {{4, 23}, true}, {{4, 25}, true}, {{5, 7}, true}, {{5, 9}, true}, {{5, 11}, true}, {{5, 13}, true}, {{5, 15}, true}, {{5, 17}, true}, {{5, 19}, true}, {{5, 21}, true}, {{5, 23}, true}, {{5, 25}, true}};
+        {{7, 1}, true}, {{9, 1}, true}, {{11, 1}, true}, {{13, 1}, true}, {{15, 1}, true}, {{17, 1}, true}, {{19, 1}, true}, {{21, 1}, true}, {{23, 1}, true}, {{25, 1}, true},
+        {{7, 2}, true}, {{9, 2}, true}, {{11, 2}, true}, {{13, 2}, true}, {{15, 2}, true}, {{17, 2}, true}, {{19, 2}, true}, {{21, 2}, true}, {{23, 2}, true}, {{25, 2}, true},
+        {{7, 3}, true}, {{9, 3}, true}, {{11, 3}, true}, {{13, 3}, true}, {{15, 3}, true}, {{17, 3}, true}, {{19, 3}, true}, {{21, 3}, true}, {{23, 3}, true}, {{25, 3}, true},
+        {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
+        {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, false}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
+    };
 };
 
 string types[9] = {
@@ -81,7 +86,7 @@ string types[9] = {
     "\u2588", // 1 parede
     "A",      // 2 player
     "W",      // 3 inimigo
-    " ",      // 4
+    "!",      // 4 ataque inimigo
     " ",      // 5
     " ",      // 6
     " ",      // 7

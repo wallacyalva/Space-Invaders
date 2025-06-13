@@ -1,3 +1,4 @@
+#include "../enemies/render.h"
 #include "./gameMap.h"
 #include <windows.h>
 #include <ctime>
@@ -30,15 +31,6 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 
         }
         cout << endl;
-    }
-}
-
-// Responsável por renderizar os inimigos no mapa
-void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
-    for (int i = 0; i < maxEnemies; i++){
-        if(game.enemies[i].active){
-            Template[game.enemies[i].position.X][game.enemies[i].position.Y] = 3;
-        }
     }
 }
 

@@ -4,6 +4,7 @@
 #include "../map/maps.h"
 #include "./projectiles.hpp"
 #include "./gameover.cpp"
+#include "../enemies/move.h"
 uint64_t timeMillis()
 {
     using namespace std::chrono;
@@ -144,6 +145,7 @@ void GameLoop(int &indexNick)
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
+        moveEnemies(gamemap,game);
 
     } while (player->health > 0 && gameexit);
     if (player->health <= 0)
