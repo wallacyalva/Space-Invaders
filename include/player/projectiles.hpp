@@ -11,16 +11,28 @@ struct Projectile
     int speed = 1;
     char projectileChar = '|';
 };
+// Enemy *searchEnemy(COORD position)
+// {
+//     int i;
+//     for (i = 0; i < maxEnemies; i++)
+//     {
+//         if (game.enemies[i].position.X == position.Y && game.enemies[i].position.Y == position.X)
+//         {
+//             return &game.enemies[i];
+//         }
+//         if (game.enemies[(maxEnemies - 1) - i].position.X == position.X && game.enemies[(maxEnemies - 1) - i].position.Y == position.Y)
+//         {
+//             return &game.enemies[i];
+//         }
+//     }
+//     return nullptr;
+// }
 Enemy *searchEnemy(COORD position)
 {
     int i;
     for (i = 0; i < maxEnemies; i++)
     {
-        if (game.enemies[i].position.X == position.Y && game.enemies[i].position.Y == position.X)
-        {
-            return &game.enemies[i];
-        }
-        if (game.enemies[(maxEnemies - 1) - i].position.X == position.X && game.enemies[(maxEnemies - 1) - i].position.Y == position.Y)
+        if (game.enemies[i].position.X == position.X && game.enemies[i].position.Y == position.Y)
         {
             return &game.enemies[i];
         }
