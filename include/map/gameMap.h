@@ -22,6 +22,7 @@ struct Gamemap
         floor = 0,
         parede = 1,
         inimigo = 3,
+        ataqueInimigo = 4,
         vazio = 9,
     };
     entities entity;
@@ -30,6 +31,7 @@ struct Gamemap
     static const DWORD amarelo = (0 << 4) | 14;  /* Define o mapa para printar fundo preto e escrita amarela */
     static const DWORD azul = (0 << 4) | 9;      /* Define o mapa para printar fundo preto e escrita azul */
     static const DWORD vermelho = (0 << 4) | 12; /* Define o mapa para printar fundo preto e escrita vermelha */
+    static const DWORD rosa = (0 << 4) | 13;     /* Define o mapa para printar fundo preto e escrita rosa */
     DWORD themeColor = padrao;                   /* Define para começar na cor padrão */
 };
 #endif

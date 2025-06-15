@@ -5,6 +5,7 @@
 #include "./projectiles.hpp"
 #include "./gameover.cpp"
 #include "../enemies/move.h"
+#include "../enemies/attack.h"
 uint64_t timeMillis()
 {
     using namespace std::chrono;
@@ -59,6 +60,9 @@ void GameLoop(int &indexNick)
     player->playerChar = GameElements::person;
     int projectilesinGame = 0;
     int nextUpdate = 0;
+    int nextUpdateEnemy = 0;
+    int timeAttack = (INT)(timeMillis()) + (1000 / 60) * 400;
+    int nextUpdateAttack = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
@@ -146,7 +150,21 @@ void GameLoop(int &indexNick)
             }
         }
         
-        moveEnemies(gamemap,game);
+        if (nextUpdateEnemy <= (INT)(timeMillis())){
+            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+            moveEnemies(gamemap,game);
+        }
+        if(timeAttack <= (INT)(timeMillis())){
+            timeAttack = (INT)(timeMillis()) + (1000 / 60) * 400;
+            makeAttackEnemy(gamemap,game);
+        }
+        if(game.enemyProjectilesInGame > 0){
+            if (nextUpdateAttack <= (INT)(timeMillis())){
+                // 60 fps test 1 second/60 frames * lowspeed
+                nextUpdateAttack = (INT)(timeMillis()) + (1000 / 60) * 10;
+                updateEnemyProjectiles(gamemap, game);
+            }
+        }
 
     } while (player->health > 0 && gameexit);
     if (player->health <= 0)

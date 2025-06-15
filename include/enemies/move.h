@@ -36,12 +36,6 @@ void desenharInimigos(Game &game, Gamemap &gamemap){
 
 // Movimenta os inimigos como no Space Invaders
 void moveEnemies(Gamemap &gamemap, Game &game){
-    enemyDelay = baseEnemyDelay - game.enemiesDie * 20;
-
-    if (enemyMoveCounter < enemyDelay){
-        enemyMoveCounter++;
-        return;
-    }
 
     // Verifica se deve descer
     bool shouldDescend = false;
@@ -83,4 +77,50 @@ void moveEnemies(Gamemap &gamemap, Game &game){
     // 6. reinicia o contador 
 
     enemyMoveCounter = 0;
+}
+
+void updateEnemyProjectiles(Gamemap &gamemap, Game &game) {
+    for (int i = 0; i < game.enemyProjectilesInGame; i++) {
+        if (game.enemyProjectiles[i].active){
+            COORD &pos = game.enemyProjectiles[i].position;
+    
+            // Apaga posição atual (mas só se não for o player)
+            if (!(pos.X == game.player.position.X && pos.Y == game.player.position.Y)) {
+                SetConsoleCursorPosition(hConsole, pos);
+                cout << " ";
+                gamemap.map[pos.Y][pos.X] = Gamemap::vazio;
+            }
+    
+            // Move para baixo
+            pos.Y += game.enemyProjectiles[i].speed;
+    
+            // Verifica se saiu da tela
+            if (pos.Y >= GameElements::lineMap - 1) {
+                game.enemyProjectiles[i].active = false;
+                continue;
+            }
+    
+            // Verifica colisão com player
+            if (pos.X == game.player.position.X && pos.Y == game.player.position.Y) {
+                game.enemyProjectiles[i].active = false;
+    
+                if (game.player.health > 0) game.player.health--;
+    
+                // Reimprime o player no lugar do impacto
+                SetConsoleCursorPosition(hConsole, game.player.position);
+                SetConsoleTextAttribute(hConsole, game.player.color);
+                cout << game.player.playerChar;
+                SetConsoleTextAttribute(hConsole, gamemap.themeColor);
+                continue;
+            }
+    
+            // Atualiza novo local do projétil
+            gamemap.map[pos.Y][pos.X] = Gamemap::ataqueInimigo;
+            SetConsoleCursorPosition(hConsole, pos);
+            SetConsoleTextAttribute(hConsole, Gamemap::rosa);
+            cout << types[GameElements::enemyAttack];
+            SetConsoleTextAttribute(hConsole, gamemap.themeColor);
+        };
+
+    }
 }

@@ -6,6 +6,7 @@
 #include "../player/player.h"
 using namespace std;
 
+const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
@@ -22,6 +23,7 @@ struct GameElements
 {
     static const char person = 'A';
     static const int enemy = 3;
+    static const int enemyAttack = 4;
     static const int columnMap = 33;
     static const int lineMap = 23;
 };
@@ -67,6 +69,12 @@ struct Nick
 {
     char nick[3] = {};
 };
+struct EnemyProjectile {
+    COORD position = {0, 0};
+    int speed = 1;
+    char projectileChar = '!'; // seta pra baixo
+    bool active = true;
+};
 struct Game
 {
     Player player;
@@ -80,6 +88,8 @@ struct Game
         {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
         {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
     };
+    EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
+    int enemyProjectilesInGame = 0;
 };
 
 string types[9] = {
