@@ -72,7 +72,7 @@ void GameLoop(int &indexNick)
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
-
+    initEnemies(game);
     do
     {
         hudPrint(game, indexNick);
