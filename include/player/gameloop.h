@@ -145,6 +145,7 @@ void GameLoop(int &indexNick)
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
+        
         moveEnemies(gamemap,game);
 
     } while (player->health > 0 && gameexit);

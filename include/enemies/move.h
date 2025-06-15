@@ -1,108 +1,86 @@
-
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
 #include "../map/gameMap.h"
 using namespace std;
 
-int enemyDirection = 1; // 1 para direita, -1 para esquerda
-int enemyMoveCounter = 0;
-int baseEnemyDelay = 200;
-int enemyDelay = baseEnemyDelay;
 
-void moveEnemies(Gamemap &gamemap, Game &game)
-{
-    if (enemyMoveCounter >= enemyDelay)
-    {
-        bool shouldDescend = false;
-
-        // Checar se algum inimigo vai colidir com parede
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                int nextX = game.enemies[i].position.X + enemyDirection;
-                int y = game.enemies[i].position.Y;
-
-                if (nextX <= 0 || nextX >= GameElements::columnMap - 1 || gamemap.map[y][nextX] == Gamemap::parede)
-                {
-                    shouldDescend = true;
-                    break;
-                }
-            }
+//limpa inimigos antigos da tela e mapa
+void limparInimigosAntigos(Game &game, Gamemap &gamemap){
+    for (int i = 0; i < maxEnemies; i++){
+        if (game.enemies[i].active){
+            COORD pos = game.enemies[i].position;
+            SetConsoleCursorPosition(hConsole, pos);
+            cout << " ";
+            gamemap.map[pos.Y][pos.X] = Gamemap::vazio;
         }
 
-        // Apagar inimigos antigos
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                SetConsoleCursorPosition(hConsole, game.enemies[i].position);
-                cout << " ";
-            }
-        }
-
-        // Mover inimigos
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                if (shouldDescend)
-                {
-                    game.enemies[i].position.Y++;
-                }
-                else
-                {
-                    game.enemies[i].position.X += enemyDirection;
-                }
-            };
-        }
-
-        // Inverter direção se desceu
-        if (shouldDescend)
-        {
-            enemyDirection *= -1;
-        }
-
-        // Redesenhar inimigos na nova posição
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                SetConsoleCursorPosition(hConsole, game.enemies[i].position);
-                SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
-                cout << types[GameElements::enemy];
-                SetConsoleTextAttribute(hConsole, gamemap.themeColor);
-            }
-        }
-
-        // Aumentar velocidade conforme inimigos são derrotados
-        int vivos = 0;
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                vivos++;
-            }
-        }
-
-        enemyDelay = max(2, baseEnemyDelay - vivos / 5); // acelera com menos inimigos
-        enemyMoveCounter = 0;
-
-        // põe inimigos na matriz
-        for (int i = 0; i < maxEnemies; i++)
-        {
-            if (game.enemies[i].active)
-            {
-                gamemap.map[game.enemies[i].position.Y][game.enemies[i].position.X] = Gamemap::inimigo;
-            }
-            else
-            {
-                gamemap.map[game.enemies[i].position.Y][game.enemies[i].position.X] = Gamemap::vazio;
-            }
-        }
     }
-    else
-    {
+}
+
+// Desenha inimigos no console e atualiza mapa
+void desenharInimigos(Game &game, Gamemap &gamemap){
+    for (int i = 0; i < maxEnemies; i++){
+        if (game.enemies[i].active){
+            COORD pos = game.enemies[i].position;
+    
+            SetConsoleCursorPosition(hConsole, pos);
+            SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            cout << types[GameElements::enemy];
+            SetConsoleTextAttribute(hConsole, gamemap.themeColor);
+    
+            gamemap.map[pos.Y][pos.X] = Gamemap::inimigo;
+        }
+
+    }
+}
+
+// Movimenta os inimigos como no Space Invaders
+void moveEnemies(Gamemap &gamemap, Game &game){
+    enemyDelay = baseEnemyDelay - game.enemiesDie * 20;
+
+    if (enemyMoveCounter < enemyDelay){
         enemyMoveCounter++;
+        return;
     }
+
+    // Verifica se deve descer
+    bool shouldDescend = false;
+    for (int i = 0; i < maxEnemies; i++){
+        if (game.enemies[i].active){
+            int nextX = game.enemies[i].position.X + enemyDirection;
+            int y = game.enemies[i].position.Y;
+    
+            if (nextX <= 0 || nextX >= GameElements::columnMap - 1 || gamemap.map[y][nextX] == Gamemap::parede){
+                shouldDescend = true;
+                break;
+            }
+        }
+
+    }
+
+    // 2. Limpa posições antigas
+    limparInimigosAntigos(game, gamemap);
+
+    // 3. Move os inimigos
+    for (int i = 0; i < maxEnemies; i++){
+        if (game.enemies[i].active){
+            if (shouldDescend){
+                game.enemies[i].position.Y++;
+            }else{
+                game.enemies[i].position.X += enemyDirection;
+            }
+        }
+    }
+
+    // 4. Inverte direção caso tenha descido
+    if (shouldDescend){
+        enemyDirection *= -1;
+    }
+
+    // 5. Redesenha inimigos na nova posição
+    desenharInimigos(game, gamemap);
+
+    // 6. reinicia o contador 
+
+    enemyMoveCounter = 0;
 }

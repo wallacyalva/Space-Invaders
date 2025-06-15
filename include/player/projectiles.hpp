@@ -64,6 +64,7 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
                 Enemy *enemy = searchEnemy(projectiles[i].position);
                 if (enemy != nullptr)
                     enemy->active = false;
+                    game.enemiesDie++;
                 if (i == 0)
                 {
                     projectiles = nullptr;

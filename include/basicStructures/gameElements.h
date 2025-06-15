@@ -72,12 +72,13 @@ struct Game
     Player player;
     int score[10] = {};
     Nick nick[10] = {};
+    int enemiesDie = 0;
     Enemy enemies[maxEnemies] = {
         {{7, 1}, true}, {{9, 1}, true}, {{11, 1}, true}, {{13, 1}, true}, {{15, 1}, true}, {{17, 1}, true}, {{19, 1}, true}, {{21, 1}, true}, {{23, 1}, true}, {{25, 1}, true},
         {{7, 2}, true}, {{9, 2}, true}, {{11, 2}, true}, {{13, 2}, true}, {{15, 2}, true}, {{17, 2}, true}, {{19, 2}, true}, {{21, 2}, true}, {{23, 2}, true}, {{25, 2}, true},
         {{7, 3}, true}, {{9, 3}, true}, {{11, 3}, true}, {{13, 3}, true}, {{15, 3}, true}, {{17, 3}, true}, {{19, 3}, true}, {{21, 3}, true}, {{23, 3}, true}, {{25, 3}, true},
         {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
-        {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, false}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
+        {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
     };
 };
 
@@ -94,5 +95,11 @@ string types[9] = {
 };
 
 Game game;
+
+// Variáveis de controle de movimento inimigo
+int enemyDirection = 1; // 1 = direita, -1 = esquerda
+int enemyMoveCounter = 0;
+int baseEnemyDelay = 1000;
+int enemyDelay = baseEnemyDelay; 
 
 #endif

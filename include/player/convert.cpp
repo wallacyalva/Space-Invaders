@@ -31,20 +31,20 @@ void CharacterDraw(string art, short int startX)
 void TalkInitGame()
 {
 
-    string startTalk = "Nas páginas em branco do destino, uma nova história será escrita. "
-                       "Com tinta de coragem e papel de incerteza, qual nome assinará este capítulo?";
-    for (size_t i = 0; i < startTalk.length(); i++)
-    {
-        if (_kbhit())
-        {
-            break;
-        }
-        int freq = 300 + startTalk[i];
-        thread testSound(Beep, freq, 150);
-        testSound.detach();
-        cout << startTalk[i];
-        Sleep(100);
-    }
+    // string startTalk = "Nas páginas em branco do destino, uma nova história será escrita. "
+    //                    "Com tinta de coragem e papel de incerteza, qual nome assinará este capítulo?";
+    // for (size_t i = 0; i < startTalk.length(); i++)
+    // {
+    //     if (_kbhit())
+    //     {
+    //         break;
+    //     }
+    //     int freq = 300 + startTalk[i];
+    //     thread testSound(Beep, freq, 150);
+    //     testSound.detach();
+    //     cout << startTalk[i];
+    //     Sleep(100);
+    // }
 }
 int Converter(int &letra, int input)
 {
