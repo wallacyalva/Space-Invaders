@@ -36,15 +36,15 @@ O jogador controla uma nave que se move lateralmente e dispara projéteis contra
 |--------------------------------------------------------------------------------|---------|
 | Nave se move corretamente lateralmente                                        | ✅       |
 | Um tiro é disparado ao pressionar espaço e segue para cima, um por vez        | ✅       |
-| Inimigos se movem em grupo                                                    | ❌       |
-| Inimigos mudam de direção e descem ao chegar nas bordas                       | ❌       |
-| Inimigos atiram projéteis                                                     | ❌       |
+| Inimigos se movem em grupo                                                    | ✅       |
+| Inimigos mudam de direção e descem ao chegar nas bordas                       | ✅       |
+| Inimigos atiram projéteis                                                     | ✅       |
 | Score é exibido e atualizado em tempo real                                    | ✅       |
 | Jogador perde vida ao ser atingido; jogo termina ao perder todas ou vencer    | ✅       |
 | Menu com instruções, score, autores e opção de jogar                          | ✅       |
 | Nave e inimigos visualmente distintos                                         | ✅       |
 | Jogo não pisca ou apresenta problemas visuais                                 | ✅       |
-| Velocidade dos inimigos aumenta conforme quantidade diminui                   | ❌       |
+| Velocidade dos inimigos aumenta conforme quantidade diminui                   | ✅       |
 | O jogo salva o score em arquivo                                               | ✅       |
 | Exibição do ranking ordenado por score e nome                                 | ✅       |
 | Tempo de jogo visível na tela                                                 | ✅       |
