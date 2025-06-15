@@ -48,7 +48,7 @@ void makeAttackEnemy(Gamemap &gamemap, Game &game){
     int myIndex = findIndexActive(game,randN);
 
     if(myIndex != -1){
-        COORD pos = {game.enemies[myIndex].position.X,(game.enemies[myIndex].position.Y + 1)};
+        COORD pos = {game.enemies[myIndex].position.X,(SHORT)(game.enemies[myIndex].position.Y + 1)};
 
         if (game.enemyProjectilesInGame < maxEnemyProjectiles) {
             EnemyProjectile proj;
