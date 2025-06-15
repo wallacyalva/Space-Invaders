@@ -72,10 +72,9 @@ void GameLoop(int &indexNick)
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
-    gameexit = !checkAllEnemiesDie(game);
-
     do
     {
+        gameexit = !checkAllEnemiesDie(game);
         hudPrint(game, indexNick);
         input = 0;
         if (_kbhit())
