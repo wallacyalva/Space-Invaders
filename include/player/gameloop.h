@@ -72,7 +72,8 @@ void GameLoop(int &indexNick)
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
-    initEnemies(game);
+    gameexit = !checkAllEnemiesDie(game);
+
     do
     {
         hudPrint(game, indexNick);
@@ -81,64 +82,64 @@ void GameLoop(int &indexNick)
             input = getch();
         switch (input)
         {
-        case 'a':
-        case 'A':
-            player->setRelativePosition(-1, 0);
-            // projectiles = nullptr;
-            break;
-        case 'd':
-        case 'D':
-            player->setRelativePosition(1, 0);
-            // projectiles = nullptr;
-            break;
-        /*spacebar*/
-        case 32:
-        {
-            /*atack*/
+            case 'a':
+            case 'A':
+                player->setRelativePosition(-1, 0);
+                // projectiles = nullptr;
+                break;
+            case 'd':
+            case 'D':
+                player->setRelativePosition(1, 0);
+                // projectiles = nullptr;
+                break;
+            /*spacebar*/
+            case 32:
+            {
+                /*atack*/
 
-            /*create projectile*/
-            Projectile actualProjectile;
-            actualProjectile.position.X = player->position.X;
-            actualProjectile.position.Y = player->position.Y - 1;
-            if (projectilesinGame < 1 || infiniteShots)
-            {
-                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                /*create projectile*/
+                Projectile actualProjectile;
+                actualProjectile.position.X = player->position.X;
+                actualProjectile.position.Y = player->position.Y - 1;
+                if (projectilesinGame < 1 || infiniteShots)
+                {
+                    CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                }
+                break;
             }
-            break;
-        }
-        /*game Exit*/
-        case 27:
-            gameexit = false;
-            /*escape*/
-            break;
-        /*game over screen test*/
-        case 'c':
-        case 'C':
-        {
-            int cheatCode = getch();
-            switch (cheatCode)
-            {
-            /*game over*/
-            case 'g':
-            case 'G':
-                showGameOverScreen(game,indexNick);
+            /*game Exit*/
+            case 27:
                 gameexit = false;
+                /*escape*/
                 break;
-            case 'k':
-            case 'K':
-                player->health--;
-                break;
-            case 'i':
-            case 'I':
-                // infiniteShots = true;
-                break;
-            case 's':
-            case 'S':
-                cout << game.score;
+            /*game over screen test*/
+            case 'c':
+            case 'C':
+            {
+                int cheatCode = getch();
+                switch (cheatCode)
+                {
+                /*game over*/
+                case 'g':
+                case 'G':
+                    gameexit = false;
+                    showGameOverScreen(game,indexNick);
+                    break;
+                case 'k':
+                case 'K':
+                    player->health--;
+                    break;
+                case 'i':
+                case 'I':
+                    infiniteShots = true;
+                    break;
+                case 's':
+                case 'S':
+                    cout << game.score;
+                    break;
+                }
                 break;
             }
-            break;
-        }
         }
         if (projectiles != nullptr)
         {
@@ -166,7 +167,7 @@ void GameLoop(int &indexNick)
             }
         }
 
-        gameexit = !checkAllEnemiesDie(game);
+
     } while (player->health > 0 && gameexit);
     // if (player->health <= 0)
     // {
