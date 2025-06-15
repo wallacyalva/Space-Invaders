@@ -151,7 +151,7 @@ void GameLoop(int &indexNick)
         }
         
         if (nextUpdateEnemy <= (INT)(timeMillis())){
-            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (100 - (game.enemiesDie * 1000));
             moveEnemies(gamemap,game);
         }
         if(timeAttack <= (INT)(timeMillis())){

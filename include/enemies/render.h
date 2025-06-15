@@ -14,11 +14,21 @@ void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
 
 bool checkAllEnemiesDie(Game game){
     bool die = true;
-    for (int i = 0; i < maxColuns; i++){
-        if(game.enemies[i].active){
+    bool isEnd = false;
+    
+    for (int i = 0; i < maxEnemies; i++) {
+
+        if (game.enemies[i].active) {
             die = false;
         }
+        if (game.enemies[i].position.Y == game.player.position.Y - 1) {
+            isEnd = true;
+        }
     }
-    
+
+    if(isEnd == true){
+        die = true;
+    }
+
     return die;
 }

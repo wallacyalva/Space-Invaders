@@ -128,5 +128,6 @@ void initEnemies(Game &game) {
     for (int i = 0; i < maxEnemies; i++) {
         game.enemies[i] = enemiesLive[i];
     }
+    game.enemiesDie = 0;
 }
 #endif

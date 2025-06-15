@@ -11,22 +11,7 @@ struct Projectile
     int speed = 1;
     char projectileChar = '|';
 };
-// Enemy *searchEnemy(COORD position)
-// {
-//     int i;
-//     for (i = 0; i < maxEnemies; i++)
-//     {
-//         if (game.enemies[i].position.X == position.Y && game.enemies[i].position.Y == position.X)
-//         {
-//             return &game.enemies[i];
-//         }
-//         if (game.enemies[(maxEnemies - 1) - i].position.X == position.X && game.enemies[(maxEnemies - 1) - i].position.Y == position.Y)
-//         {
-//             return &game.enemies[i];
-//         }
-//     }
-//     return nullptr;
-// }
+
 Enemy *searchEnemy(COORD position)
 {
     int i;
@@ -58,13 +43,13 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo)
             {
                 game.score[indexNick] += 10;
+                game.enemiesDie += 1;
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
                 SetConsoleCursorPosition(hConsole, projectiles[i].position);
                 cout << " ";
                 Enemy *enemy = searchEnemy(projectiles[i].position);
                 if (enemy != nullptr)
                     enemy->active = false;
-                    game.enemiesDie++;
                 if (i == 0)
                 {
                     projectiles = nullptr;
