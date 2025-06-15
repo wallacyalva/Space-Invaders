@@ -11,3 +11,14 @@ void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
         }
     }
 }
+
+bool checkAllEnemiesDie(Game game){
+    bool die = true;
+    for (int i = 0; i < maxColuns; i++){
+        if(game.enemies[i].active){
+            die = false;
+        }
+    }
+    
+    return die;
+}

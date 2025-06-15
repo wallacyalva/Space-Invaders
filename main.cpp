@@ -20,10 +20,10 @@ int main()
         {
         case 0:
             /* Play Game*/
-            game.nick[indexNick] = SetNick();
-            system("cls");
-            cout << indexNick;
-            getch();
+            // game.nick[indexNick] = SetNick();
+            // system("cls");
+            // cout << indexNick;
+            // getch();
             GameLoop(indexNick);
             break;
         case 1:

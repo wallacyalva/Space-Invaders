@@ -2,8 +2,6 @@
 #include "../basicStructures/gameElements.h"
 #include "../map/gameMap.h"
 using namespace std;
-int maxLines = 5;
-int maxColuns = 10;
 
 int findIndexActive(Game &game, int randN, int add = 0, int initialRandN = -1) {
     // Inicializa o valor original na primeira chamada

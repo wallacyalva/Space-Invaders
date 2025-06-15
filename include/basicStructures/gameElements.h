@@ -10,6 +10,9 @@ const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
+int maxLines = 5;
+int maxColuns = 10;
+
 // utilities Functions
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 void getConsoleSize()

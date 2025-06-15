@@ -121,7 +121,7 @@ void GameLoop(int &indexNick)
             /*game over*/
             case 'g':
             case 'G':
-                showGameOverScreen();
+                showGameOverScreen(game,indexNick);
                 gameexit = false;
                 break;
             case 'k':
@@ -166,12 +166,13 @@ void GameLoop(int &indexNick)
             }
         }
 
+        gameexit = !checkAllEnemiesDie(game);
     } while (player->health > 0 && gameexit);
-    if (player->health <= 0)
-    {
-        showGameOverScreen();
+    // if (player->health <= 0)
+    // {
+        showGameOverScreen(game,indexNick);
         indexNick++;
-    }
+    // }
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
