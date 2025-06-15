@@ -27,7 +27,7 @@ void CharacterDraw2(string art, short int startX)
     }
 }
 
-int Converter2(int &letra, int input){
+int Converter(int &letra, int input,int version){
     // int input = 1;
     int returnValue = -1;
     switch (input)
@@ -176,6 +176,7 @@ int Converter2(int &letra, int input){
     }
     return returnValue;
 }
+
 string asciiAlphabet2[27] = {
     // A
     "____\n"
@@ -311,7 +312,7 @@ string asciiAlphabet2[27] = {
     "    \n"
     "    \n"
     "    \n"};
-Nick SetNick2(){
+Nick SetNick(int newVersion){
     Nick nick;
     int letra = 0;
     int input = 0;
@@ -332,7 +333,7 @@ Nick SetNick2(){
         {
             input = 0;
         }
-        int number = Converter2(letra, input);
+        int number = Converter(letra, input,1);
         if (number > 0)
         {
             CharacterDraw2(asciiAlphabet2[number - 1], letra);
@@ -385,5 +386,5 @@ void showGameOverScreen(Game &game,int indexNick)
 
     getch(); // Espera o usuário apertar uma tecla
 
-    game.nick[indexNick] = SetNick2();
+    game.nick[indexNick] = SetNick(1);
 }
