@@ -50,8 +50,8 @@ O jogador controla uma nave que se move lateralmente e dispara projéteis contra
 | Tempo de jogo visível na tela                                                 | ✅       |
 | Início com 3 vidas e exibição de vidas na tela                                | ✅       |
 
-**Total implementado:** 10 de 15  
-**Progresso:** 66%
+**Total implementado:** 15 de 15  
+**Progresso:** 100%
 
 ---
 
