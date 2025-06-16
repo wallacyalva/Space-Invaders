@@ -24,10 +24,14 @@ int main()
             // system("cls");
             // cout << indexNick;
             // getch();
+            game = Game();
             GameLoop(indexNick);
+            saveGame(game);
+            indexNick++;
             break;
         case 1:
             system("cls");
+            cout<<indexNick;
             cout << "Como Jogar:\n\n";
             cout << "Use as teclas 'A' e 'D' para mover o player.\n";
             cout << "Use a tecla 'ESPAÇO' para atirar.\n";
@@ -61,7 +65,7 @@ int main()
     } while (option != 4);
     if (game.player.health <= 0)
         game.player.health = 3;
-    saveGame(game);
+    // saveGame(game);
     system("cls");
     return 0;
 }

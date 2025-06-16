@@ -47,11 +47,7 @@ int readSave(Game &game)
             {
                 actualSession = line;
             }
-            if (actualSession == "[Roguelike ASCII]")
-            {
-                cout << "Save Game";
-            }
-            else if (actualSession == "[Player]")
+             if (actualSession == "[Player]")
             {
                 cout << "Player Save" << endl;
                 string value = "";
@@ -149,5 +145,5 @@ int readSave(Game &game)
         }
         fileSave.close();
     }
-    return indexPoints;
+    return indexNick;
 }

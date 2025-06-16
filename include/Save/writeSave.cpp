@@ -15,7 +15,7 @@ void saveGame(Game &game)
     bool playerEmpty = false;
     for (size_t i = 0; !playerEmpty && i < 100; i++)
     {
-        if (game.score[i] == 0 || game.nick[i].nick[0] == '\0')
+        if (game.score[i] == 0 && game.nick[i].nick[0] == '\0')
         {
             playerEmpty = true;
         }
