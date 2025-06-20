@@ -89,7 +89,7 @@ Enemy enemiesLive[maxEnemies] = {
 
 struct Game
 {
-    Player player;
+    Player player = {Player()};
     int score[10] = {};
     Nick nick[10] = {};
     int enemiesDie = 0;

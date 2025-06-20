@@ -63,9 +63,13 @@ void GameLoop(int &indexNick)
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
     Player *player;
+    Player player2 = Player();
     player = &game.player;
     Projectile *projectiles = nullptr;
     getConsoleSize();
+    player2.position.Y = GameElements::lineMap - 3;
+    player2.position.X = GameElements::columnMap / 2;
+    player2.playerChar = GameElements::person;
     player->position.Y = GameElements::lineMap - 2;
     player->position.X = GameElements::columnMap / 2;
     player->playerChar = GameElements::person;
@@ -107,6 +111,12 @@ void GameLoop(int &indexNick)
                     player->setRelativePosition(-1, 0);
                     // projectiles = nullptr;
                     break;
+                case VK_LEFT:
+                    player2.setRelativePosition(-1, 0);
+                    break;
+                case VK_RIGHT:
+                    player2.setRelativePosition(1, 0);
+                    break;
                 case 'd':
                 case 'D':
                     player->setRelativePosition(1, 0);
@@ -129,6 +139,20 @@ void GameLoop(int &indexNick)
                     }
                     break;
                 }
+                case VK_RETURN:
+                {
+                    Projectile actualProjectile;
+                    actualProjectile.position.X = player2.position.X;
+                    actualProjectile.position.Y = player2.position.Y - 1;
+                    if (projectilesinGame < 1 || infiniteShots)
+                    {
+                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                        thread fire(fireSound);
+                        fire.detach();
+                    }
+                    break;
+                }
+                /*escape*/
                 /*game Exit*/
                 case 27:
                     gameexit = false;
