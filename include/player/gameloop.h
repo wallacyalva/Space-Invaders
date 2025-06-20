@@ -145,23 +145,23 @@ void GameLoop(int &indexNick)
             if (nextUpdate <= (INT)(timeMillis()))
             {
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdate = (INT)(timeMillis()) + (1000 / 60) * game.projectTime;
+                nextUpdate = (INT)(timeMillis()) + (1000 / 60) * 2.5;
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
         
         if (nextUpdateEnemy <= (INT)(timeMillis())){
-            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (game.moveEnemiesTime - game.enemiesDie);
+            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
             moveEnemies(gamemap,game);
         }
         if(timeAttack <= (INT)(timeMillis())){
-            timeAttack = (INT)(timeMillis()) + (1000 / 60) * game.attackEnemiesTime;
+            timeAttack = (INT)(timeMillis()) + (1000 / 60) * 400;
             makeAttackEnemy(gamemap,game);
         }
         if(game.enemyProjectilesInGame > 0){
             if (nextUpdateAttack <= (INT)(timeMillis())){
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdateAttack = (INT)(timeMillis()) + (1000 / 60) * game.moveAttackEnemiesTime;
+                nextUpdateAttack = (INT)(timeMillis()) + (1000 / 60) * 10;
                 updateEnemyProjectiles(gamemap, game);
             }
         }

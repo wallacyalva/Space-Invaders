@@ -96,10 +96,6 @@ struct Game
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
     int enemyProjectilesInGame = 0;
-    float projectTime = 2.5;
-    float moveEnemiesTime = 100;
-    float attackEnemiesTime = 400;
-    float moveAttackEnemiesTime = 10;
     Game() {
         // Copia os inimigos do modelo enemiesLive
         for (int i = 0; i < maxEnemies; i++) {
