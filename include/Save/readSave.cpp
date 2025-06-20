@@ -46,6 +46,7 @@ int readSave(Game &game)
             if (line[0] == '[')
             {
                 actualSession = line;
+                continue;
             }
              if (actualSession == "[Player]")
             {
@@ -92,7 +93,7 @@ int readSave(Game &game)
                     };
                 isValue = false;
             }
-            else if (actualSession == "[Points]" && line != "[Points]")
+            else if (actualSession == "[Points]")
             {
                 valueType type;
                 bool isValue = false;
@@ -139,10 +140,10 @@ int readSave(Game &game)
                 }
             }
 
-            game.player = player;
             cout << endl
-                 << player.position.X << "," << player.position.Y << endl;
+            << player.position.X << "," << player.position.Y << endl;
         }
+        game.player = player;
         fileSave.close();
     }
     return indexNick;

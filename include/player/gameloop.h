@@ -6,6 +6,8 @@
 #include "./gameover.cpp"
 #include "../enemies/move.h"
 #include "../enemies/attack.h"
+#include<chrono>
+
 uint64_t timeMillis()
 {
     using namespace std::chrono;
@@ -59,10 +61,10 @@ void GameLoop(int &indexNick)
     player->position.X = GameElements::columnMap / 2;
     player->playerChar = GameElements::person;
     int projectilesinGame = 0;
-    int nextUpdate = 0;
-    int nextUpdateEnemy = 0;
-    int timeAttack = (INT)(timeMillis()) + (1000 / 60) * 400;
-    int nextUpdateAttack = 0;
+    uint64_t nextUpdate = 0;
+    uint64_t nextUpdateEnemy = 0;
+    uint64_t timeAttack = (timeMillis()) + (1000 / 60) * 400;
+    uint64_t nextUpdateAttack = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
@@ -142,26 +144,26 @@ void GameLoop(int &indexNick)
         }
         if (projectiles != nullptr)
         {
-            if (nextUpdate <= (INT)(timeMillis()))
+            if (nextUpdate <= (timeMillis()))
             {
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdate = (INT)(timeMillis()) + (1000 / 60) * 2.5;
+                nextUpdate = (timeMillis()) + (1000 / 60) * 6.5;
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
         
-        if (nextUpdateEnemy <= (INT)(timeMillis())){
-            nextUpdateEnemy = (INT)(timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+        if (nextUpdateEnemy <= (timeMillis())){
+            nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
             moveEnemies(gamemap,game);
         }
-        if(timeAttack <= (INT)(timeMillis())){
-            timeAttack = (INT)(timeMillis()) + (1000 / 60) * 400;
+        if(timeAttack <= (timeMillis())){
+            timeAttack = (timeMillis()) + (1000 / 60) * 400;
             makeAttackEnemy(gamemap,game);
         }
         if(game.enemyProjectilesInGame > 0){
-            if (nextUpdateAttack <= (INT)(timeMillis())){
+            if (nextUpdateAttack <= (timeMillis())){
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdateAttack = (INT)(timeMillis()) + (1000 / 60) * 10;
+                nextUpdateAttack = (timeMillis()) + (1000 / 60) * 10;
                 updateEnemyProjectiles(gamemap, game);
             }
         }
