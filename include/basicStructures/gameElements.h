@@ -103,7 +103,10 @@ struct Game
         }
     }
 };
-
+struct Input{
+    int* inputs = nullptr;
+    int count = 0;
+};
 string types[9] = {
     " ",      // 0 vazio
     "\u2588", // 1 parede

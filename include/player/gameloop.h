@@ -6,8 +6,18 @@
 #include "./gameover.cpp"
 #include "../enemies/move.h"
 #include "../enemies/attack.h"
+#include "./inputs.h"
+#include <thread>
 #include<chrono>
-
+#include<windows.h>
+void fireSound() {
+    Beep(1200, 30);
+    Beep(1000, 20);
+}
+void laserSound() {
+    Beep(1500, 20);
+    Beep(1700, 15);
+}
 uint64_t timeMillis()
 {
     using namespace std::chrono;
@@ -55,12 +65,12 @@ void GameLoop(int &indexNick)
     Player *player;
     player = &game.player;
     Projectile *projectiles = nullptr;
-    int input = 0;
     getConsoleSize();
     player->position.Y = GameElements::lineMap - 2;
     player->position.X = GameElements::columnMap / 2;
     player->playerChar = GameElements::person;
     int projectilesinGame = 0;
+    uint64_t inputUpdate = 0;
     uint64_t nextUpdate = 0;
     uint64_t nextUpdateEnemy = 0;
     uint64_t timeAttack = (timeMillis()) + (1000 / 60) * 400;
@@ -74,80 +84,91 @@ void GameLoop(int &indexNick)
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
+    Input input = {nullptr,0};
     do
     {
         gameexit = !checkAllEnemiesDie(game);
         hudPrint(game, indexNick);
-        input = 0;
-        if (_kbhit())
-            input = getch();
-        switch (input)
+        input.inputs = nullptr;
+        if (inputUpdate <= (timeMillis()))
         {
-            case 'a':
-            case 'A':
-                player->setRelativePosition(-1, 0);
-                // projectiles = nullptr;
-                break;
-            case 'd':
-            case 'D':
-                player->setRelativePosition(1, 0);
-                // projectiles = nullptr;
-                break;
-            /*spacebar*/
-            case 32:
-            {
-                /*atack*/
-
-                /*create projectile*/
-                Projectile actualProjectile;
-                actualProjectile.position.X = player->position.X;
-                actualProjectile.position.Y = player->position.Y - 1;
-                if (projectilesinGame < 1 || infiniteShots)
-                {
-                    CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
-                }
-                break;
-            }
-            /*game Exit*/
-            case 27:
-                gameexit = false;
-                /*escape*/
-                break;
-            /*game over screen test*/
-            case 'c':
-            case 'C':
-            {
-                int cheatCode = getch();
-                switch (cheatCode)
-                {
-                /*game over*/
-                case 'g':
-                case 'G':
-                    gameexit = false;
-                    showGameOverScreen(game,indexNick);
-                    break;
-                case 'k':
-                case 'K':
-                    player->health--;
-                    break;
-                case 'i':
-                case 'I':
-                    infiniteShots = true;
-                    break;
-                case 's':
-                case 'S':
-                    cout << game.score;
-                    break;
-                }
-                break;
-            }
+            // 24 fps
+            inputUpdate = (timeMillis()) + (1000 / 24);
+            inputGet(input);
         }
+        for (int i = 0; i < input.count; i++)
+        {
+            if(input.inputs != nullptr){
+            int inputActual = input.inputs[i];
+            switch (inputActual)
+            {
+                case 'a':
+                case 'A':
+                    player->setRelativePosition(-1, 0);
+                    // projectiles = nullptr;
+                    break;
+                case 'd':
+                case 'D':
+                    player->setRelativePosition(1, 0);
+                    // projectiles = nullptr;
+                    break;
+                /*spacebar*/
+                case 32:
+                {
+                    /*atack*/
+
+                    /*create projectile*/
+                    Projectile actualProjectile;
+                    actualProjectile.position.X = player->position.X;
+                    actualProjectile.position.Y = player->position.Y - 1;
+                    if (projectilesinGame < 1 || infiniteShots)
+                    {
+                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                        thread fire(laserSound);
+                        fire.detach();
+                    }
+                    break;
+                }
+                /*game Exit*/
+                case 27:
+                    gameexit = false;
+                    /*escape*/
+                    break;
+                /*game over screen test*/
+                case 'c':
+                case 'C':
+                {
+                    int cheatCode = getch();
+                    switch (cheatCode)
+                    {
+                    /*game over*/
+                    case 'g':
+                    case 'G':
+                        gameexit = false;
+                        showGameOverScreen(game,indexNick);
+                        break;
+                    case 'k':
+                    case 'K':
+                        player->health--;
+                        break;
+                    case 'i':
+                    case 'I':
+                        infiniteShots = true;
+                        break;
+                    case 's':
+                    case 'S':
+                        cout << game.score;
+                        break;
+                    }
+                    break;
+                }
+            }}}
         if (projectiles != nullptr)
         {
             if (nextUpdate <= (timeMillis()))
             {
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdate = (timeMillis()) + (1000 / 60) * 6.5;
+                nextUpdate = (timeMillis()) + (1000 / 60) * 2.5;
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }

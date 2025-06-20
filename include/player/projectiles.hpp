@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <iostream>
 #include <conio.h>
+#include <thread>
 #include "../basicStructures/gameElements.h"
 #include "../map/gameMap.h"
 using namespace std;
@@ -11,6 +12,11 @@ struct Projectile
     int speed = 1;
     char projectileChar = '|';
 };
+void explosionSound() {
+    Beep(1000, 80);
+    Beep(800, 60);
+    Beep(600, 100);
+}
 
 Enemy *searchEnemy(COORD position)
 {
@@ -42,6 +48,8 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             projectiles[i].position.Y--;
             if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo)
             {
+                thread explosion(explosionSound);
+                explosion.detach();
                 game.score[indexNick] += 10;
                 game.enemiesDie += 1;
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
