@@ -1,14 +1,17 @@
-    #include <windows.h>
+#include <windows.h>
 #include <iostream>
+#include <cstdlib> // Para srand()
+#include <ctime>   // Para time()
 #include "./include/player/gameloop.h"
 #include "./include/menu.cpp"
 #include "./include/player/convert.cpp"
 #include "./include/Save/writeSave.cpp"
 #include "./include/Save/readSave.cpp"
 #include "./include/scoreScreen.hpp"
+
 int main()
 {
-
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
     int indexNick = readSave(game);
     int option = -1;
     do
@@ -26,10 +29,15 @@ int main()
             // cout << indexNick;
             // getch();
             aplicarDificuldade(game);
-            game = Game(game.difficulty);
+            // game = Game(game.difficulty);
             game.player = Player();
             initEnemies(game);
             game.enemiesDie = 0;
+            // Limpa os itens e power-ups da partida anterior
+            game.itemsInGame = 0;
+            for (int i = 0; i < maxItems; ++i) {
+                game.activeItems[i].active = false;
+            }
             game.enemyProjectilesInGame = 0;
             GameLoop(indexNick,game);
             saveGame(game);
@@ -78,7 +86,7 @@ int main()
         default:
             break;
         }
-    } while (option != 6);
+    } while (option != (itensMenu-1));
     if (game.player.health <= 0)
         game.player.health =  game.player.maxhealth;
     // saveGame(game);

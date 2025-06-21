@@ -1,19 +1,25 @@
 #include <conio.h>
 #include <iostream>
 #include <string.h>
+#include <thread>
 using namespace std;
 void cleanmenu(short int pos,Game &game)
 {
     setlocale(LC_ALL, "pt_BR.UTF-8");
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 17});
     
-    for (int i = 0; i < intensMenu; i++){
+    for (int i = 0; i < itensMenu; i++){
         cout << game.menu[i] << "         \n";
     }
     
     cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
     pos += 17;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, pos});
+}
+void selectSound(){
+    Beep(1300, 20);
+    Sleep(10); // pequena pausa
+    Beep(900, 20);
 }
 int mainMenu(Game &game)
 {
@@ -52,25 +58,25 @@ int mainMenu(Game &game)
         option = getch();
         switch (option)
         {
-        case 81:
-        case 'q':
+            case 81:
+            case 'q':
             return 2;
-        case 72:
-        case 'w':
-            Beep(1300, 20);
-            // Sleep(10); // pequena pausa
-            Beep(900, 20);
+            case 72:
+            case 'w':{
+            thread Up(selectSound);
+            Up.detach();
             // cout<<"Up";
-            position <= 0 ? position = (intensMenu - 1) : position--;
+            position <= 0 ? position = (itensMenu - 1) : position--;
             break;
+            }
         case 80:
-        case 's':
-            Beep(1300, 20);
-            // Sleep(10); // pequena pausa
-            Beep(900, 20);
-            // cout<<"Down";
-            position >= (intensMenu - 1) ? position = 0 : position++;
+        case 's':{
+            thread Down(selectSound);
+            Down.detach();
+            // cout<<"Up";
+          position >= (itensMenu - 1) ? position = 0 : position++;
             break;
+        }
         case 75:
         case 'a':
 
@@ -88,21 +94,8 @@ int mainMenu(Game &game)
                 system("cls");
                 return 0;
                 break;
-            case 1:
-                // Informações
-                return 1;
-                break;
-            case 2:
-                return 2;
-                break;
-            case 3:
-                return 3;
-                break;
-            case 4:
-                return 4;
-                break;
-            case 5:
-                return 5;
+            default:
+                return position;
                 break;
             }
             break;
