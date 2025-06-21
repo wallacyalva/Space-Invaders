@@ -78,22 +78,20 @@ void hudPrint(Game &game, int indexNick)
 
 }
 bool infiniteShots = false;
-void GameLoop(int &indexNick)
+void GameLoop(int &indexNick,Game &game)
 {
     startTime = timeMillis()/1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
-    Player *player;
     Player player2 = Player();
-    player = &game.player;
     Projectile *projectiles = nullptr;
     getConsoleSize();
     player2.position.Y = GameElements::lineMap - 3;
     player2.position.X = GameElements::columnMap / 2;
     player2.playerChar = GameElements::person;
-    player->position.Y = GameElements::lineMap - 2;
-    player->position.X = GameElements::columnMap / 2;
-    player->playerChar = GameElements::person;
+    game.player.position.Y = GameElements::lineMap - 2;
+    game.player.position.X = GameElements::columnMap / 2;
+    game.player.playerChar = GameElements::person;
     int projectilesinGame = 0;
     uint64_t inputUpdate = 0;
     uint64_t nextUpdate = 0;
@@ -104,8 +102,8 @@ void GameLoop(int &indexNick)
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player->position);
-    cout << player->playerChar;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), game.player.position);
+    cout << game.player.playerChar;
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
@@ -134,6 +132,7 @@ void GameLoop(int &indexNick)
                         moveAmount = 2; // Move mais rápido com o power-up
                     }
                     player->setRelativePosition(-moveAmount, 0);
+
                     // projectiles = nullptr;
                     break;
                 }
@@ -160,6 +159,7 @@ void GameLoop(int &indexNick)
 
                     /*create projectile*/
                     Projectile actualProjectile;
+
                     bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime);
 
                     if (canFire)
@@ -219,7 +219,7 @@ void GameLoop(int &indexNick)
                         break;
                     case 'k':
                     case 'K':
-                        player->health--;
+                        game.player.health--;
                         break;
                     case 'i':
                     case 'I':
@@ -271,7 +271,7 @@ void GameLoop(int &indexNick)
         }
 
 
-    } while (player->health > 0 && gameexit);
+    } while ((game.player.health > 0)||(player2.health > 0) && gameexit);
     
     cleanBuffer();
     showGameOverScreen(game,indexNick);

@@ -18,9 +18,8 @@ int main()
     {
         option = -1;
         if (game.player.health <= 0)
-            game.player.health = 3;
-        cleanBuffer();
-        option = mainMenu();
+            game.player.health = game.player.maxhealth;
+        option = mainMenu(game);
         switch (option)
         {
         case 0:
@@ -29,6 +28,8 @@ int main()
             // system("cls");
             // cout << indexNick;
             // getch();
+            aplicarDificuldade(game);
+            game = Game(game.difficulty);
             game.player = Player();
             initEnemies(game);
             game.enemiesDie = 0;
@@ -38,7 +39,7 @@ int main()
                 game.activeItems[i].active = false;
             }
             game.enemyProjectilesInGame = 0;
-            GameLoop(indexNick);
+            GameLoop(indexNick,game);
             saveGame(game);
             indexNick++;
             break;
@@ -72,12 +73,22 @@ int main()
             cout << "Pressione qualquer tecla para voltar ao menu principal.\n";
             getch();
             break;
+        case 4:
+            system("cls");
+            game.difficulty = escolherDificuldade(game.difficulty);
+            aplicarDificuldade(game);
+            break;
+        case 5:
+            system("cls");
+            game.difficulty = escolherDificuldade(game.difficulty);
+            aplicarDificuldade(game);
+            break;
         default:
             break;
         }
-    } while (option != 4);
+    } while (option != 6);
     if (game.player.health <= 0)
-        game.player.health = 3;
+        game.player.health =  game.player.maxhealth;
     // saveGame(game);
     system("cls");
     return 0;

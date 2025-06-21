@@ -9,6 +9,7 @@ using namespace std;
 
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
+const int intensMenu = 7;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
@@ -51,7 +52,7 @@ struct Player
     COORD position = {0, 0};
     Inventory inventory;
     char projetil = '|';
-    int health = 3, shield = 0, damage = 1, maxhealth = 3;
+    int health = 5, shield = 0, damage = 1, maxhealth = 5;
     char playerChar = 'A';
     uint64_t speedBoostEndTime = 0;
     uint64_t extraShotsEndTime = 0;
@@ -100,8 +101,8 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
 
-struct Game
-{
+struct Game{
+    string menu[intensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
     int score[10] = {};
     Nick nick[10] = {};
@@ -112,8 +113,24 @@ struct Game
     Items activeItems[maxItems];
     int itemsInGame = 0;
     uint64_t freezeEnemiesEndTime = 0;
-    Game() {
-        // Copia os inimigos do modelo enemiesLive
+    int difficulty = 0;
+    Game(int thisDifficulty = 0) {
+        switch (thisDifficulty) {
+            case 0: // Fácil
+                player.health = 5;
+                break;
+            case 1: // Médio
+                player.health = 4;
+                break;
+            case 2: // Difícil
+                player.health = 3;
+                break;
+            default:
+                player.health = 5;
+                break;
+        }
+        player.maxhealth = player.health;
+        // Copia os inimigos do modelo base
         for (int i = 0; i < maxEnemies; i++) {
             enemies[i] = enemiesLive[i];
         }
