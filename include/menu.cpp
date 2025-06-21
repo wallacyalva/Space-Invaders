@@ -61,7 +61,7 @@ int mainMenu(Game &game)
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Up";
-            position <= 0 ? position = 5 : position--;
+            position <= 0 ? position = (intensMenu - 1) : position--;
             break;
         case 80:
         case 's':
@@ -69,7 +69,7 @@ int mainMenu(Game &game)
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Down";
-            position >= 5 ? position = 0 : position++;
+            position >= (intensMenu - 1) ? position = 0 : position++;
             break;
         case 75:
         case 'a':
