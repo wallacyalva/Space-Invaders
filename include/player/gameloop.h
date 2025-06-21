@@ -110,6 +110,7 @@ void GameLoop(int &indexNick,Game &game)
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
     Input input = Input();
+    SetConsoleTitle("Space Invaders - Playing");
     do
     {
         gameexit = !gameover(game);
@@ -272,8 +273,9 @@ void GameLoop(int &indexNick,Game &game)
         }
 
 
-    } while ((game.player.health > 0)||(player2.health > 0) && gameexit);
+    } while ((game.player.health > 0 || player2.health > 0) && gameexit);
     
+    //limpando entrada para não preencher sozinho o Nick
     cleanBuffer();
     showGameOverScreen(game,indexNick);
     cursorInfo.bVisible = false;

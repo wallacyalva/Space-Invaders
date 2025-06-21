@@ -86,7 +86,7 @@ int main()
         default:
             break;
         }
-    } while (option != 6);
+    } while (option != (itensMenu-1));
     if (game.player.health <= 0)
         game.player.health =  game.player.maxhealth;
     // saveGame(game);
