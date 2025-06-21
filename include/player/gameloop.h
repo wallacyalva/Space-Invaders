@@ -83,6 +83,7 @@ void GameLoop(int &indexNick,Game &game)
     startTime = timeMillis()/1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
+    Player *player = &game.player;
     Player player2 = Player();
     Projectile *projectiles = nullptr;
     getConsoleSize();
