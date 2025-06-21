@@ -57,18 +57,16 @@ void hudPrint(Game &game, int indexNick)
     cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
 }
 bool infiniteShots = false;
-void GameLoop(int &indexNick)
+void GameLoop(int &indexNick,Game &game)
 {
     startTime = timeMillis()/1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
-    Player *player;
-    player = &game.player;
     Projectile *projectiles = nullptr;
     getConsoleSize();
-    player->position.Y = GameElements::lineMap - 2;
-    player->position.X = GameElements::columnMap / 2;
-    player->playerChar = GameElements::person;
+    game.player.position.Y = GameElements::lineMap - 2;
+    game.player.position.X = GameElements::columnMap / 2;
+    game.player.playerChar = GameElements::person;
     int projectilesinGame = 0;
     uint64_t inputUpdate = 0;
     uint64_t nextUpdate = 0;
@@ -78,8 +76,8 @@ void GameLoop(int &indexNick)
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), player->position);
-    cout << player->playerChar;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), game.player.position);
+    cout << game.player.playerChar;
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
@@ -104,12 +102,12 @@ void GameLoop(int &indexNick)
             {
                 case 'a':
                 case 'A':
-                    player->setRelativePosition(-1, 0);
+                    game.player.setRelativePosition(-1, 0);
                     // projectiles = nullptr;
                     break;
                 case 'd':
                 case 'D':
-                    player->setRelativePosition(1, 0);
+                    game.player.setRelativePosition(1, 0);
                     // projectiles = nullptr;
                     break;
                 /*spacebar*/
@@ -119,8 +117,8 @@ void GameLoop(int &indexNick)
 
                     /*create projectile*/
                     Projectile actualProjectile;
-                    actualProjectile.position.X = player->position.X;
-                    actualProjectile.position.Y = player->position.Y - 1;
+                    actualProjectile.position.X = game.player.position.X;
+                    actualProjectile.position.Y = game.player.position.Y - 1;
                     if (projectilesinGame < 1 || infiniteShots)
                     {
                         CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
@@ -149,7 +147,7 @@ void GameLoop(int &indexNick)
                         break;
                     case 'k':
                     case 'K':
-                        player->health--;
+                        game.player.health--;
                         break;
                     case 'i':
                     case 'I':
@@ -190,8 +188,8 @@ void GameLoop(int &indexNick)
         }
 
 
-    } while (player->health > 0 && gameexit);
-    // if (player->health <= 0)
+    } while (game.player.health > 0 && gameexit);
+    // if (game.player.health <= 0)
     // {
         showGameOverScreen(game,indexNick);
         // indexNick++;

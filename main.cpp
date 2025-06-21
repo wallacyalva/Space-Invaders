@@ -14,7 +14,7 @@ int main()
     do
     {
         if (game.player.health <= 0)
-            game.player.health = 3;
+            game.player.health = game.player.maxhealth;
         option = mainMenu();
         switch (option)
         {
@@ -24,8 +24,9 @@ int main()
             // system("cls");
             // cout << indexNick;
             // getch();
-            game = Game();
-            GameLoop(indexNick);
+            aplicarDificuldade(game);
+            game = Game(game.difficulty);
+            GameLoop(indexNick,game);
             saveGame(game);
             indexNick++;
             break;
@@ -59,10 +60,15 @@ int main()
             cout << "Pressione qualquer tecla para voltar ao menu principal.\n";
             getch();
             break;
+        case 4:
+            system("cls");
+            game.difficulty = escolherDificuldade(game.difficulty);
+            aplicarDificuldade(game);
+            break;
         default:
             break;
         }
-    } while (option != 4);
+    } while (option != 5);
     if (game.player.health <= 0)
         game.player.health = 3;
     // saveGame(game);

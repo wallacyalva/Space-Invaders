@@ -41,7 +41,7 @@ struct Player
     COORD position = {0, 0};
     Inventory inventory;
     char projetil = '|';
-    int health = 3, shield = 0, damage = 1, maxhealth = 3;
+    int health = 5, shield = 0, damage = 1, maxhealth = 5;
     char playerChar = 'A';
     DWORD color = (0 << 4) | 7;
     void setPosition(int x, int y)
@@ -96,8 +96,25 @@ struct Game
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
     int enemyProjectilesInGame = 0;
-    Game() {
-        // Copia os inimigos do modelo enemiesLive
+    int difficulty = 0;
+    Game(int thisDifficulty = 0) {
+        switch (thisDifficulty) {
+            case 0: // Fácil
+                player.health = 5;
+                break;
+            case 1: // Médio
+                player.health = 4;
+                break;
+            case 2: // Difícil
+                player.health = 3;
+                break;
+            default:
+                player.health = 5;
+                break;
+        }
+        player.maxhealth = player.health;
+
+        // Copia os inimigos do modelo base
         for (int i = 0; i < maxEnemies; i++) {
             enemies[i] = enemiesLive[i];
         }

@@ -10,6 +10,7 @@ void cleanmenu(short int pos)
     cout << "Como Jogar   \n";
     cout << "Score      \n";
     cout << "Sobre   \n";
+    cout << "Dificuldade   \n";
     cout << "Sair   \n";
     cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
     pos += 17;
@@ -69,6 +70,10 @@ int mainMenu()
             break;
         case 4:
             cleanmenu(position);
+            cout << "> Dificuldade \n";
+            break;
+        case 5:
+            cleanmenu(position);
             cout << "> Sair \n";
             break;
         default:
@@ -87,7 +92,7 @@ int mainMenu()
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Up";
-            position <= 0 ? position = 4 : position--;
+            position <= 0 ? position = 5 : position--;
             break;
         case 80:
         case 's':
@@ -95,7 +100,7 @@ int mainMenu()
             // Sleep(10); // pequena pausa
             Beep(900, 20);
             // cout<<"Down";
-            position >= 4 ? position = 0 : position++;
+            position >= 5 ? position = 0 : position++;
             break;
         case 75:
         case 'a':
@@ -135,4 +140,111 @@ int mainMenu()
         }
     } while (option != 27);
     return 2;
+}
+
+enum Dificuldade { FACIL = 0, MEDIO = 1, DIFICIL = 2 };
+
+void mostrarOpcoesDificuldade(int selecao) {
+    const char *dificuldades[] = {"Fácil", "Médio", "Difícil"};
+
+    COORD pos = {0, 20};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+    for (int i = 0; i < 3; i++) {
+        if (i == selecao) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Verde
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Branco
+        }
+        cout << dificuldades[i] << "   ";
+    }
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Reset para branco
+    cout << "\n\nUse ← → A D para navegar, Enter ou Espaço para confirmar";
+}
+
+int escolherDificuldade(int difficulty) {
+    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 18});
+    cout << "Selecione a Dificuldade:\n";
+
+    int selecao = difficulty;
+    int tecla;
+
+    mostrarOpcoesDificuldade(selecao);
+
+    do {
+        tecla = getch();
+
+        switch (tecla) {
+        case 75: // ←
+        case 'a':
+        case 'A':
+            Beep(700, 50);
+            selecao = (selecao - 1 + 3) % 3;
+            break;
+        case 77: // →
+        case 'd':
+        case 'D':
+            Beep(700, 50);
+            selecao = (selecao + 1) % 3;
+            break;
+        case 13: // Enter
+        case 32: // Espaço
+            Beep(1200, 80);
+            return selecao;
+        }
+
+        mostrarOpcoesDificuldade(selecao);
+    } while (true);
+}
+
+void aplicarDificuldade(Game &game) {
+    switch (game.difficulty) {
+        // Fácil
+        case 0:{
+            for (int i = 0; i < maxEnemies; i++) {
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
+                    enemiesLive[i].active = false;
+                }else{
+                    enemiesLive[i].active = true;
+                }
+            }
+            game.player.health = 5; 
+        }
+        break;
+        // Médio
+        case 1: {
+            game.player.health = 4;
+            for (int i = 0; i < maxEnemies; i++) {
+                if((1 + ((i/10) * 10)) == i || (4 + ((i/10) * 10)) == i || (7 + ((i/10) * 10)) == i){
+                    enemiesLive[i].active = false;
+                }else{
+                    enemiesLive[i].active = true;
+                }
+            }
+        }    
+        break;
+        // Difícil
+        case 2: {
+            game.player.health = 3;
+            for (int i = 0; i < maxEnemies; i++) {
+                enemiesLive[i].active = true;
+            }
+        }
+        break;   
+        default: {
+            for (int i = 0; i < maxEnemies; i++) {
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
+                    enemiesLive[i].active = false;
+                }else{
+                    enemiesLive[i].active = true;
+                }
+            }
+            game.player.health = 5; 
+        }
+        break;
+    }
+
+    game.player.maxhealth = game.player.health;
 }
