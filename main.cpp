@@ -13,6 +13,7 @@ int main()
     int option = -1;
     do
     {
+        option = -1;
         if (game.player.health <= 0)
             game.player.health = game.player.maxhealth;
         option = mainMenu();
@@ -26,6 +27,10 @@ int main()
             // getch();
             aplicarDificuldade(game);
             game = Game(game.difficulty);
+            game.player = Player();
+            initEnemies(game);
+            game.enemiesDie = 0;
+            game.enemyProjectilesInGame = 0;
             GameLoop(indexNick,game);
             saveGame(game);
             indexNick++;

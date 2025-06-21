@@ -62,8 +62,12 @@ void GameLoop(int &indexNick,Game &game)
     startTime = timeMillis()/1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
+    Player player2 = Player();
     Projectile *projectiles = nullptr;
     getConsoleSize();
+    player2.position.Y = GameElements::lineMap - 3;
+    player2.position.X = GameElements::columnMap / 2;
+    player2.playerChar = GameElements::person;
     game.player.position.Y = GameElements::lineMap - 2;
     game.player.position.X = GameElements::columnMap / 2;
     game.player.playerChar = GameElements::person;
@@ -105,6 +109,12 @@ void GameLoop(int &indexNick,Game &game)
                     game.player.setRelativePosition(-1, 0);
                     // projectiles = nullptr;
                     break;
+                case VK_LEFT:
+                    player2.setRelativePosition(-1, 0);
+                    break;
+                case VK_RIGHT:
+                    player2.setRelativePosition(1, 0);
+                    break;
                 case 'd':
                 case 'D':
                     game.player.setRelativePosition(1, 0);
@@ -127,6 +137,20 @@ void GameLoop(int &indexNick,Game &game)
                     }
                     break;
                 }
+                case VK_RETURN:
+                {
+                    Projectile actualProjectile;
+                    actualProjectile.position.X = player2.position.X;
+                    actualProjectile.position.Y = player2.position.Y - 1;
+                    if (projectilesinGame < 1 || infiniteShots)
+                    {
+                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                        thread fire(fireSound);
+                        fire.detach();
+                    }
+                    break;
+                }
+                /*escape*/
                 /*game Exit*/
                 case 27:
                     gameexit = false;
@@ -188,12 +212,10 @@ void GameLoop(int &indexNick,Game &game)
         }
 
 
-    } while (game.player.health > 0 && gameexit);
-    // if (game.player.health <= 0)
-    // {
-        showGameOverScreen(game,indexNick);
-        // indexNick++;
-    // }
+    } while ((game.player.health > 0)||(player2.health > 0) && gameexit);
+    
+    cleanBuffer();
+    showGameOverScreen(game,indexNick);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }

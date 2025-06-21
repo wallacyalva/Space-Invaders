@@ -42,6 +42,7 @@ int readSave(Game &game)
         Player player = game.player;
         while (getline(fileSave, line))
         {
+            if (line == "[Space Invaders]") continue;
             pastSession = actualSession;
             if (line[0] == '[')
             {

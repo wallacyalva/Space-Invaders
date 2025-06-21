@@ -12,7 +12,11 @@ int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
 int maxColuns = 10;
-
+void cleanBuffer(){
+while (_kbhit()) {
+    _getch();
+}
+}
 // utilities Functions
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 void getConsoleSize()
@@ -89,7 +93,7 @@ Enemy enemiesLive[maxEnemies] = {
 
 struct Game
 {
-    Player player;
+    Player player = {Player()};
     int score[10] = {};
     Nick nick[10] = {};
     int enemiesDie = 0;
