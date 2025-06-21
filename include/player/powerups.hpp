@@ -58,20 +58,20 @@ void CreateItem(Game &game, Items::TypeofItems type, COORD position) {
 }
 
 // Aplica o efeito do power-up ao jogador
-void ApplyPowerUp(Game &game, Items::TypeofItems type, int indexNick) {
+void ApplyPowerUp(Player &targetPlayer, Game &game, Items::TypeofItems type, int indexNick) {
     Beep(2000, 50); // Som de coleta
     switch (type) {
         case Items::ExtraLife:
-            if (game.player.health < game.player.maxhealth) game.player.health++;
+            if (targetPlayer.health < targetPlayer.maxhealth) targetPlayer.health++;
             break;
         case Items::SpeedBoost:
-            game.player.speedBoostEndTime = timeMillis() + 8000;
+            targetPlayer.speedBoostEndTime = timeMillis() + 8000;
             break;
         case Items::ExtraShots:
-            game.player.extraShotsEndTime = timeMillis() + 6000;
+            targetPlayer.extraShotsEndTime = timeMillis() + 6000;
             break;
         case Items::MultiShot:
-            game.player.multiShotEndTime = timeMillis() + 5000;
+            targetPlayer.multiShotEndTime = timeMillis() + 5000;
             break;
         case Items::ExtraPoints:
             game.score[indexNick] += 50;
@@ -85,7 +85,7 @@ void ApplyPowerUp(Game &game, Items::TypeofItems type, int indexNick) {
 }
 
 // Atualiza a posição e o estado dos itens na tela
-void UpdateItems(Game &game, int indexNick) {
+void UpdateItems(Game &game, Player &player1, Player &player2, int indexNick) {
     for (int i = 0; i < maxItems; ++i) {
         if (game.activeItems[i].active) {
             Items &item = game.activeItems[i];
@@ -97,9 +97,17 @@ void UpdateItems(Game &game, int indexNick) {
             // Move para baixo
             item.position.Y++;
 
+            bool collected = false;
             // Verifica colisão com o jogador
-            if (item.position.X == game.player.position.X && item.position.Y == game.player.position.Y) {
-                ApplyPowerUp(game, item.type, indexNick);
+            if (item.position.X == player1.position.X && item.position.Y == player1.position.Y) {
+                ApplyPowerUp(player1, game, item.type, indexNick);
+                collected = true;
+            } else if (item.position.X == player2.position.X && item.position.Y == player2.position.Y) {
+                ApplyPowerUp(player2, game, item.type, indexNick);
+                collected = true;
+            }
+
+            if (collected) {
                 item.active = false;
                 game.itemsInGame--;
             }

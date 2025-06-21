@@ -138,12 +138,22 @@ void GameLoop(int &indexNick,Game &game)
                     // projectiles = nullptr;
                     break;
                 }
-                case VK_LEFT:
-                    player2.setRelativePosition(-1, 0);
+                case VK_LEFT: {
+                    int moveAmount = 1;
+                    if (timeMillis() < player2.speedBoostEndTime) {
+                        moveAmount = 2; // Move mais rápido com o power-up
+                    }
+                    player2.setRelativePosition(-moveAmount, 0);
                     break;
-                case VK_RIGHT:
-                    player2.setRelativePosition(1, 0);
+                }
+                case VK_RIGHT: {
+                    int moveAmount = 1;
+                    if (timeMillis() < player2.speedBoostEndTime) {
+                        moveAmount = 2; // Move mais rápido com o power-up
+                    }
+                    player2.setRelativePosition(moveAmount, 0);
                     break;
+                }
                 case 'd':
                 case 'D': {
                     int moveAmount = 1;
@@ -189,14 +199,28 @@ void GameLoop(int &indexNick,Game &game)
                 }
                 case VK_RETURN:
                 {
-                    Projectile actualProjectile;
-                    actualProjectile.position.X = player2.position.X;
-                    actualProjectile.position.Y = player2.position.Y - 1;
-                    if (projectilesinGame < 1 || infiniteShots)
-                    {
-                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                    // Verifica se o Player 2 pode atirar (tiro extra ou sem projéteis na tela)
+                    bool canFireP2 = (projectilesinGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
+
+                    if (canFireP2) {
                         thread fire(fireSound);
                         fire.detach();
+
+                        if (timeMillis() < player2.multiShotEndTime) {
+                            // Tiro triplo para o Player 2
+                            Projectile p1, p2, p3;
+                            p1.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                            p2.position = {SHORT(player2.position.X - 2), (SHORT)(player2.position.Y - 1)};
+                            p3.position = {(SHORT)(player2.position.X + 2), (SHORT)(player2.position.Y - 1)};
+                            CreateProjectiles(projectiles, p1, projectilesinGame);
+                            CreateProjectiles(projectiles, p2, projectilesinGame);
+                            CreateProjectiles(projectiles, p3, projectilesinGame);
+                        } else {
+                            // Tiro único para o Player 2
+                            Projectile actualProjectile;
+                            actualProjectile.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                            CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                        }
                     }
                     break;
                 }
@@ -268,7 +292,7 @@ void GameLoop(int &indexNick,Game &game)
             if (nextUpdateItems <= (timeMillis()))
             {
                 nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
-                UpdateItems(game, indexNick);
+                UpdateItems(game, *player, player2, indexNick);
             }
         }
 
