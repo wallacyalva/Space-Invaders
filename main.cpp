@@ -29,7 +29,7 @@ int main()
             // cout << indexNick;
             // getch();
             aplicarDificuldade(game);
-            game = Game(game.difficulty);
+            // game = Game(game.difficulty);
             game.player = Player();
             initEnemies(game);
             game.enemiesDie = 0;
