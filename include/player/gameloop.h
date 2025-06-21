@@ -4,6 +4,7 @@
 #include "../map/maps.h"
 #include "./projectiles.hpp"
 #include "./gameover.cpp"
+#include "./powerups.hpp"
 #include "../enemies/move.h"
 #include "../enemies/attack.h"
 #include "./inputs.h"
@@ -18,11 +19,7 @@ void laserSound() {
     Beep(1500, 20);
     Beep(1700, 15);
 }
-uint64_t timeMillis()
-{
-    using namespace std::chrono;
-    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-}
+
 int startTime;
 string convertTimetoText(int seconds){
     string segundos = to_string(seconds%60);
@@ -55,6 +52,30 @@ void hudPrint(Game &game, int indexNick)
     cout << "Score: " << game.score[indexNick];
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 2});
     cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
+
+    // Exibe os power-ups ativos
+    int hudLine = 4;
+    auto print_powerup = [&](const char* name, uint64_t endTime) {
+        SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), (SHORT)hudLine});
+        uint64_t currentTime = timeMillis();
+        if (currentTime < endTime) {
+            cout << name << ": " << (endTime - currentTime) / 1000 << "s   ";
+        } else {
+            // Limpa a linha se o power-up expirou
+            cout << "                    "; // Espaços para limpar a linha
+        }
+        hudLine++;
+    };
+
+    print_powerup("Speed Boost ", game.player.speedBoostEndTime);
+    print_powerup("Extra Shots ", game.player.extraShotsEndTime);
+    print_powerup("Multi-Shot  ", game.player.multiShotEndTime);
+    
+    // Para o freeze, que é global
+    SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), (SHORT)hudLine});
+    uint64_t currentTime = timeMillis();
+    cout << (currentTime < game.freezeEnemiesEndTime ? "Enemies Frozen: " + to_string((game.freezeEnemiesEndTime - currentTime) / 1000) + "s   " : "                    ");
+
 }
 bool infiniteShots = false;
 void GameLoop(int &indexNick)
@@ -78,6 +99,7 @@ void GameLoop(int &indexNick)
     uint64_t nextUpdate = 0;
     uint64_t nextUpdateEnemy = 0;
     uint64_t timeAttack = (timeMillis()) + (1000 / 60) * 400;
+    uint64_t nextUpdateItems = 0;
     uint64_t nextUpdateAttack = 0;
     Gamemap gamemap;
     system("cls");
@@ -88,12 +110,12 @@ void GameLoop(int &indexNick)
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
-    Input input = {nullptr,0};
+    Input input = Input();
     do
     {
         gameexit = !gameover(game);
         hudPrint(game, indexNick);
-        input.inputs = nullptr;
+        // input.inputs = nullptr;
         if (inputUpdate <= (timeMillis()))
         {
             // 24 fps
@@ -102,15 +124,19 @@ void GameLoop(int &indexNick)
         }
         for (int i = 0; i < input.count; i++)
         {
-            if(input.inputs != nullptr){
             int inputActual = input.inputs[i];
             switch (inputActual)
             {
                 case 'a':
-                case 'A':
-                    player->setRelativePosition(-1, 0);
+                case 'A': {
+                    int moveAmount = 1;
+                    if (timeMillis() < player->speedBoostEndTime) {
+                        moveAmount = 2; // Move mais rápido com o power-up
+                    }
+                    player->setRelativePosition(-moveAmount, 0);
                     // projectiles = nullptr;
                     break;
+                }
                 case VK_LEFT:
                     player2.setRelativePosition(-1, 0);
                     break;
@@ -118,10 +144,15 @@ void GameLoop(int &indexNick)
                     player2.setRelativePosition(1, 0);
                     break;
                 case 'd':
-                case 'D':
-                    player->setRelativePosition(1, 0);
+                case 'D': {
+                    int moveAmount = 1;
+                    if (timeMillis() < player->speedBoostEndTime) {
+                        moveAmount = 2; // Move mais rápido com o power-up
+                    }
+                    player->setRelativePosition(moveAmount, 0);
                     // projectiles = nullptr;
                     break;
+                }
                 /*spacebar*/
                 case 32:
                 {
@@ -129,13 +160,28 @@ void GameLoop(int &indexNick)
 
                     /*create projectile*/
                     Projectile actualProjectile;
-                    actualProjectile.position.X = player->position.X;
-                    actualProjectile.position.Y = player->position.Y - 1;
-                    if (projectilesinGame < 1 || infiniteShots)
+                    bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime);
+
+                    if (canFire)
                     {
-                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
                         thread fire(laserSound);
                         fire.detach();
+
+                        if (timeMillis() < player->multiShotEndTime) {
+                            // Tiro triplo
+                            Projectile p1, p2, p3;
+                            p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};
+                            p2.position = {SHORT(player->position.X - 2), (SHORT)(player->position.Y - 1)};
+                            p3.position = {(SHORT)(player->position.X + 2), (SHORT)(player->position.Y - 1)};
+                            CreateProjectiles(projectiles, p1, projectilesinGame);
+                            CreateProjectiles(projectiles, p2, projectilesinGame);
+                            CreateProjectiles(projectiles, p3, projectilesinGame);
+                        } else {
+                            // Tiro único
+                            actualProjectile.position.X = player->position.X;
+                            actualProjectile.position.Y = player->position.Y - 1;
+                            CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                        }
                     }
                     break;
                 }
@@ -186,7 +232,7 @@ void GameLoop(int &indexNick)
                     }
                     break;
                 }
-            }}}
+            }}
         if (projectiles != nullptr)
         {
             if (nextUpdate <= (timeMillis()))
@@ -198,8 +244,11 @@ void GameLoop(int &indexNick)
         }
         
         if (nextUpdateEnemy <= (timeMillis())){
-            nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
-            moveEnemies(gamemap,game);
+            // Só move os inimigos se o power-up de congelar não estiver ativo
+            if (timeMillis() > game.freezeEnemiesEndTime) {
+                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+                moveEnemies(gamemap,game);
+            }
         }
         if(timeAttack <= (timeMillis())){
             timeAttack = (timeMillis()) + (1000 / 60) * 400;
@@ -210,6 +259,14 @@ void GameLoop(int &indexNick)
                 // 60 fps test 1 second/60 frames * lowspeed
                 nextUpdateAttack = (timeMillis()) + (1000 / 60) * 10;
                 updateEnemyProjectiles(gamemap, game);
+            }
+        }
+        if (game.itemsInGame > 0) {
+            // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
+            if (nextUpdateItems <= (timeMillis()))
+            {
+                nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
+                UpdateItems(game, indexNick);
             }
         }
 

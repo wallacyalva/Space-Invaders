@@ -5,6 +5,7 @@
 #include<Xinput.h>
 #include "../basicStructures/gameElements.h"
 #include "../map/gameMap.h"
+#include "./powerups.hpp"
 using namespace std;
 
 struct Projectile
@@ -43,79 +44,56 @@ Enemy* searchEnemy(COORD position) {
 }
 void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap &gamemap, Game &game, int indexNick)
 {
-    for (int i = 0; i < projectilesinGame; i++)
+    for (int i = 0; i < projectilesinGame; ++i)
     {
-        if (projectiles[i].position.Y == 1)
-        {
-            SetConsoleCursorPosition(hConsole, projectiles[i].position);
-            cout << " ";
-            projectiles[i].position.Y--;
-        }
+        // Apaga a posição antiga do projétil
+        SetConsoleCursorPosition(hConsole, projectiles[i].position);
+        cout << " ";
 
-        if (projectiles[i].position.Y > 1)
-        {
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
-            cout << " ";
-            projectiles[i].position.Y--;
-            Enemy *enemy = searchEnemy(projectiles[i].position);
-            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo && enemy != nullptr)
-            {
-                thread explosion(explosionSound);
-                explosion.detach();
-                if(rand()%100 < 10){
-                    Items item;
-                    int itemSelect =rand()%6;
-                    switch (itemSelect)
-                    {
-                    /*Vida Extra*/
-                    case 0:
-                        item.itemAppearance = '♥';
-                        item.position = projectiles[i].position;
-                        
-                        game.player.health++;
-                        break;
-                    case 1:
-                        game.player.damage++;
-                        break;
-                    case 2:
-                        game.player.shield++;
-                        break;
-                    case 3:
-                        game.player.maxhealth++;
-                        break;
+        // Move o projétil
+        projectiles[i].position.Y -= projectiles[i].speed;
 
-                    }}
-                game.score[indexNick] += 10;
-                game.enemiesDie += 1;
-                gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
-                SetConsoleCursorPosition(hConsole, projectiles[i].position);
-                cout << " ";
-                if (enemy != nullptr){
-                    enemy->active = false;
-                }
-                if (i == 0)
-                {
-                    projectiles = nullptr;
-                    delete[] projectiles;
-                    projectilesinGame = 0;
-                }
-            }
-            else
-            {
-                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
-                cout << projectiles[i].projectileChar;
-            }
+        // Verifica se o projétil saiu da tela ou atingiu um inimigo
+        bool hit = false;
+        if (projectiles[i].position.Y < 1)
+        {
+            hit = true; // Saiu do topo da tela
         }
         else
         {
-            if (i == 0)
+            Enemy *enemy = searchEnemy(projectiles[i].position);
+            if (enemy != nullptr && enemy->active)
             {
-                projectiles = nullptr;
-                delete[] projectiles;
-                projectilesinGame = 0;
+                hit = true;
+                thread explosion(explosionSound);
+                explosion.detach();
+
+                // Chance de dropar um power-up
+                if(rand() % 100 < 20) { // 20% de chance
+                    Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
+                    CreateItem(game, itemType, enemy->position);
+                }
+                game.score[indexNick] += 10;
+                game.enemiesDie += 1;
+                // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
+                SetConsoleCursorPosition(hConsole, enemy->position);
+                cout << " ";
+                enemy->active = false;
             }
-            /* case to multiples shots will make later*/
-            break;
+        }
+
+        if (hit)
+        {
+            // Remove o projétil da lista de forma eficiente
+            projectiles[i] = projectiles[projectilesinGame - 1];
+            projectilesinGame--;
+            i--; // Reavalia o índice atual, que agora contém um novo projétil
+        }
+        else
+        {
+            // Se não atingiu nada, desenha o projétil na nova posição
+            SetConsoleCursorPosition(hConsole, projectiles[i].position);
+            cout << projectiles[i].projectileChar;
         }
     }
 }
