@@ -13,8 +13,10 @@ int main()
     int option = -1;
     do
     {
+        option = -1;
         if (game.player.health <= 0)
             game.player.health = 3;
+        cleanBuffer();
         option = mainMenu();
         switch (option)
         {
@@ -24,7 +26,10 @@ int main()
             // system("cls");
             // cout << indexNick;
             // getch();
-            game = Game();
+            game.player = Player();
+            initEnemies(game);
+            game.enemiesDie = 0;
+            game.enemyProjectilesInGame = 0;
             GameLoop(indexNick);
             saveGame(game);
             indexNick++;
