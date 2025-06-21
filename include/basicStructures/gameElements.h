@@ -8,6 +8,7 @@ using namespace std;
 
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
+const int intensMenu = 7;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
@@ -91,8 +92,8 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
 
-struct Game
-{
+struct Game{
+    string menu[intensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
     int score[10] = {};
     Nick nick[10] = {};

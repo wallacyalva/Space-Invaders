@@ -2,21 +2,20 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-void cleanmenu(short int pos)
+void cleanmenu(short int pos,Game &game)
 {
     setlocale(LC_ALL, "pt_BR.UTF-8");
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 17});
-    cout << "Iniciar   \n";
-    cout << "Como Jogar   \n";
-    cout << "Score      \n";
-    cout << "Sobre   \n";
-    cout << "Dificuldade   \n";
-    cout << "Sair   \n";
+    
+    for (int i = 0; i < intensMenu; i++){
+        cout << game.menu[i] << "         \n";
+    }
+    
     cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
     pos += 17;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, pos});
 }
-int mainMenu()
+int mainMenu(Game &game)
 {
     SetConsoleOutputCP(CP_UTF8);
     system("cls");
@@ -46,39 +45,9 @@ int mainMenu()
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
 
         SetConsoleTitle("Space Invaders - Menu");
-        if (option == 0)
-        {
-            cleanmenu(0);
-        }
-        switch (position)
-        {
-        case 0:
-            cleanmenu(position);
-            cout << "> Iniciar \n";
-            break;
-        case 1:
-            cleanmenu(position);
-            cout << "> Como Jogar \n";
-            break;
-        case 2:
-            cleanmenu(position);
-            cout << "> Score \n";
-            break;
-        case 3:
-            cleanmenu(position);
-            cout << "> Sobre \n";
-            break;
-        case 4:
-            cleanmenu(position);
-            cout << "> Dificuldade \n";
-            break;
-        case 5:
-            cleanmenu(position);
-            cout << "> Sair \n";
-            break;
-        default:
-            break;
-        }
+
+        cleanmenu(position,game);
+        cout << "> " << game.menu[position] <<  "\n";
 
         option = getch();
         switch (option)
@@ -131,6 +100,9 @@ int mainMenu()
                 break;
             case 4:
                 return 4;
+                break;
+            case 5:
+                return 5;
                 break;
             }
             break;

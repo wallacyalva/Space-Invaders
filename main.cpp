@@ -16,7 +16,7 @@ int main()
         option = -1;
         if (game.player.health <= 0)
             game.player.health = game.player.maxhealth;
-        option = mainMenu();
+        option = mainMenu(game);
         switch (option)
         {
         case 0:
@@ -70,12 +70,17 @@ int main()
             game.difficulty = escolherDificuldade(game.difficulty);
             aplicarDificuldade(game);
             break;
+        case 5:
+            system("cls");
+            game.difficulty = escolherDificuldade(game.difficulty);
+            aplicarDificuldade(game);
+            break;
         default:
             break;
         }
-    } while (option != 5);
+    } while (option != 6);
     if (game.player.health <= 0)
-        game.player.health = 3;
+        game.player.health =  game.player.maxhealth;
     // saveGame(game);
     system("cls");
     return 0;
