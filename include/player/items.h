@@ -25,6 +25,8 @@ struct Items
         luck,
     };
     string art;
+    COORD position = {0, 0};
+    char itemAppearance = ' ';
     DWORD color = (0 << 4) | 7;
     short int midX, midY;
     string description[3] = {"", "", ""};

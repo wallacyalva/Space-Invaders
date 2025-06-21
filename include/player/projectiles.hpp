@@ -26,19 +26,21 @@ void explosionSound() {
     XInputSetState(0,&vibration);
 }
 
-Enemy *searchEnemy(COORD position)
-{
-    int i;
-    for (i = 0; i < maxEnemies; i++)
-    {
-        if (game.enemies[i].position.X == position.X && game.enemies[i].position.Y == position.Y)
-        {
-            return &game.enemies[i];
+Enemy* searchEnemy(COORD position) {
+    // Itera por todos os inimigos para encontrar um na posição especificada.
+    for (int i = 0; i < maxEnemies; ++i) {
+        // Primeiro, verifica se o inimigo está ativo para otimizar a busca.
+        if (game.enemies[i].active) {
+            // Se estiver ativo, compara as coordenadas.
+            if (game.enemies[i].position.X == position.X && game.enemies[i].position.Y == position.Y) {
+                // Inimigo encontrado, retorna um ponteiro para ele.
+                return &game.enemies[i];
+            }
         }
     }
+    // Se nenhum inimigo ativo for encontrado na posição, retorna nulo.
     return nullptr;
 }
-
 void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap &gamemap, Game &game, int indexNick)
 {
     for (int i = 0; i < projectilesinGame; i++)
@@ -55,18 +57,42 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), projectiles[i].position);
             cout << " ";
             projectiles[i].position.Y--;
-            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo)
+            Enemy *enemy = searchEnemy(projectiles[i].position);
+            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::inimigo && enemy != nullptr)
             {
                 thread explosion(explosionSound);
                 explosion.detach();
+                if(rand()%100 < 10){
+                    Items item;
+                    int itemSelect =rand()%6;
+                    switch (itemSelect)
+                    {
+                    /*Vida Extra*/
+                    case 0:
+                        item.itemAppearance = '♥';
+                        item.position = projectiles[i].position;
+                        
+                        game.player.health++;
+                        break;
+                    case 1:
+                        game.player.damage++;
+                        break;
+                    case 2:
+                        game.player.shield++;
+                        break;
+                    case 3:
+                        game.player.maxhealth++;
+                        break;
+
+                    }}
                 game.score[indexNick] += 10;
                 game.enemiesDie += 1;
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio;
                 SetConsoleCursorPosition(hConsole, projectiles[i].position);
                 cout << " ";
-                Enemy *enemy = searchEnemy(projectiles[i].position);
-                if (enemy != nullptr)
+                if (enemy != nullptr){
                     enemy->active = false;
+                }
                 if (i == 0)
                 {
                     projectiles = nullptr;

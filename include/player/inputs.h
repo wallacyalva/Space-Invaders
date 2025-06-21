@@ -10,6 +10,7 @@
 
 #include "../basicStructures/gameElements.h"
 using namespace std;
+
 XINPUT_STATE controllerState;
 void addInput(Input &input, int key) {
     // Cria novo array maior

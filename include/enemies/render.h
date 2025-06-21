@@ -12,7 +12,7 @@ void renderEnemy(int Template[GameElements::lineMap][GameElements::columnMap]){
     }
 }
 
-bool checkAllEnemiesDie(Game game){
+bool gameover(Game game){
     bool die = true;
     bool isEnd = false;
     

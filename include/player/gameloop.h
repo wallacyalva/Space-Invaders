@@ -91,7 +91,7 @@ void GameLoop(int &indexNick)
     Input input = {nullptr,0};
     do
     {
-        gameexit = !checkAllEnemiesDie(game);
+        gameexit = !gameover(game);
         hudPrint(game, indexNick);
         input.inputs = nullptr;
         if (inputUpdate <= (timeMillis()))
