@@ -4,6 +4,7 @@
 #include <conio.h>
 #define gameElements
 #include "../player/player.h"
+#include "../player/items.h"
 using namespace std;
 
 const int maxEnemyProjectiles = 50;
@@ -12,6 +13,7 @@ const int intensMenu = 7;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
+const int maxItems = 10;
 int maxColuns = 10;
 void cleanBuffer(){
 while (_kbhit()) {
@@ -19,6 +21,10 @@ while (_kbhit()) {
 }
 }
 // utilities Functions
+uint64_t timeMillis(){
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 void getConsoleSize()
 {
@@ -48,6 +54,9 @@ struct Player
     char projetil = '|';
     int health = 5, shield = 0, damage = 1, maxhealth = 5;
     char playerChar = 'A';
+    uint64_t speedBoostEndTime = 0;
+    uint64_t extraShotsEndTime = 0;
+    uint64_t multiShotEndTime = 0;
     DWORD color = (0 << 4) | 7;
     void setPosition(int x, int y)
     {
@@ -101,6 +110,9 @@ struct Game{
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
     int enemyProjectilesInGame = 0;
+    Items activeItems[maxItems];
+    int itemsInGame = 0;
+    uint64_t freezeEnemiesEndTime = 0;
     int difficulty = 0;
     Game(int thisDifficulty = 0) {
         switch (thisDifficulty) {
@@ -118,15 +130,15 @@ struct Game{
                 break;
         }
         player.maxhealth = player.health;
-
         // Copia os inimigos do modelo base
         for (int i = 0; i < maxEnemies; i++) {
             enemies[i] = enemiesLive[i];
         }
     }
 };
-struct Input{
-    int* inputs = nullptr;
+const int MAX_INPUTS = 10; // Máximo de inputs simultâneos por frame
+struct Input {
+    int inputs[MAX_INPUTS] = {};
     int count = 0;
 };
 string types[9] = {

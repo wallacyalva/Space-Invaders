@@ -1,6 +1,7 @@
 #include <conio.h>
 #include <iostream>
 #include <string.h>
+#include <thread>
 using namespace std;
 void cleanmenu(short int pos,Game &game)
 {
@@ -14,6 +15,11 @@ void cleanmenu(short int pos,Game &game)
     cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
     pos += 17;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, pos});
+}
+void selectSound(){
+    Beep(1300, 20);
+    Sleep(10); // pequena pausa
+    Beep(900, 20);
 }
 int mainMenu(Game &game)
 {
@@ -52,25 +58,25 @@ int mainMenu(Game &game)
         option = getch();
         switch (option)
         {
-        case 81:
-        case 'q':
+            case 81:
+            case 'q':
             return 2;
-        case 72:
-        case 'w':
-            Beep(1300, 20);
-            // Sleep(10); // pequena pausa
-            Beep(900, 20);
+            case 72:
+            case 'w':{
+            thread Up(selectSound);
+            Up.detach();
             // cout<<"Up";
             position <= 0 ? position = (intensMenu - 1) : position--;
             break;
+            }
         case 80:
-        case 's':
-            Beep(1300, 20);
-            // Sleep(10); // pequena pausa
-            Beep(900, 20);
-            // cout<<"Down";
-            position >= (intensMenu - 1) ? position = 0 : position++;
+        case 's':{
+            thread Down(selectSound);
+            Down.detach();
+            // cout<<"Up";
+          position >= (intensMenu - 1) ? position = 0 : position++;
             break;
+        }
         case 75:
         case 'a':
 

@@ -7,30 +7,21 @@
 #define VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT 0xD5
 #define VK_GAMEPAD_LEFT_THUMBSTICK_LEFT 0xD6
 #endif
-
+#ifndef INPUT_H
+#define INPUT_H
 #include "../basicStructures/gameElements.h"
 using namespace std;
+
+// Adiciona uma tecla à lista de inputs do frame atual, se houver espaço.
+// Esta versão é mais segura e eficiente, evitando alocações de memória constantes.
 void addInput(Input &input, int key) {
-    // Cria novo array maior
-    int* newInputs = new int[input.count + 1];
-
-    // Copia os valores antigos
-    for (int i = 0; i < input.count; i++) {
-        newInputs[i] = input.inputs[i];
+    if (input.count < MAX_INPUTS) {
+        input.inputs[input.count] = key;
+        input.count++;
     }
-
-    // Adiciona nova tecla
-    newInputs[input.count] = key;
-    input.count++;
-
-    // Libera memória antiga
-    delete[] input.inputs;
-
-    // Atualiza ponteiro
-    input.inputs = newInputs;
 }
 void inputGet(Input &input){
-input.count = 0;
+input.count = 0; // Reseta os inputs a cada frame
 if (GetAsyncKeyState('A') & 0x8000)
 {
     addInput(input, 'A');
@@ -91,4 +82,4 @@ if (XInputGetState(0, &controllerState) == ERROR_SUCCESS)
     }
 }
 }
-
+#endif
