@@ -8,7 +8,7 @@ void cleanmenu(short int pos,Game &game)
     setlocale(LC_ALL, "pt_BR.UTF-8");
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 17});
     
-    for (int i = 0; i < intensMenu; i++){
+    for (int i = 0; i < itensMenu; i++){
         cout << game.menu[i] << "         \n";
     }
     
@@ -66,7 +66,7 @@ int mainMenu(Game &game)
             thread Up(selectSound);
             Up.detach();
             // cout<<"Up";
-            position <= 0 ? position = (intensMenu - 1) : position--;
+            position <= 0 ? position = (itensMenu - 1) : position--;
             break;
             }
         case 80:
@@ -74,7 +74,7 @@ int mainMenu(Game &game)
             thread Down(selectSound);
             Down.detach();
             // cout<<"Up";
-          position >= (intensMenu - 1) ? position = 0 : position++;
+          position >= (itensMenu - 1) ? position = 0 : position++;
             break;
         }
         case 75:

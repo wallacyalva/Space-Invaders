@@ -201,7 +201,7 @@ void GameLoop(int &indexNick,Game &game)
                 }
                 /*escape*/
                 /*game Exit*/
-                case 27:
+                case VK_ESCAPE:
                     gameexit = false;
                     /*escape*/
                     break;
