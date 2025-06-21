@@ -2,6 +2,7 @@
 #include <iostream>
 #include <conio.h>
 #include <thread>
+#include<Xinput.h>
 #include "../basicStructures/gameElements.h"
 #include "../map/gameMap.h"
 using namespace std;
@@ -13,9 +14,16 @@ struct Projectile
     char projectileChar = '|';
 };
 void explosionSound() {
+    XINPUT_VIBRATION vibration;
+    vibration.wLeftMotorSpeed = 65535;
+    vibration.wRightMotorSpeed = 65535; 
+    XInputSetState(0,&vibration);
     Beep(1000, 80);
     Beep(800, 60);
     Beep(600, 100);
+    vibration.wLeftMotorSpeed = 0;
+    vibration.wRightMotorSpeed = 0; 
+    XInputSetState(0,&vibration);
 }
 
 Enemy *searchEnemy(COORD position)
@@ -30,6 +38,7 @@ Enemy *searchEnemy(COORD position)
     }
     return nullptr;
 }
+
 void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap &gamemap, Game &game, int indexNick)
 {
     for (int i = 0; i < projectilesinGame; i++)

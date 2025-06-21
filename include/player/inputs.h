@@ -10,6 +10,7 @@
 
 #include "../basicStructures/gameElements.h"
 using namespace std;
+XINPUT_STATE controllerState;
 void addInput(Input &input, int key) {
     // Cria novo array maior
     int* newInputs = new int[input.count + 1];
@@ -74,7 +75,6 @@ if (GetAsyncKeyState('K') & 0x8000)
     addInput(input, 'K');
 }
 /*Controller Support Test*/
-XINPUT_STATE controllerState;
 if (XInputGetState(0, &controllerState) == ERROR_SUCCESS)
 {
     if (controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
