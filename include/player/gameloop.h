@@ -212,8 +212,8 @@ void GameLoop(int &indexNick,Game &game)
         }
 
 
-    } while ((game.player.health > 0)||(player2.health > 0) && gameexit);
-    
+    } while (((game.player.health > 0) && (player2.health > 0)) && gameexit);
+
     cleanBuffer();
     showGameOverScreen(game,indexNick);
     cursorInfo.bVisible = false;
