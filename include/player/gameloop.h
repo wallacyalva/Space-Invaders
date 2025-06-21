@@ -215,11 +215,9 @@ void GameLoop(int &indexNick)
 
 
     } while (player->health > 0 && gameexit);
-    // if (player->health <= 0)
-    // {
-        showGameOverScreen(game,indexNick);
-        // indexNick++;
-    // }
+    
+    cleanBuffer();
+    showGameOverScreen(game,indexNick);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
