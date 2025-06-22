@@ -85,6 +85,7 @@ void GameLoop(int &indexNick,Game &game)
     bool gameexit = true;
     Player *player = &game.player;
     Player player2 = Player();
+    player2.playerColor = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
     Projectile *projectiles = nullptr;
     getConsoleSize();
     player2.position.Y = GameElements::lineMap - 3;
@@ -116,10 +117,10 @@ void GameLoop(int &indexNick,Game &game)
         gameexit = !gameover(game);
         hudPrint(game, indexNick);
         // input.inputs = nullptr;
+        input.count = 0;
         if (inputUpdate <= (timeMillis()))
         {
-            // 24 fps
-            inputUpdate = (timeMillis()) + (1000 / 24);
+            inputUpdate = (timeMillis()) + (speedInputUpdate);
             inputGet(input);
         }
         for (int i = 0; i < input.count; i++)

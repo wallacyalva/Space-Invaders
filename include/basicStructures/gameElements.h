@@ -6,7 +6,7 @@
 #include "../player/player.h"
 #include "../player/items.h"
 using namespace std;
-
+#define speedInputUpdate 41
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
 const int itensMenu = 7;
@@ -53,6 +53,7 @@ struct Player
     Inventory inventory;
     char projetil = '|';
     int health = 5, shield = 0, damage = 1, maxhealth = 5;
+    DWORD playerColor = (0 << 4) | 7;
     char playerChar = 'A';
     uint64_t speedBoostEndTime = 0;
     uint64_t extraShotsEndTime = 0;
@@ -65,7 +66,9 @@ struct Player
         position.X = x;
         position.Y = y;
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+        SetConsoleTextAttribute(hConsole, playerColor);
         cout << playerChar;
+        SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
     }
 
     void setRelativePosition(int x, int y)
@@ -78,7 +81,9 @@ struct Player
             position.X += x;
             position.Y += y;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+            SetConsoleTextAttribute(hConsole, playerColor);
             cout << playerChar;
+            SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
         }
     }
 };
