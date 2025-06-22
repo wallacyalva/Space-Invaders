@@ -55,30 +55,30 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
 
         // Verifica se o projétil saiu da tela ou atingiu um inimigo
         bool hit = false;
-        if (projectiles[i].position.Y < 1)
-        {
+        if (projectiles[i].position.Y < 1){
             hit = true; // Saiu do topo da tela
-        }
-        else
-        {
+        }else{
             Enemy *enemy = searchEnemy(projectiles[i].position);
-            if (enemy != nullptr && enemy->active)
-            {
+            if ((enemy != nullptr && enemy->active) || gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == 1){
                 hit = true;
-                thread explosion(explosionSound);
-                explosion.detach();
-
-                // Chance de dropar um power-up
-                if(rand() % 100 < 20) { // 20% de chance
-                    Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
-                    CreateItem(game, itemType, enemy->position);
+                // thread explosion(explosionSound);
+                // explosion.detach();
+                if(enemy != nullptr && enemy->active){
+                    // Chance de dropar um power-up
+                    if(rand() % 100 < 20) { // 20% de chance
+                        Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
+                        CreateItem(game, itemType, enemy->position);
+                    }
+                    game.score[indexNick] += 10;
+                    game.enemiesDie += 1;
+                    // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
+                    SetConsoleCursorPosition(hConsole, enemy->position);
+                    cout << " ";
+                    enemy->active = false;
+                }else{
+                    SetConsoleCursorPosition(hConsole, projectiles[i].position);
+                    cout << " ";
                 }
-                game.score[indexNick] += 10;
-                game.enemiesDie += 1;
-                // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
-                SetConsoleCursorPosition(hConsole, enemy->position);
-                cout << " ";
-                enemy->active = false;
             }
         }
 
