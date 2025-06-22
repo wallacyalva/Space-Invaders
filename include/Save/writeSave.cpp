@@ -13,7 +13,7 @@ void saveGame(Game &game)
     fileSave << "Health" << "\t" << game.player.health << endl;
     fileSave << "[Points]" << endl;
     bool playerEmpty = false;
-    for (size_t i = 0; !playerEmpty && i < 10; i++)
+    for (size_t i = 0; !playerEmpty && i < 100; i++)
     {
         if (game.score[i] == 0 && game.nick[i].nick[0] == '\0')
         {

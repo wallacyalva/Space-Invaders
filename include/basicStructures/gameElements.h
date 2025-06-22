@@ -109,8 +109,8 @@ Enemy enemiesLive[maxEnemies] = {
 struct Game{
     string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
-    int score[10] = {};
-    Nick nick[10] = {};
+    int score[100] = {};
+    Nick nick[100] = {};
     int enemiesDie = 0;
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
