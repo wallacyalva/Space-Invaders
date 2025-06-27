@@ -273,7 +273,7 @@ void GameLoop(int &indexNick,Game &game)
         if (nextUpdateEnemy <= (timeMillis())){
             // Só move os inimigos se o power-up de congelar não estiver ativo
             if (timeMillis() > game.freezeEnemiesEndTime) {
-                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (15 - game.enemiesDie);
                 moveEnemies(gamemap,game);
             }
         }
