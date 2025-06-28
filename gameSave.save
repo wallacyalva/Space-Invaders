@@ -1,6 +1,6 @@
 [Space Invaders]
 [Player]
-Health	4
+Health	5
 [Points]
 Nick	AAA
 Points	550
@@ -16,3 +16,5 @@ Nick	DSD
 Points	10
 Nick	DSS
 Points	80
+Nick	DSD
+Points	160
