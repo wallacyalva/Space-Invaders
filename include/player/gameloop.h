@@ -226,8 +226,10 @@ void GameLoop(int &indexNick,Game &game)
         if (inputUpdate <= (timeMillis()))
         {
             inputUpdate = (timeMillis()) + (speedInputUpdate);
+            //adquire o input de forma assyncrona pega input de teclado e controle
             thread inputs(inputGet,ref(input));
             inputs.join();
+            //convert input para ações
             thread handle(handleInput,ref(input), ref(game), ref(*player), ref(player2), ref(projectiles),
             ref(projectilesinGame), ref(gameexit), indexNick, infiniteShots);
             handle.join();
