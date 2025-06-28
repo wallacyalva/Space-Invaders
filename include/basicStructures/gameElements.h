@@ -10,6 +10,7 @@ using namespace std;
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
 const int itensMenu = 7;
+const int timeMoveEnemyBase = 20;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
@@ -105,13 +106,13 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
-
 struct Game{
     int cordEndY = 17; 
     int timeAttProject = 2.5;
     int timeAttackEnemy = 400;
-    int timeMoveEnemy = 70;
+    int timeMoveEnemy = (timeMoveEnemyBase*2)*2;
     int timeAttackPlayer = 10;
+    bool autoPlay = false;
     string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
     int score[100] = {};

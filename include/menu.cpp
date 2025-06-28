@@ -176,11 +176,11 @@ void aplicarDificuldade(Game &game) {
                 }
             }
             game.player.health = 5; 
+            game.timeMoveEnemy = (timeMoveEnemyBase*2)*2;
         }
         break;
         // Médio
         case 1: {
-            game.player.health = 4;
             for (int i = 0; i < maxEnemies; i++) {
                 if((1 + ((i/10) * 10)) == i || (4 + ((i/10) * 10)) == i || (7 + ((i/10) * 10)) == i){
                     enemiesLive[i].active = false;
@@ -188,14 +188,17 @@ void aplicarDificuldade(Game &game) {
                     enemiesLive[i].active = true;
                 }
             }
+            game.player.health = 4;
+            game.timeMoveEnemy = (timeMoveEnemyBase*2);
         }    
         break;
         // Difícil
         case 2: {
-            game.player.health = 3;
             for (int i = 0; i < maxEnemies; i++) {
                 enemiesLive[i].active = true;
             }
+            game.player.health = 3;
+            game.timeMoveEnemy = timeMoveEnemyBase;
         }
         break;   
         default: {
@@ -206,7 +209,8 @@ void aplicarDificuldade(Game &game) {
                     enemiesLive[i].active = true;
                 }
             }
-            game.player.health = 5; 
+            game.player.health = 5;
+            game.timeMoveEnemy = (timeMoveEnemyBase*2)*2;
         }
         break;
     }
