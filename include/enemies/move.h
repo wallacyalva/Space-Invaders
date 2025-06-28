@@ -100,6 +100,15 @@ void updateEnemyProjectiles(Gamemap &gamemap, Game &game) {
                 continue;
             }
     
+            // Verifica colisão com barreira
+            if (gamemap.map[pos.Y][pos.X] == Gamemap::barreira) {
+                game.enemyProjectiles[i].active = false; // Desativa o projétil
+                gamemap.map[pos.Y][pos.X] = Gamemap::vazio; // Destroi parte da barreira
+                SetConsoleCursorPosition(hConsole, pos); // Limpa o caractere da barreira na tela
+                cout << " ";
+                continue; // Próximo projétil
+            }
+
             // Verifica colisão com player
             if (pos.X == game.player.position.X && pos.Y == game.player.position.Y) {
                 game.enemyProjectiles[i].active = false;

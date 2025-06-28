@@ -19,9 +19,13 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
             // desenhando piso
             case mapCurrent.entities::parede:
                 SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
+                // cout<<types[1];
                 break;
             case mapCurrent.entities::inimigo:
                 SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+                break;
+            case mapCurrent.entities::barreira:
+                SetConsoleTextAttribute(hConsole, Gamemap::verde);
                 break;
             default:
                 break;
@@ -35,69 +39,69 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 }
 
 void renderBarrier(int Template[GameElements::lineMap][GameElements::columnMap]){
-    
-    Template[17][5] = 1;
-    Template[17][6] = 1;
-    Template[17][7] = 1;
 
-    Template[18][5] = 1;
-    Template[18][6] = 1;
-    Template[18][7] = 1;
-    
-    Template[19][5] = 1;
-    Template[19][7] = 1;
-    
+    Template[game.cordEndY][4] = Gamemap::barreira;
+    Template[game.cordEndY][5] = Gamemap::barreira;
+    Template[game.cordEndY][6] = Gamemap::barreira;
 
+    Template[game.cordEndY + 1][4] = Gamemap::barreira;
+    Template[game.cordEndY + 1][5] = Gamemap::barreira;
+    Template[game.cordEndY + 1][6] = Gamemap::barreira;
     
-    Template[17][11] = 1;
-    Template[17][12] = 1;
-    Template[17][13] = 1;
-
-    Template[18][11] = 1;
-    Template[18][12] = 1;
-    Template[18][13] = 1;
-    
-    Template[19][11] = 1;
-    Template[19][13] = 1;
+    Template[game.cordEndY + 2][4] = Gamemap::barreira;
+    Template[game.cordEndY + 2][6] = Gamemap::barreira;
     
 
-
-    Template[17][16] = 1;
-    Template[17][17] = 1;
-    Template[17][18] = 1;
-
-    Template[18][16] = 1;
-    Template[18][17] = 1;
-    Template[18][18] = 1;
     
-    Template[19][16] = 1;
-    Template[19][18] = 1;
+    Template[game.cordEndY][10] = Gamemap::barreira;
+    Template[game.cordEndY][11] = Gamemap::barreira;
+    Template[game.cordEndY][12] = Gamemap::barreira;
+
+    Template[game.cordEndY + 1][10] = Gamemap::barreira;
+    Template[game.cordEndY + 1][11] = Gamemap::barreira;
+    Template[game.cordEndY + 1][12] = Gamemap::barreira;
+    
+    Template[game.cordEndY + 2][10] = Gamemap::barreira;
+    Template[game.cordEndY + 2][12] = Gamemap::barreira;
     
 
 
-    Template[17][21] = 1;
-    Template[17][22] = 1;
-    Template[17][23] = 1;
+    Template[game.cordEndY][15] = Gamemap::barreira;
+    Template[game.cordEndY][16] = Gamemap::barreira;
+    Template[game.cordEndY][17] = Gamemap::barreira;
 
-    Template[18][21] = 1;
-    Template[18][22] = 1;
-    Template[18][23] = 1;
+    Template[game.cordEndY + 1][15] = Gamemap::barreira;
+    Template[game.cordEndY + 1][16] = Gamemap::barreira;
+    Template[game.cordEndY + 1][17] = Gamemap::barreira;
     
-    Template[19][21] = 1;
-    Template[19][23] = 1;
+    Template[game.cordEndY + 2][15] = Gamemap::barreira;
+    Template[game.cordEndY + 2][17] = Gamemap::barreira;
     
 
 
-    Template[17][27] = 1;
-    Template[17][28] = 1;
-    Template[17][29] = 1;
+    Template[game.cordEndY][20] = Gamemap::barreira;
+    Template[game.cordEndY][21] = Gamemap::barreira;
+    Template[game.cordEndY][22] = Gamemap::barreira;
 
-    Template[18][27] = 1;
-    Template[18][28] = 1;
-    Template[18][29] = 1;
+    Template[game.cordEndY + 1][20] = Gamemap::barreira;
+    Template[game.cordEndY + 1][21] = Gamemap::barreira;
+    Template[game.cordEndY + 1][22] = Gamemap::barreira;
     
-    Template[19][27] = 1;
-    Template[19][29] = 1;
+    Template[game.cordEndY + 2][20] = Gamemap::barreira;
+    Template[game.cordEndY + 2][22] = Gamemap::barreira;
+    
+
+
+    Template[game.cordEndY][26] = Gamemap::barreira;
+    Template[game.cordEndY][27] = Gamemap::barreira;
+    Template[game.cordEndY][28] = Gamemap::barreira;
+
+    Template[game.cordEndY + 1][26] = Gamemap::barreira;
+    Template[game.cordEndY + 1][27] = Gamemap::barreira;
+    Template[game.cordEndY + 1][28] = Gamemap::barreira;
+    
+    Template[game.cordEndY + 2][26] = Gamemap::barreira;
+    Template[game.cordEndY + 2][28] = Gamemap::barreira;
 }
 
 // Criação dos mapas, matriz mãe.

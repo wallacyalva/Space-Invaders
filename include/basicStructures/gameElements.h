@@ -107,10 +107,15 @@ Enemy enemiesLive[maxEnemies] = {
 };
 
 struct Game{
+    int cordEndY = 17; 
+    int timeAttProject = 2.5;
+    int timeAttackEnemy = 400;
+    int timeMoveEnemy = 70;
+    int timeAttackPlayer = 10;
     string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
-    int score[10] = {};
-    Nick nick[10] = {};
+    int score[100] = {};
+    Nick nick[100] = {};
     int enemiesDie = 0;
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
@@ -152,7 +157,7 @@ string types[9] = {
     "A",      // 2 player
     "W",      // 3 inimigo
     "!",      // 4 ataque inimigo
-    " ",      // 5
+    "\u2588", // 5 barreira
     " ",      // 6
     " ",      // 7
     " "       // 8

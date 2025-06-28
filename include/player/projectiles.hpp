@@ -27,6 +27,39 @@ void explosionSound() {
     XInputSetState(0,&vibration);
 }
 
+void visualExplosion(COORD position) {
+    // Posições relativas para formar um 'X' com o caractere '*'
+    COORD offsets[] = {
+        {-1, -1}, {1, -1},
+        {-1,  1}, {1,  1}
+    };
+
+    // Desenha a explosão
+    SetConsoleTextAttribute(hConsole, Gamemap::amarelo); // Cor amarela para a explosão
+    for (const auto& offset : offsets) {
+        COORD explosionPos = { (SHORT)(position.X + offset.X), (SHORT)(position.Y + offset.Y) };
+        // Garante que não vai desenhar fora do mapa
+        if (explosionPos.X > 0 && explosionPos.X < GameElements::columnMap - 1 &&
+            explosionPos.Y > 0 && explosionPos.Y < GameElements::lineMap - 1) {
+            SetConsoleCursorPosition(hConsole, explosionPos);
+            cout << "*";
+        }
+    }
+
+    // Pausa para o efeito ser visível
+    Sleep(75);
+
+    // Apaga a explosão
+    for (const auto& offset : offsets) {
+        COORD explosionPos = { (SHORT)(position.X + offset.X), (SHORT)(position.Y + offset.Y) };
+        if (explosionPos.X > 0 && explosionPos.X < GameElements::columnMap - 1 &&
+            explosionPos.Y > 0 && explosionPos.Y < GameElements::lineMap - 1) {
+            SetConsoleCursorPosition(hConsole, explosionPos);
+            cout << " ";
+        }
+    }
+}
+
 Enemy* searchEnemy(COORD position) {
     // Itera por todos os inimigos para encontrar um na posição especificada.
     for (int i = 0; i < maxEnemies; ++i) {
@@ -60,21 +93,30 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
         }else{
             Enemy *enemy = searchEnemy(projectiles[i].position);
             if ((enemy != nullptr && enemy->active)){
+                    hit = true;
+                    COORD enemyPos = enemy->position; // Salva a posição antes de desativar o inimigo
+
+                    thread explosion(explosionSound);
+                    explosion.detach();
+
+                    // Inicia o efeito visual da explosão em uma nova thread
+                    visualExplosion(enemyPos);
+                    
+
+                    // Chance de dropar um power-up
+                    if(rand() % 100 < 20) { // 20% de chance
+                        Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
+                        CreateItem(game, itemType, enemyPos);
+                    }
+                    game.score[indexNick] += 10;
+                    game.enemiesDie += 1;
+                    // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
+                    SetConsoleCursorPosition(hConsole, enemyPos);
+                    cout << " ";
+                    enemy->active = false;
+            }else if(gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::barreira){// Verifica colisão com barreira
                 hit = true;
-                // Chance de dropar um power-up
-                if(rand() % 100 < 20) { // 20% de chance
-                    Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
-                    CreateItem(game, itemType, enemy->position);
-                }
-                game.score[indexNick] += 10;
-                game.enemiesDie += 1;
-                // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
-                SetConsoleCursorPosition(hConsole, enemy->position);
-                cout << " ";
-                enemy->active = false;
-            }else if(gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == 1){
-                hit = true;
-                gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = 0;
+                gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = 0;// Limpa o caractere da barreira na tela
             }else{
                 SetConsoleCursorPosition(hConsole, projectiles[i].position);
                 cout << " ";

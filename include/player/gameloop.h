@@ -265,7 +265,7 @@ void GameLoop(int &indexNick,Game &game)
             if (nextUpdate <= (timeMillis()))
             {
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdate = (timeMillis()) + (1000 / 60) * 2.5;
+                nextUpdate = (timeMillis()) + (1000 / 60) * game.timeAttProject;
                 UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
             }
         }
@@ -273,18 +273,18 @@ void GameLoop(int &indexNick,Game &game)
         if (nextUpdateEnemy <= (timeMillis())){
             // Só move os inimigos se o power-up de congelar não estiver ativo
             if (timeMillis() > game.freezeEnemiesEndTime) {
-                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (100 - game.enemiesDie);
+                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - game.enemiesDie);
                 moveEnemies(gamemap,game);
             }
         }
         if(timeAttack <= (timeMillis())){
-            timeAttack = (timeMillis()) + (1000 / 60) * 400;
+            timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
             makeAttackEnemy(gamemap,game);
         }
         if(game.enemyProjectilesInGame > 0){
             if (nextUpdateAttack <= (timeMillis())){
                 // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdateAttack = (timeMillis()) + (1000 / 60) * 10;
+                nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
                 updateEnemyProjectiles(gamemap, game);
             }
         }

@@ -70,13 +70,14 @@ if (GetAsyncKeyState('K') & 0x8000)
 }
 /*Controller Support Test*/
 XINPUT_STATE controllerState;
-//verificar se controle 0 está conectado
 int controllerPos = 0;
+//verifica se alguém usou teclado como player 1
 if (hasKeyboard)
 {
     controllerPos = 1;
 }
 
+//verificar se controle 0 está conectado
 if (XInputGetState(0, &controllerState) == ERROR_SUCCESS)
 {
     int inputs[2][3]={{'A','D',VK_SPACE},{VK_LEFT,VK_RIGHT,VK_RETURN}};

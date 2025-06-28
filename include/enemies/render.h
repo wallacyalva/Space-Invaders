@@ -21,7 +21,7 @@ bool gameover(Game game){
         if (game.enemies[i].active) {
             die = false;
         }
-        if (game.enemies[i].position.Y == game.player.position.Y - 1) {
+        if (game.enemies[i].position.Y == game.player.position.Y - 1 || game.enemies[i].position.Y == game.cordEndY) {
             isEnd = true;
         }
     }
