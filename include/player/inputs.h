@@ -1,12 +1,5 @@
 #include<windows.h>
 #include<Xinput.h>
-#ifndef VK_GAMEPAD_A
-#define VK_GAMEPAD_A 0xC3
-#define VK_GAMEPAD_DPAD_LEFT 0xCD
-#define VK_GAMEPAD_DPAD_RIGHT 0xCE
-#define VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT 0xD5
-#define VK_GAMEPAD_LEFT_THUMBSTICK_LEFT 0xD6
-#endif
 #ifndef INPUT_H
 #define INPUT_H
 #include "../basicStructures/gameElements.h"
