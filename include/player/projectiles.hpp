@@ -59,26 +59,25 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
             hit = true; // Saiu do topo da tela
         }else{
             Enemy *enemy = searchEnemy(projectiles[i].position);
-            if ((enemy != nullptr && enemy->active) || gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == 1){
+            if ((enemy != nullptr && enemy->active)){
                 hit = true;
-                // thread explosion(explosionSound);
-                // explosion.detach();
-                if(enemy != nullptr && enemy->active){
-                    // Chance de dropar um power-up
-                    if(rand() % 100 < 20) { // 20% de chance
-                        Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
-                        CreateItem(game, itemType, enemy->position);
-                    }
-                    game.score[indexNick] += 10;
-                    game.enemiesDie += 1;
-                    // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
-                    SetConsoleCursorPosition(hConsole, enemy->position);
-                    cout << " ";
-                    enemy->active = false;
-                }else{
-                    SetConsoleCursorPosition(hConsole, projectiles[i].position);
-                    cout << " ";
+                // Chance de dropar um power-up
+                if(rand() % 100 < 20) { // 20% de chance
+                    Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
+                    CreateItem(game, itemType, enemy->position);
                 }
+                game.score[indexNick] += 10;
+                game.enemiesDie += 1;
+                // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
+                SetConsoleCursorPosition(hConsole, enemy->position);
+                cout << " ";
+                enemy->active = false;
+            }else if(gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == 1){
+                hit = true;
+                gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = 0;
+            }else{
+                SetConsoleCursorPosition(hConsole, projectiles[i].position);
+                cout << " ";
             }
         }
 

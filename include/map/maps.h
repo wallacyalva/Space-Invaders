@@ -36,68 +36,68 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
 
 void renderBarrier(int Template[GameElements::lineMap][GameElements::columnMap]){
     
+    Template[17][5] = 1;
+    Template[17][6] = 1;
+    Template[17][7] = 1;
+
     Template[18][5] = 1;
     Template[18][6] = 1;
     Template[18][7] = 1;
-
+    
     Template[19][5] = 1;
-    Template[19][6] = 1;
     Template[19][7] = 1;
     
-    Template[20][5] = 1;
-    Template[20][7] = 1;
-    
 
     
+    Template[17][11] = 1;
+    Template[17][12] = 1;
+    Template[17][13] = 1;
+
     Template[18][11] = 1;
     Template[18][12] = 1;
     Template[18][13] = 1;
-
+    
     Template[19][11] = 1;
-    Template[19][12] = 1;
     Template[19][13] = 1;
     
-    Template[20][11] = 1;
-    Template[20][13] = 1;
-    
 
+
+    Template[17][16] = 1;
+    Template[17][17] = 1;
+    Template[17][18] = 1;
 
     Template[18][16] = 1;
     Template[18][17] = 1;
     Template[18][18] = 1;
-
+    
     Template[19][16] = 1;
-    Template[19][17] = 1;
     Template[19][18] = 1;
     
-    Template[20][16] = 1;
-    Template[20][18] = 1;
-    
 
+
+    Template[17][21] = 1;
+    Template[17][22] = 1;
+    Template[17][23] = 1;
 
     Template[18][21] = 1;
     Template[18][22] = 1;
     Template[18][23] = 1;
-
+    
     Template[19][21] = 1;
-    Template[19][22] = 1;
     Template[19][23] = 1;
     
-    Template[20][21] = 1;
-    Template[20][23] = 1;
-    
 
+
+    Template[17][27] = 1;
+    Template[17][28] = 1;
+    Template[17][29] = 1;
 
     Template[18][27] = 1;
     Template[18][28] = 1;
     Template[18][29] = 1;
-
-    Template[19][27] = 1;
-    Template[19][28] = 1;
-    Template[19][29] = 1;
     
-    Template[20][27] = 1;
-    Template[20][29] = 1;
+    Template[19][27] = 1;
+    Template[19][29] = 1;
 }
 
 // Criação dos mapas, matriz mãe.
