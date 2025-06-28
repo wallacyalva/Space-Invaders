@@ -101,6 +101,7 @@ void GameLoop(int &indexNick,Game &game)
     uint64_t timeAttack = (timeMillis()) + (1000 / 60) * 400;
     uint64_t nextUpdateItems = 0;
     uint64_t nextUpdateAttack = 0;
+    uint64_t nextUpdateHud = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
@@ -115,7 +116,6 @@ void GameLoop(int &indexNick,Game &game)
     do
     {
         gameexit = !gameover(game);
-        hudPrint(game, indexNick);
         // input.inputs = nullptr;
         input.count = 0;
         if (inputUpdate <= (timeMillis()))
@@ -296,7 +296,12 @@ void GameLoop(int &indexNick,Game &game)
                 UpdateItems(game, *player, player2, indexNick);
             }
         }
-
+        if (nextUpdateHud <= (timeMillis()))
+        {
+            nextUpdateHud = timeMillis() + 300;
+            hudPrint(game,indexNick);
+        }
+        
 
     } while ((game.player.health > 0 || player2.health > 0) && gameexit);
     

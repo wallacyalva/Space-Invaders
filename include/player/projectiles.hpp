@@ -45,7 +45,7 @@ void visualExplosion(COORD position) {
             cout << "*";
         }
     }
-
+    SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
     // Pausa para o efeito ser visível
     Sleep(75);
 
