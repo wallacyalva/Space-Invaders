@@ -61,24 +61,35 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
         }
         else
         {
-            Enemy *enemy = searchEnemy(projectiles[i].position);
-            if (enemy != nullptr && enemy->active)
+            // Verifica colisão com barreira
+            if (gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::barreira)
             {
                 hit = true;
-                thread explosion(explosionSound);
-                explosion.detach();
+                gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = Gamemap::vazio; // Destroi a barreira
+                SetConsoleCursorPosition(hConsole, projectiles[i].position);
+                cout << " "; // Limpa o caractere da barreira na tela
+            }
+            else // Se não for barreira, verifica se é inimigo
+            {
+                Enemy *enemy = searchEnemy(projectiles[i].position);
+                if (enemy != nullptr && enemy->active)
+                {
+                    hit = true;
+                    thread explosion(explosionSound);
+                    explosion.detach();
 
-                // Chance de dropar um power-up
-                if(rand() % 100 < 20) { // 20% de chance
-                    Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
-                    CreateItem(game, itemType, enemy->position);
+                    // Chance de dropar um power-up
+                    if(rand() % 100 < 20) { // 20% de chance
+                        Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
+                        CreateItem(game, itemType, enemy->position);
+                    }
+                    game.score[indexNick] += 10;
+                    game.enemiesDie += 1;
+                    // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
+                    SetConsoleCursorPosition(hConsole, enemy->position);
+                    cout << " ";
+                    enemy->active = false;
                 }
-                game.score[indexNick] += 10;
-                game.enemiesDie += 1;
-                // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
-                SetConsoleCursorPosition(hConsole, enemy->position);
-                cout << " ";
-                enemy->active = false;
             }
         }
 

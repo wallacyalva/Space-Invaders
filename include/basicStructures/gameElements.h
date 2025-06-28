@@ -152,7 +152,7 @@ string types[9] = {
     "A",      // 2 player
     "W",      // 3 inimigo
     "!",      // 4 ataque inimigo
-    " ",      // 5
+    "\u2588", // 5 barreira
     " ",      // 6
     " ",      // 7
     " "       // 8
