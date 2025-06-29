@@ -442,6 +442,9 @@ void GameLoop(int &indexNick,Game &game)
             }
             timeDelay = (timeMillis() + timeMillis());
         }
+        if(game.player.health > 0 || player2.health > 0 && ){
+            gameexit
+        }
     } while ((game.player.health > 0 || player2.health > 0) && gameexit);
     
     //limpando entrada para não preencher sozinho o Nick
