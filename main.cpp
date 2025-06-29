@@ -96,6 +96,24 @@ int main()
             game.autoPlay = false;
             indexNick++;
             break;
+        case 6:
+            system("cls");
+            game.difficulty = 2;
+            aplicarDificuldade(game);
+            game.player = Player();
+            initEnemies(game);
+            game.enemiesDie = 0;
+            // Limpa os itens e power-ups da partida anterior
+            game.itemsInGame = 0;
+            for (int i = 0; i < maxItems; ++i) {
+                game.activeItems[i].active = false;
+            }
+            game.enemyProjectilesInGame = 0;
+            game.infiniteGame = true;
+            GameLoop(indexNick,game);
+            game.autoPlay = false;
+            indexNick++;
+            break;
         default:
             break;
         }

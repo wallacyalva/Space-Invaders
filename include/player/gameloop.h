@@ -318,9 +318,19 @@ void GameLoop(int &indexNick,Game &game)
     int delay = 10;
     int timeDelay = 0;
     int difficulty = game.difficulty;
-    // infiniteShots = true;
+    if(game.infiniteGame){
+        difficulty = 2;
+    }
+    infiniteShots = true;
     // int difficulty = 2;
-    for (int i = 0; i <= difficulty; i++){
+
+
+
+    int i = 0;
+    
+
+
+    do {
         if((game.player.health > 0 || player2.health > 0) && gameexit){
             GetConsoleCursorInfo(hConsole, &cursorInfo);
             cursorInfo.bVisible = false;
@@ -557,9 +567,14 @@ void GameLoop(int &indexNick,Game &game)
             if((game.player.health > 0 || player2.health) && difficulty != 0 && i != 2){
                 gameexit = true;
                 rezetEnemys(game);
+            }else if ((game.player.health > 0 || player2.health) && (i >= 2 && game.infiniteGame)){
+                difficulty++;
+                gameexit = true;
+                rezetEnemys(game);
             }
         }
-    }
+     i++;
+    } while (i <= difficulty || game.infiniteGame);
     
     
     //limpando entrada para não preencher sozinho o Nick

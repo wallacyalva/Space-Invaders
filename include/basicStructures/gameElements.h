@@ -9,7 +9,7 @@ using namespace std;
 #define speedInputUpdate 41
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
-const int itensMenu = 7;
+const int itensMenu = 8;
 const int timeMoveEnemyBase = 20;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
@@ -109,6 +109,7 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
 struct Game{
+    bool infiniteGame = false;
     int timeMoveMod = 1;
     int cordEndY = 17; 
     int timeAttProject = 2.5;
@@ -116,7 +117,7 @@ struct Game{
     int timeMoveEnemy = (timeMoveEnemyBase*2)*2;
     int timeAttackPlayer = 10;
     bool autoPlay = false;
-    string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
+    string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Modo Desafio","Sair"};
     Player player = {Player()};
     int score[100] = {};
     Nick nick[100] = {};

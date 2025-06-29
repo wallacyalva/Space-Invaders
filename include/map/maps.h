@@ -211,8 +211,9 @@ void mapa(Gamemap &newMap, int mapSelect = 1)
         printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
         break;
     }
-    case 2:
-    {
+
+    default:
+            {
         for (int i = 0; i < GameElements::lineMap; i++)
         {
             for (int j = 0; j < GameElements::columnMap; j++)
@@ -224,8 +225,6 @@ void mapa(Gamemap &newMap, int mapSelect = 1)
         printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
         break;
     }
-    default:
-        cout << char(219);
         break;
     }
 }

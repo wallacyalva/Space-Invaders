@@ -12,7 +12,7 @@ void cleanmenu(short int pos,Game &game)
         cout << game.menu[i] << "         \n";
     }
     
-    cout << "Você pode precionar ESC para sair e ENTER para selecionar;)";
+    cout << "Você pode precionar ESC para sair e ENTER para selecionar.";
     pos += 17;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, pos});
 }
