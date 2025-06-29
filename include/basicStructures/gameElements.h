@@ -50,6 +50,15 @@ struct Enemy
     int life = 1;
     int level = 1;
 };
+struct Boss
+{
+    COORD position = {GameElements::columnMap / 2,GameElements::lineMap / 3};
+    bool active = false;
+    int life = 5;
+    int level = 1;
+    char appareance = 'B';
+    DWORD color = (0 << 4) | 12;
+};
 struct Player
 {
     COORD position = {0, 0};
@@ -120,6 +129,8 @@ struct Game{
     Player player = {Player()};
     int score[100] = {};
     Nick nick[100] = {};
+    Boss boss = {Boss()};
+    bool bosshasKilled = false;
     int enemiesDie = 0;
     Enemy enemies[maxEnemies];
     EnemyProjectile enemyProjectiles[maxEnemyProjectiles];
@@ -217,6 +228,7 @@ struct Gamemap
         ataqueInimigo = 4,
         barreira = 5,
         vazio = 9,
+        boss,
     };
     entities entity;
     static const DWORD padrao = (0 << 4) | 7;    /* Define o mapa para printar fundo preto e escrita branca */

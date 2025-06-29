@@ -7,6 +7,9 @@
 #include "./powerups.hpp"
 #include "../enemies/move.h"
 #include "../enemies/attack.h"
+#include "../boss/move.h"
+#include "../boss/attack.h"
+
 #include "./inputs.h"
 #include <thread>
 #include<chrono>
@@ -52,7 +55,16 @@ void hudPrint(Game &game, int indexNick)
     cout << "Score: " << game.score[indexNick];
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 2});
     cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
-
+    if(game.boss.active){
+        SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 3});
+        cout << "Boss Health: ";
+        for (int i = 1; i <= 5 - (game.boss.life); i++)
+        {
+            SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            cout << "\u2588";
+            SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
+        }
+    }
     // Exibe os power-ups ativos
     int hudLine = 4;
     auto print_powerup = [&](const char* name, uint64_t endTime) {
@@ -224,7 +236,14 @@ void GameLoop(int &indexNick,Game &game)
     do
     {
         if(timeDelay <= timeMillis()){
-            gameexit = !gameover(game);
+            if(game.difficulty == 0){
+                game.boss.active = gameover(game);
+                if(game.bosshasKilled){
+                    gameexit = !gameover(game);
+                }
+            }else{
+                gameexit = !gameover(game);
+            }
             hudPrint(game, indexNick);
             // input.inputs = nullptr;
             input.count = 0;
@@ -395,6 +414,12 @@ void GameLoop(int &indexNick,Game &game)
                         }
                         break;
                     }
+                    case 'i':
+                    case 'I':
+                    {
+                        infiniteShots = true;
+                        break;
+                    }
                 }}
             if (projectiles != nullptr)
             {
@@ -415,6 +440,12 @@ void GameLoop(int &indexNick,Game &game)
                     nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie * ((game.difficulty + 1) * game.timeMoveMod)));
                     moveEnemies(gamemap,game);
                 }
+                if (game.boss.active)
+                {
+                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * 20;
+                    moveBoss(gamemap,game);
+                }
+                
             }
             if(timeAttack <= (timeMillis())){
                 timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
@@ -442,7 +473,7 @@ void GameLoop(int &indexNick,Game &game)
             }
             timeDelay = (timeMillis() + timeMillis());
         }
-    } while ((game.player.health > 0 || player2.health > 0) && gameexit);
+    } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled);
     
     //limpando entrada para não preencher sozinho o Nick
     cleanBuffer();
@@ -450,7 +481,7 @@ void GameLoop(int &indexNick,Game &game)
         showGameOverScreen(game,indexNick);
         cursorInfo.bVisible = false;
         SetConsoleCursorInfo(hConsole, &cursorInfo);
+    }else{
         exit(0);
     }
-
 }
