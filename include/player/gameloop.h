@@ -353,10 +353,10 @@ void GameLoop(int &indexNick,Game &game)
                 
                 if(timeDelay <= timeMillis()){
                     if(gameover(game) && i>=2){
-                    game.boss.active = true;
-                    game.bosshasKilled = false;
+                        game.boss.active = true;
+                        game.bosshasKilled = false;
                     if(game.boss.position.Y >= player->position.Y){
-                        gameexit = true;
+                        gameexit = false;
                     }
                 }else{
                     gameexit = !gameover(game);

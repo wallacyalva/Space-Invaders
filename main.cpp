@@ -29,6 +29,7 @@ int main()
             aplicarNaves(game);
             initEnemies(game);
             game.enemiesDie = 0;
+            game.bosshasKilled = false;
             // Limpa os itens e power-ups da partida anterior
             game.itemsInGame = 0;
             for (int i = 0; i < maxItems; ++i) {
