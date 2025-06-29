@@ -197,4 +197,36 @@ Enemy* localizarInimigoRecursivo(Enemy* enemies, COORD target, int xIndex = 0, i
     return localizarInimigoRecursivo(enemies, target, xIndex, yIndex + 1);
 }
 
+struct Gamemap
+{
+    // Tamanho máximo do mapa e outras funções sobre
+    int map[GameElements::lineMap][GameElements::columnMap] = {};
+    enum mapSpawnPositions
+    {
+        top,
+        bottom,
+        left,
+        right,
+    };
+    // Todas as coisas usadas na criação do mapa
+    enum entities
+    {
+        floor = 0,
+        parede = 1,
+        inimigo = 3,
+        ataqueInimigo = 4,
+        barreira = 5,
+        vazio = 9,
+    };
+    entities entity;
+    static const DWORD padrao = (0 << 4) | 7;    /* Define o mapa para printar fundo preto e escrita branca */
+    static const DWORD branco = (0 << 4) | 15;   /* Define o mapa para printar fundo preto e escrita branca */
+    static const DWORD amarelo = (0 << 4) | 14;  /* Define o mapa para printar fundo preto e escrita amarela */
+    static const DWORD verde = (0 << 4) | 10;    /* Define o mapa para printar fundo preto e escrita verde */
+    static const DWORD azul = (0 << 4) | 9;      /* Define o mapa para printar fundo preto e escrita azul */
+    static const DWORD vermelho = (0 << 4) | 12; /* Define o mapa para printar fundo preto e escrita vermelha */
+    static const DWORD rosa = (0 << 4) | 13;     /* Define o mapa para printar fundo preto e escrita rosa */
+    DWORD themeColor = padrao;                   /* Define para começar na cor padrão */
+};
+
 #endif

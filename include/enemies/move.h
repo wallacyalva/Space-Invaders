@@ -1,6 +1,5 @@
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
-#include "../map/gameMap.h"
 using namespace std;
 
 

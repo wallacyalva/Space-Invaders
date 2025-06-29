@@ -1,5 +1,5 @@
 #include "../enemies/render.h"
-#include "./gameMap.h"
+#include "../basicStructures/gameElements.h"
 #include <windows.h>
 #include <ctime>
 #include <iostream>

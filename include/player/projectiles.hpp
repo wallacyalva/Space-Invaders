@@ -4,7 +4,6 @@
 #include <thread>
 #include<Xinput.h>
 #include "../basicStructures/gameElements.h"
-#include "../map/gameMap.h"
 #include "./powerups.hpp"
 using namespace std;
 
