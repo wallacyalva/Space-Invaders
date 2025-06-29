@@ -123,7 +123,7 @@ void updateEnemyProjectiles(Gamemap &gamemap, Game &game) {
     
                 // Reimprime o player no lugar do impacto
                 SetConsoleCursorPosition(hConsole, game.player.position);
-                SetConsoleTextAttribute(hConsole, game.player.color);
+                SetConsoleTextAttribute(hConsole, game.player.playerColor);
                 cout << game.player.playerChar;
                 SetConsoleTextAttribute(hConsole, gamemap.themeColor);
                 continue;

@@ -24,13 +24,9 @@ int main()
         {
         case 0:
             /* Play Game*/
-            // game.nick[indexNick] = SetNick();
-            // system("cls");
-            // cout << indexNick;
-            // getch();
-            aplicarDificuldade(game);
-            // game = Game(game.difficulty);
             game.player = Player();
+            aplicarDificuldade(game);
+            aplicarNaves(game);
             initEnemies(game);
             game.enemiesDie = 0;
             // Limpa os itens e power-ups da partida anterior
@@ -81,8 +77,9 @@ int main()
         case 5:
             system("cls");
             game.difficulty = 0;
-            aplicarDificuldade(game);
             game.player = Player();
+            aplicarDificuldade(game);
+            aplicarNaves(game);
             game.autoPlay = true;
             initEnemies(game);
             game.enemiesDie = 0;
@@ -94,13 +91,20 @@ int main()
             game.enemyProjectilesInGame = 0;
             GameLoop(indexNick,game);
             game.autoPlay = false;
+            saveGame(game);
             indexNick++;
             break;
         case 6:
             system("cls");
+            game.nave = escolherNaves(game.nave);
+            aplicarNaves(game);
+            break;
+
+            case 7:
             game.difficulty = 2;
-            aplicarDificuldade(game);
             game.player = Player();
+            aplicarDificuldade(game);
+            aplicarNaves(game);
             initEnemies(game);
             game.enemiesDie = 0;
             // Limpa os itens e power-ups da partida anterior

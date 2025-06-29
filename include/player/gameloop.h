@@ -436,14 +436,14 @@ void GameLoop(int &indexNick,Game &game)
                                 /*create projectile*/
                                 Projectile actualProjectile;
         
-                                bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime);
+                                bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime || !player->extraShots);
         
                                 if (canFire)
                                 {
                                     thread fire(laserSound);
                                     fire.detach();
         
-                                    if (timeMillis() < player->multiShotEndTime) {
+                                    if (timeMillis() < player->multiShotEndTime || !player->multiShot) {
                                         // Tiro triplo
                                         Projectile p1, p2, p3;
                                         p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};
