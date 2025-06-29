@@ -269,3 +269,89 @@ void aplicarDificuldade(Game &game) {
 
     game.player.maxhealth = game.player.health;
 }
+
+void mostrarOpcoesNaves(int selecao) {
+    const char *naves[] = {"Comum", "Extra Shot", "Multi Shot"};
+
+    COORD pos = {0, 20};
+
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+    for (int i = 0; i < 3; i++) {
+        if (i == selecao) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Verde
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Branco
+        }
+        cout << naves[i] << "   ";
+    }
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Reset para branco
+    cout << "\n\nUse ← → A D para navegar, Enter ou Espaço para confirmar";
+}
+
+int escolherNaves(int escolha) {
+    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 18});
+    cout << "Selecione a Nave desejada:\n";
+
+    int selecao = escolha;
+    int tecla;
+
+    mostrarOpcoesNaves(selecao);
+
+    do {
+        tecla = getch();
+
+        switch (tecla) {
+        case 75: // ←
+        case 'a':
+        case 'A':
+            Beep(700, 50);
+            selecao = (selecao - 1 + 3) % 3;
+            break;
+        case 77: // →
+        case 'd':
+        case 'D':
+            Beep(700, 50);
+            selecao = (selecao + 1) % 3;
+            break;
+        case 13: // Enter
+        case 32: // Espaço
+            Beep(1200, 80);
+            return selecao;
+        }
+
+        mostrarOpcoesNaves(selecao);
+    } while (true);
+}
+
+void aplicarNaves(Game &game) {
+    switch (game.nave) {
+        // Commum
+        case 0:{
+            game.player.projetil = '|';
+            game.player.damage = 1;
+            game.timeAttProject = 1;
+            game.timeAttackEnemy = 400;
+            game.timeMoveMod = 1;
+        }
+        break;
+           // Extra Shot
+        case 1: {
+            game.player.projetil = '|';
+            game.player.playerColor = game.player.blue;
+            game.player.extraShots = false;
+        }    
+        break;
+        // Multi Shot
+        case 2: {
+            game.player.projetil = '|';
+            game.player.playerColor = game.player.red;
+            game.player.multiShot =  false;
+        }
+        break;   
+        default: {
+        }
+        break;
+    }
+}

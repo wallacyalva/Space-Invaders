@@ -22,7 +22,7 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
                 // cout<<types[1];
                 break;
             case mapCurrent.entities::inimigo:{
-                Enemy* inimigo = localizarInimigoRecursivo(enemiesLive,COORD {i,j});
+                Enemy* inimigo = localizarInimigoRecursivo(enemiesLive,COORD {(SHORT)i,(SHORT)j});
                 if (inimigo != nullptr) {
                     if (inimigo->life == 1) {
                         SetConsoleTextAttribute(hConsole, Gamemap::verde);
