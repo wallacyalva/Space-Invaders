@@ -1,6 +1,5 @@
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
-#include "../map/gameMap.h"
 using namespace std;
 
 int findIndexActive(Game &game, int randN, int add = 0, int initialRandN = -1) {
