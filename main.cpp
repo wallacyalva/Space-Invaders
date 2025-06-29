@@ -29,6 +29,7 @@ int main()
             // cout << indexNick;
             // getch();
             aplicarDificuldade(game);
+            aplicarNaves(game);
             // game = Game(game.difficulty);
             game.player = Player();
             initEnemies(game);
@@ -95,6 +96,11 @@ int main()
             GameLoop(indexNick,game);
             game.autoPlay = false;
             indexNick++;
+            break;
+        case 6:
+            system("cls");
+            game.nave = escolherNaves(game.nave);
+            aplicarNaves(game);
             break;
         default:
             break;

@@ -9,7 +9,7 @@ using namespace std;
 #define speedInputUpdate 41
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
-const int itensMenu = 7;
+const int itensMenu = 8;
 const int timeMoveEnemyBase = 20;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
@@ -56,13 +56,18 @@ struct Player
     Inventory inventory;
     char projetil = '|';
     int health = 5, shield = 0, damage = 1, maxhealth = 5;
-    DWORD playerColor = (0 << 4) | 7;
     char playerChar = 'A';
     uint64_t speedBoostEndTime = 0;
     uint64_t extraShotsEndTime = 0;
     uint64_t multiShotEndTime = 0;
-    DWORD color = (0 << 4) | 7;
+    bool extraShots = false;
+    bool multiShot =  false;
+    DWORD white = (0 << 4) | 7;    /*Player comum*/
+    DWORD blue = (0 << 4) | 9; /*Player com tiro extra*/
+    DWORD red = (0 << 4) | 12; /*Player com tiros múltiplos*/
+    DWORD playerColor = white; /*Cor do player que será usada para imprimir na tela*/
     void setPosition(int x, int y)
+    
     {
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         cout << " ";
@@ -116,7 +121,7 @@ struct Game{
     int timeMoveEnemy = (timeMoveEnemyBase*2)*2;
     int timeAttackPlayer = 10;
     bool autoPlay = false;
-    string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
+    string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Naves","Sair"};
     Player player = {Player()};
     int score[100] = {};
     Nick nick[100] = {};
@@ -128,6 +133,7 @@ struct Game{
     int itemsInGame = 0;
     uint64_t freezeEnemiesEndTime = 0;
     int difficulty = 0;
+    int nave = 0;
     Game(int thisDifficulty = 0) {
         switch (thisDifficulty) {
             case 0: // Fácil
@@ -211,7 +217,7 @@ struct Gamemap
     // Todas as coisas usadas na criação do mapa
     enum entities
     {
-        floor = 0,
+        floor = 0,        
         parede = 1,
         inimigo = 3,
         ataqueInimigo = 4,
