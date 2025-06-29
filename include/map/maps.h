@@ -53,6 +53,35 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
     }
 }
 
+void printLevel(int mapSelect) {
+    // Limpa a tela
+    system("cls");
+
+    // Centraliza o texto baseado no tamanho da janela
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int columns = 80, rows = 25; // valores padrão
+
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+        rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    }
+
+    string message = "Nível " + to_string(mapSelect + 1);
+    int textX = (columns - message.size()) / 2;
+    int textY = rows / 2;
+
+    COORD pos = { (SHORT)textX, (SHORT)textY };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Verde claro
+    cout << message;
+
+    // Espera 3 segundos
+    this_thread::sleep_for(chrono::seconds(1));
+
+    // Limpa a mensagem se desejar:
+    system("cls");
+}
+
 void renderBarrier(int Template[GameElements::lineMap][GameElements::columnMap]){
 
     Template[game.cordEndY][4] = Gamemap::barreira;
@@ -120,10 +149,10 @@ void renderBarrier(int Template[GameElements::lineMap][GameElements::columnMap])
 }
 
 // Criação dos mapas, matriz mãe.
-void mapa(Gamemap &newMap, int mapSelect)
+void mapa(Gamemap &newMap, int mapSelect = 1)
 {
-    // newMap.spawnPos[Gamemap::bottom] = {5, 5};
-    mapSelect = 1; // Seleciona o mapa a ser printado
+    printLevel(mapSelect);
+
     int Template[GameElements::lineMap][GameElements::columnMap] = {
 
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//0
@@ -156,7 +185,33 @@ void mapa(Gamemap &newMap, int mapSelect)
 
     switch (mapSelect)
     {
+    case 0:
+    {
+        for (int i = 0; i < GameElements::lineMap; i++)
+        {
+            for (int j = 0; j < GameElements::columnMap; j++)
+            {
+                newMap.map[i][j] = Template[i][j];
+            }
+        }
+
+        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
+        break;
+    }
     case 1:
+    {
+        for (int i = 0; i < GameElements::lineMap; i++)
+        {
+            for (int j = 0; j < GameElements::columnMap; j++)
+            {
+                newMap.map[i][j] = Template[i][j];
+            }
+        }
+
+        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
+        break;
+    }
+    case 2:
     {
         for (int i = 0; i < GameElements::lineMap; i++)
         {
