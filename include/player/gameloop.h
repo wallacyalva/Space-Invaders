@@ -82,7 +82,7 @@ void rezetEnemys(Game &game){
                     game.enemies[i].level = 3;
                 }
 
-                if((1 + ((i/10) * 10)) == i || (4 + ((i/10) * 10)) == i || (7 + ((i/10) * 10)) == i){
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
                     game.enemies[i].active = false;
                 }else{
                     game.enemies[i].active = true;
@@ -107,7 +107,11 @@ void rezetEnemys(Game &game){
                     game.enemies[i].level = 3;
                 }
 
-                game.enemies[i].active = true;
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
+                    game.enemies[i].active = false;
+                }else{
+                    game.enemies[i].active = true;
+                }
                 game.enemies[i].position = enemiesLive[i].position;
             }
         }
@@ -333,7 +337,7 @@ void GameLoop(int &indexNick,Game &game)
     if(game.infiniteGame){
         difficulty = 2;
     }
-    infiniteShots = true;
+    // infiniteShots = true;
     // int difficulty = 2;
     int i = 0;
     do {
@@ -535,7 +539,7 @@ void GameLoop(int &indexNick,Game &game)
                     if (nextUpdateEnemy <= (timeMillis())){
                         // Só move os inimigos se o power-up de congelar não estiver ativo
                         if (timeMillis() > game.freezeEnemiesEndTime) {
-                            nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie * ((game.difficulty + 1) * game.timeMoveMod)));
+                            nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie / 200));
                             moveEnemies(gamemap,game);
                         }
                     }

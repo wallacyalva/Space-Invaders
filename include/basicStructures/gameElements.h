@@ -111,11 +111,11 @@ struct EnemyProjectile {
 };
 
 Enemy enemiesLive[maxEnemies] = {
-    {{7, 1}, true}, {{9, 1}, true}, {{11, 1}, true}, {{13, 1}, true}, {{15, 1}, true}, {{17, 1}, true}, {{19, 1}, true}, {{21, 1}, true}, {{23, 1}, true}, {{25, 1}, true},
-    {{7, 2}, true}, {{9, 2}, true}, {{11, 2}, true}, {{13, 2}, true}, {{15, 2}, true}, {{17, 2}, true}, {{19, 2}, true}, {{21, 2}, true}, {{23, 2}, true}, {{25, 2}, true},
-    {{7, 3}, true}, {{9, 3}, true}, {{11, 3}, true}, {{13, 3}, true}, {{15, 3}, true}, {{17, 3}, true}, {{19, 3}, true}, {{21, 3}, true}, {{23, 3}, true}, {{25, 3}, true},
-    {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
-    {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
+    {{7, 1}, true}, {{9, 1}, false}, {{11, 1}, true}, {{13, 1}, false}, {{15, 1}, true}, {{17, 1}, false}, {{19, 1}, true}, {{21, 1}, false}, {{23, 1}, true}, {{25, 1}, false},
+    {{7, 2}, true}, {{9, 2}, false}, {{11, 2}, true}, {{13, 2}, false}, {{15, 2}, true}, {{17, 2}, false}, {{19, 2}, true}, {{21, 2}, false}, {{23, 2}, true}, {{25, 2}, false},
+    {{7, 3}, true}, {{9, 3}, false}, {{11, 3}, true}, {{13, 3}, false}, {{15, 3}, true}, {{17, 3}, false}, {{19, 3}, true}, {{21, 3}, false}, {{23, 3}, true}, {{25, 3}, false},
+    {{7, 4}, true}, {{9, 4}, false}, {{11, 4}, true}, {{13, 4}, false}, {{15, 4}, true}, {{17, 4}, false}, {{19, 4}, true}, {{21, 4}, false}, {{23, 4}, true}, {{25, 4}, false},
+    {{7, 5}, true}, {{9, 5}, false}, {{11, 5}, true}, {{13, 5}, false}, {{15, 5}, true}, {{17, 5}, false}, {{19, 5}, true}, {{21, 5}, false}, {{23, 5}, true}, {{25, 5}, false}
 };
 struct Game{
     bool infiniteGame = false;

@@ -208,7 +208,7 @@ void aplicarDificuldade(Game &game) {
                     enemiesLive[i].level = 3;
                 }
 
-                if((1 + ((i/10) * 10)) == i || (4 + ((i/10) * 10)) == i || (7 + ((i/10) * 10)) == i){
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
                     enemiesLive[i].active = false;
                 }else{
                     enemiesLive[i].active = true;
@@ -233,8 +233,11 @@ void aplicarDificuldade(Game &game) {
                     enemiesLive[i].life = 3;
                     enemiesLive[i].level = 3;
                 }
-
-                enemiesLive[i].active = true;
+                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
+                    enemiesLive[i].active = false;
+                }else{
+                    enemiesLive[i].active = true;
+                }
             }
             game.player.health = 3;
             game.timeMoveEnemy = timeMoveEnemyBase;

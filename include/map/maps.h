@@ -183,48 +183,13 @@ void mapa(Gamemap &newMap, int mapSelect = 1)
     
     renderBarrier(Template);
 
-    switch (mapSelect)
+    for (int i = 0; i < GameElements::lineMap; i++)
     {
-    case 0:
-    {
-        for (int i = 0; i < GameElements::lineMap; i++)
+        for (int j = 0; j < GameElements::columnMap; j++)
         {
-            for (int j = 0; j < GameElements::columnMap; j++)
-            {
-                newMap.map[i][j] = Template[i][j];
-            }
+            newMap.map[i][j] = Template[i][j];
         }
-
-        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
-        break;
-    }
-    case 1:
-    {
-        for (int i = 0; i < GameElements::lineMap; i++)
-        {
-            for (int j = 0; j < GameElements::columnMap; j++)
-            {
-                newMap.map[i][j] = Template[i][j];
-            }
-        }
-
-        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
-        break;
     }
 
-    default:
-            {
-        for (int i = 0; i < GameElements::lineMap; i++)
-        {
-            for (int j = 0; j < GameElements::columnMap; j++)
-            {
-                newMap.map[i][j] = Template[i][j];
-            }
-        }
-
-        printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
-        break;
-    }
-        break;
-    }
+    printMap(newMap, GetStdHandle(STD_OUTPUT_HANDLE));
 }
