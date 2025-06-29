@@ -350,9 +350,17 @@ void GameLoop(int &indexNick,Game &game)
             
             cout << game.player.playerChar;
             do{
+                
                 if(timeDelay <= timeMillis()){
+                    if(gameover(game) && i>=2){
+                    game.boss.active = true;
+                    game.bosshasKilled = false;
+                    if(game.boss.position.Y >= player->position.Y){
+                        gameexit = true;
+                    }
+                }else{
                     gameexit = !gameover(game);
-                    hudPrint(game, indexNick);
+                }hudPrint(game, indexNick);
                     // input.inputs = nullptr;
                     input.count = 0;
                     if (inputUpdate <= (timeMillis()))
