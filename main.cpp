@@ -80,8 +80,21 @@ int main()
             break;
         case 5:
             system("cls");
-            game.difficulty = escolherDificuldade(game.difficulty);
+            game.difficulty = 0;
             aplicarDificuldade(game);
+            game.player = Player();
+            game.autoPlay = true;
+            initEnemies(game);
+            game.enemiesDie = 0;
+            // Limpa os itens e power-ups da partida anterior
+            game.itemsInGame = 0;
+            for (int i = 0; i < maxItems; ++i) {
+                game.activeItems[i].active = false;
+            }
+            game.enemyProjectilesInGame = 0;
+            GameLoop(indexNick,game);
+            game.autoPlay = false;
+            indexNick++;
             break;
         default:
             break;

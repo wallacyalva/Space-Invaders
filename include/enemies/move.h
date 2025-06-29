@@ -1,6 +1,5 @@
 #include <windows.h>
 #include "../basicStructures/gameElements.h"
-#include "../map/gameMap.h"
 using namespace std;
 
 
@@ -22,9 +21,16 @@ void desenharInimigos(Game &game, Gamemap &gamemap){
     for (int i = 0; i < maxEnemies; i++){
         if (game.enemies[i].active){
             COORD pos = game.enemies[i].position;
-    
+            
             SetConsoleCursorPosition(hConsole, pos);
-            SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            if(game.enemies[i].life == 1){
+                SetConsoleTextAttribute(hConsole, Gamemap::verde);
+            }else if(game.enemies[i].life == 2){
+                SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
+            }else if(game.enemies[i].life == 3){
+                SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            }
+
             cout << types[GameElements::enemy];
             SetConsoleTextAttribute(hConsole, gamemap.themeColor);
     

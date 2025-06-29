@@ -10,6 +10,7 @@ using namespace std;
 const int maxEnemyProjectiles = 50;
 const int maxEnemies = 50;
 const int itensMenu = 7;
+const int timeMoveEnemyBase = 20;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 int maxLines = 5;
@@ -46,6 +47,8 @@ struct Enemy
 {
     COORD position = {0, 0};
     bool active = true;
+    int life = 1;
+    int level = 1;
 };
 struct Player
 {
@@ -105,13 +108,14 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 4}, true}, {{9, 4}, true}, {{11, 4}, true}, {{13, 4}, true}, {{15, 4}, true}, {{17, 4}, true}, {{19, 4}, true}, {{21, 4}, true}, {{23, 4}, true}, {{25, 4}, true},
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
-
 struct Game{
+    int timeMoveMod = 1;
     int cordEndY = 17; 
     int timeAttProject = 2.5;
     int timeAttackEnemy = 400;
-    int timeMoveEnemy = 70;
+    int timeMoveEnemy = (timeMoveEnemyBase*2)*2;
     int timeAttackPlayer = 10;
+    bool autoPlay = false;
     string menu[itensMenu] = {"Iniciar","Como Jogar","Score","Sobre","Dificuldade","Jogo Automático","Sair"};
     Player player = {Player()};
     int score[100] = {};
@@ -177,4 +181,52 @@ void initEnemies(Game &game) {
     }
     game.enemiesDie = 0;
 }
+
+Enemy* localizarInimigoRecursivo(Enemy* enemies, COORD target, int xIndex = 0, int yIndex = 0) {
+    if (xIndex >= maxColuns) return nullptr; // passou das colunas
+
+    // Calcula o índice com base na estrutura da matriz inimiga
+    int index = (yIndex * maxColuns) + xIndex;
+    if (index >= maxEnemies) return localizarInimigoRecursivo(enemies, target, xIndex + 1, 0);
+
+    if (enemies[index].position.X == target.X && enemies[index].position.Y == target.Y) {
+        return &enemies[index];
+    }
+
+    // Continua procurando na próxima linha da mesma coluna
+    return localizarInimigoRecursivo(enemies, target, xIndex, yIndex + 1);
+}
+
+struct Gamemap
+{
+    // Tamanho máximo do mapa e outras funções sobre
+    int map[GameElements::lineMap][GameElements::columnMap] = {};
+    enum mapSpawnPositions
+    {
+        top,
+        bottom,
+        left,
+        right,
+    };
+    // Todas as coisas usadas na criação do mapa
+    enum entities
+    {
+        floor = 0,
+        parede = 1,
+        inimigo = 3,
+        ataqueInimigo = 4,
+        barreira = 5,
+        vazio = 9,
+    };
+    entities entity;
+    static const DWORD padrao = (0 << 4) | 7;    /* Define o mapa para printar fundo preto e escrita branca */
+    static const DWORD branco = (0 << 4) | 15;   /* Define o mapa para printar fundo preto e escrita branca */
+    static const DWORD amarelo = (0 << 4) | 14;  /* Define o mapa para printar fundo preto e escrita amarela */
+    static const DWORD verde = (0 << 4) | 10;    /* Define o mapa para printar fundo preto e escrita verde */
+    static const DWORD azul = (0 << 4) | 9;      /* Define o mapa para printar fundo preto e escrita azul */
+    static const DWORD vermelho = (0 << 4) | 12; /* Define o mapa para printar fundo preto e escrita vermelha */
+    static const DWORD rosa = (0 << 4) | 13;     /* Define o mapa para printar fundo preto e escrita rosa */
+    DWORD themeColor = padrao;                   /* Define para começar na cor padrão */
+};
+
 #endif

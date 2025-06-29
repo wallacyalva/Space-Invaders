@@ -218,71 +218,239 @@ void GameLoop(int &indexNick,Game &game)
     SetConsoleCursorInfo(hConsole, &cursorInfo);
     Input input = Input();
     SetConsoleTitle("Space Invaders - Playing");
+    int indexAutoPlay = 0;
+    int delay = 10;
+    int timeDelay = 0;
     do
     {
-        gameexit = !gameover(game);
-        // input.inputs = nullptr;
-        input.count = 0;
-        if (inputUpdate <= (timeMillis()))
-        {
-            inputUpdate = (timeMillis()) + (speedInputUpdate);
-            //adquire o input de forma assyncrona pega input de teclado e controle
-            thread inputs(inputGet,ref(input));
-            inputs.join();
-            //convert input para ações
-            thread handle(handleInput,ref(input), ref(game), ref(*player), ref(player2), ref(projectiles),
-            ref(projectilesinGame), ref(gameexit), indexNick, infiniteShots);
-            handle.join();
-        }
-        
-        if (projectiles != nullptr)
-        {
-            if (nextUpdate <= (timeMillis()))
+        if(timeDelay <= timeMillis()){
+            gameexit = !gameover(game);
+            hudPrint(game, indexNick);
+            // input.inputs = nullptr;
+            input.count = 0;
+            if (inputUpdate <= (timeMillis()))
             {
-                // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdate = (timeMillis()) + (1000 / 60) * game.timeAttProject;
-                UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
-            }
-        }
-        
-        if (nextUpdateEnemy <= (timeMillis())){
-            // Só move os inimigos se o power-up de congelar não estiver ativo
-            if (timeMillis() > game.freezeEnemiesEndTime) {
-                nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - game.enemiesDie);
-                moveEnemies(gamemap,game);
-            }
-        }
-        if(timeAttack <= (timeMillis())){
-            timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
-            makeAttackEnemy(gamemap,game);
-        }
-        if(game.enemyProjectilesInGame > 0){
-            if (nextUpdateAttack <= (timeMillis())){
-                // 60 fps test 1 second/60 frames * lowspeed
-                nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
-                updateEnemyProjectiles(gamemap, game);
-            }
-        }
-        if (game.itemsInGame > 0) {
-            // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
-            if (nextUpdateItems <= (timeMillis()))
-            {
-                nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
-                UpdateItems(game, *player, player2, indexNick);
-            }
-        }
-        if (nextUpdateHud <= (timeMillis()))
-        {
-            nextUpdateHud = timeMillis() + 300;
-            hudPrint(game,indexNick);
-        }
-        
+                if(!game.autoPlay){
+                    inputUpdate = (timeMillis()) + (speedInputUpdate);
+                    inputGet(input);
+                }else{
+                    inputUpdate = (timeMillis()) + (speedInputUpdate);
+                    input.count = 1;
+                    switch(indexAutoPlay){
+                        case 0:{
+                            input.inputs[input.count - 1] = 'd';
+                            indexAutoPlay++;
+                            break;
+                        }
+                        case 1:{
+                            input.inputs[input.count - 1] = 'd';
+                            indexAutoPlay++;
+                            break;
+                        }
+                        case 2:{
+                            input.inputs[input.count - 1] = 32;
+                            indexAutoPlay++;
+                            break;
+                        }
 
+                    }
+                }
+            }
+
+            for (int i = 0; i < input.count; i++)
+            {
+                int inputActual = input.inputs[i];
+
+
+                switch (inputActual)
+                {
+                    case 'a':
+                    case 'A': {
+                        int moveAmount = 1;
+                        if (timeMillis() < player->speedBoostEndTime) {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player->setRelativePosition(-moveAmount, 0);
+
+                        // projectiles = nullptr;
+                        break;
+                    }
+                    case VK_LEFT: {
+                        int moveAmount = 1;
+                        if (timeMillis() < player2.speedBoostEndTime) {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player2.setRelativePosition(-moveAmount, 0);
+                        break;
+                    }
+                    case VK_RIGHT: {
+                        int moveAmount = 1;
+                        if (timeMillis() < player2.speedBoostEndTime) {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player2.setRelativePosition(moveAmount, 0);
+                        break;
+                    }
+                    case 'd':
+                    case 'D': {
+                        int moveAmount = 1;
+                        if (timeMillis() < player->speedBoostEndTime) {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player->setRelativePosition(moveAmount, 0);
+                        // projectiles = nullptr;
+                        break;
+                    }
+                    /*spacebar*/
+                    case 32:
+                    {
+                        /*atack*/
+
+                        /*create projectile*/
+                        Projectile actualProjectile;
+
+                        bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime);
+
+                        if (canFire)
+                        {
+                            thread fire(laserSound);
+                            fire.detach();
+
+                            if (timeMillis() < player->multiShotEndTime) {
+                                // Tiro triplo
+                                Projectile p1, p2, p3;
+                                p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};
+                                p2.position = {SHORT(player->position.X - 2), (SHORT)(player->position.Y - 1)};
+                                p3.position = {(SHORT)(player->position.X + 2), (SHORT)(player->position.Y - 1)};
+                                CreateProjectiles(projectiles, p1, projectilesinGame);
+                                CreateProjectiles(projectiles, p2, projectilesinGame);
+                                CreateProjectiles(projectiles, p3, projectilesinGame);
+                            } else {
+                                // Tiro único
+                                actualProjectile.position.X = player->position.X;
+                                actualProjectile.position.Y = player->position.Y - 1;
+                                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                            }
+                        }
+                        break;
+                    }
+                    case VK_RETURN:
+                    {
+                        // Verifica se o Player 2 pode atirar (tiro extra ou sem projéteis na tela)
+                        bool canFireP2 = (projectilesinGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
+
+                        if (canFireP2) {
+                            thread fire(fireSound);
+                            fire.detach();
+
+                            if (timeMillis() < player2.multiShotEndTime) {
+                                // Tiro triplo para o Player 2
+                                Projectile p1, p2, p3;
+                                p1.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                                p2.position = {SHORT(player2.position.X - 2), (SHORT)(player2.position.Y - 1)};
+                                p3.position = {(SHORT)(player2.position.X + 2), (SHORT)(player2.position.Y - 1)};
+                                CreateProjectiles(projectiles, p1, projectilesinGame);
+                                CreateProjectiles(projectiles, p2, projectilesinGame);
+                                CreateProjectiles(projectiles, p3, projectilesinGame);
+                            } else {
+                                // Tiro único para o Player 2
+                                Projectile actualProjectile;
+                                actualProjectile.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                            }
+                        }
+                        break;
+                    }
+                    /*escape*/
+                    /*game Exit*/
+                    case VK_ESCAPE:
+                        gameexit = false;
+                        /*escape*/
+                        break;
+                    /*game over screen test*/
+                    case 'c':
+                    case 'C':
+                    {
+                        int cheatCode = getch();
+                        switch (cheatCode)
+                        {
+                        /*game over*/
+                        case 'g':
+                        case 'G':
+                            gameexit = false;
+                            showGameOverScreen(game,indexNick);
+                            break;
+                        case 'k':
+                        case 'K':
+                            game.player.health--;
+                            break;
+                        case 'i':
+                        case 'I':
+                            infiniteShots = true;
+                            break;
+                        case 's':
+                        case 'S':
+                            cout << game.score;
+                            break;
+                        }
+                        break;
+                    }
+                }}
+            if (projectiles != nullptr)
+            {
+                if (nextUpdate <= (timeMillis()))
+                {
+                    // 60 fps test 1 second/60 frames * lowspeed
+                    nextUpdate = (timeMillis()) + (1000 / 60) * game.timeAttProject;
+                    if(game.autoPlay){
+                        inputUpdate = nextUpdate;
+                    }
+                    UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
+                }
+            }
+            
+            if (nextUpdateEnemy <= (timeMillis())){
+                // Só move os inimigos se o power-up de congelar não estiver ativo
+                if (timeMillis() > game.freezeEnemiesEndTime) {
+                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie * ((game.difficulty + 1) * game.timeMoveMod)));
+                    moveEnemies(gamemap,game);
+                }
+            }
+            if(timeAttack <= (timeMillis())){
+                timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
+                makeAttackEnemy(gamemap,game);
+            }
+            if(game.enemyProjectilesInGame > 0){
+                if (nextUpdateAttack <= (timeMillis())){
+                    // 60 fps test 1 second/60 frames * lowspeed
+                    nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
+                    updateEnemyProjectiles(gamemap, game);
+                }
+            }
+            if (game.itemsInGame > 0) {
+                // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
+                if (nextUpdateItems <= (timeMillis()))
+                {
+                    nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
+                    UpdateItems(game, *player, player2, indexNick);
+                }
+            }
+            if (nextUpdateHud <= (timeMillis()))
+            {
+                nextUpdateHud = timeMillis() + 300;
+                hudPrint(game,indexNick);
+            }
+            timeDelay = (timeMillis() + timeMillis());
+        }
     } while ((game.player.health > 0 || player2.health > 0) && gameexit);
     
     //limpando entrada para não preencher sozinho o Nick
     cleanBuffer();
-    showGameOverScreen(game,indexNick);
-    cursorInfo.bVisible = false;
-    SetConsoleCursorInfo(hConsole, &cursorInfo);
+    if(!game.autoPlay){
+        showGameOverScreen(game,indexNick);
+        cursorInfo.bVisible = false;
+        SetConsoleCursorInfo(hConsole, &cursorInfo);
+        exit(0);
+    }
+
 }
