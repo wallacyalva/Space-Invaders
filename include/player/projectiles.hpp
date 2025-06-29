@@ -87,6 +87,18 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
 
         // Verifica se o projétil saiu da tela ou atingiu um inimigo
         bool hit = false;
+        if(gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::boss){
+            game.boss.life--;
+            hit = true;
+            if(game.boss.life == 1){
+                SetConsoleTextAttribute(hConsole, Gamemap::verde);
+            }
+            if(game.boss.life < 0){
+                game.boss.active = false;
+                hit = true;
+                game.bosshasKilled = true;
+            }
+        }
         if (projectiles[i].position.Y < 1){
             hit = true; // Saiu do topo da tela
         }else{

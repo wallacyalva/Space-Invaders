@@ -7,6 +7,9 @@
 #include "./powerups.hpp"
 #include "../enemies/move.h"
 #include "../enemies/attack.h"
+#include "../boss/move.h"
+#include "../boss/attack.h"
+
 #include "./inputs.h"
 #include <thread>
 #include<chrono>
@@ -154,7 +157,16 @@ void hudPrint(Game &game, int indexNick)
     cout << "Score: " << game.score[indexNick];
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 2});
     cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
-
+    if(game.boss.active){
+        SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 3});
+        cout << "Boss Health: ";
+        for (int i = 1; i <= 5 - (game.boss.life); i++)
+        {
+            SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            cout << "\u2588";
+            SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
+        }
+    }
     // Exibe os power-ups ativos
     int hudLine = 4;
     auto print_powerup = [&](const char* name, uint64_t endTime) {
@@ -533,36 +545,42 @@ void GameLoop(int &indexNick,Game &game)
                             moveEnemies(gamemap,game);
                         }
                     }
-                    if(timeAttack <= (timeMillis())){
-                        timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
-                        makeAttackEnemy(gamemap,game);
-                    }
-                    if(game.enemyProjectilesInGame > 0){
-                        if (nextUpdateAttack <= (timeMillis())){
-                            // 60 fps test 1 second/60 frames * lowspeed
-                            nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
-                            updateEnemyProjectiles(gamemap, game);
-                        }
-                    }
-                    if (game.itemsInGame > 0) {
-                        // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
-                        if (nextUpdateItems <= (timeMillis()))
-                        {
-                            nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
-                            UpdateItems(game, *player, player2, indexNick);
-                        }
-                    }
-                    if (nextUpdateHud <= (timeMillis()))
+                    if (game.boss.active)
                     {
-                        nextUpdateHud = timeMillis() + 300;
-                        hudPrint(game,indexNick);
+                        nextUpdateEnemy = (timeMillis()) + (1000 / 60) * 20;
+                        moveBoss(gamemap,game);
                     }
-                    timeDelay = (timeMillis() + timeMillis());
+                
                 }
-                // if(game.player.health > 0 || player2.health > 0 && ){
-                //     gameexit
-                // }
-            } while ((game.player.health > 0 || player2.health > 0) && gameexit);
+                if(timeAttack <= (timeMillis())){
+                    timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
+                    makeAttackEnemy(gamemap,game);
+                    if(game.boss.active){
+                        makeAttackBoss(gamemap,game);
+                    }
+                }
+                if(game.enemyProjectilesInGame > 0){
+                    if (nextUpdateAttack <= (timeMillis())){
+                        // 60 fps test 1 second/60 frames * lowspeed
+                        nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
+                        updateEnemyProjectiles(gamemap, game);
+                    }
+                }
+                if (game.itemsInGame > 0) {
+                    // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
+                    if (nextUpdateItems <= (timeMillis()))
+                    {
+                        nextUpdateItems = timeMillis() + 150; // Itens caem a cada 150ms
+                        UpdateItems(game, *player, player2, indexNick);
+                    }
+                }
+                if (nextUpdateHud <= (timeMillis()))
+                {
+                    nextUpdateHud = timeMillis() + 300;
+                    hudPrint(game,indexNick);
+                }
+                timeDelay = (timeMillis() + timeMillis());
+            } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled);
 
             if((game.player.health > 0 || player2.health) && difficulty != 0 && i != 2){
                 gameexit = true;
@@ -586,5 +604,4 @@ void GameLoop(int &indexNick,Game &game)
     }else{
         exit(0);
     }
-
 }

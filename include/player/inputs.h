@@ -61,6 +61,11 @@ if (GetAsyncKeyState('K') & 0x8000)
 {
     addInput(input, 'K');
 }
+if (GetAsyncKeyState('I') & 0x8000)
+{
+    addInput(input, 'I');
+}
+
 /*Controller Support Test*/
 XINPUT_STATE controllerState;
 int controllerPos = 0;
