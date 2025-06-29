@@ -341,7 +341,7 @@ void GameLoop(int &indexNick,Game &game)
     // int difficulty = 2;
     int i = 0;
     do {
-        if((game.player.health > 0 || player2.health > 0) && gameexit){
+        if((game.player.health > 0 || player2.health > 0)){
             GetConsoleCursorInfo(hConsole, &cursorInfo);
             cursorInfo.bVisible = false;
             SetConsoleCursorInfo(hConsole, &cursorInfo);
@@ -579,21 +579,19 @@ void GameLoop(int &indexNick,Game &game)
                 }
                 timeDelay = (timeMillis() + timeMillis());
             } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled);
-            if(gameexit){
-                if((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2){
-                    gameexit = true;
-                    rezetEnemys(game);
-                }else if ((game.player.health > 0 || player2.health > 0) && (i >= 2 && game.infiniteGame)){
-                    difficulty++;
-                    gameexit = true;
-                    rezetEnemys(game);
-                }else if(game.player.health <= 0 || player2.health <= 0){
-                    gameexit = false;
-                }
+            if((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2){
+                gameexit = true;
+                rezetEnemys(game);
+            }else if ((game.player.health > 0 || player2.health > 0) && (i >= 2 && game.infiniteGame)){
+                difficulty++;
+                gameexit = true;
+                rezetEnemys(game);
+            }else if(game.player.health <= 0 || player2.health <= 0){
+                gameexit = false;
             }
         }
      i++;
-    } while ((i <= difficulty || game.infiniteGame) && gameexit);
+    } while ((i <= difficulty || game.infiniteGame));
     
     
     //limpando entrada para não preencher sozinho o Nick
