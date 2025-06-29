@@ -450,6 +450,9 @@ void GameLoop(int &indexNick,Game &game)
             if(timeAttack <= (timeMillis())){
                 timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
                 makeAttackEnemy(gamemap,game);
+                if(game.boss.active){
+                    makeAttackBoss(gamemap,game);
+                }
             }
             if(game.enemyProjectilesInGame > 0){
                 if (nextUpdateAttack <= (timeMillis())){
