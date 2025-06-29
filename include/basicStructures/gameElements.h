@@ -47,6 +47,8 @@ struct Enemy
 {
     COORD position = {0, 0};
     bool active = true;
+    int life = 1;
+    int level = 1;
 };
 struct Player
 {
@@ -107,6 +109,7 @@ Enemy enemiesLive[maxEnemies] = {
     {{7, 5}, true}, {{9, 5}, true}, {{11, 5}, true}, {{13, 5}, true}, {{15, 5}, true}, {{17, 5}, true}, {{19, 5}, true}, {{21, 5}, true}, {{23, 5}, true}, {{25, 5}, true}
 };
 struct Game{
+    int timeMoveMod = 1;
     int cordEndY = 17; 
     int timeAttProject = 2.5;
     int timeAttackEnemy = 400;
@@ -178,4 +181,20 @@ void initEnemies(Game &game) {
     }
     game.enemiesDie = 0;
 }
+
+Enemy* localizarInimigoRecursivo(Enemy* enemies, COORD target, int xIndex = 0, int yIndex = 0) {
+    if (xIndex >= maxColuns) return nullptr; // passou das colunas
+
+    // Calcula o índice com base na estrutura da matriz inimiga
+    int index = (yIndex * maxColuns) + xIndex;
+    if (index >= maxEnemies) return localizarInimigoRecursivo(enemies, target, xIndex + 1, 0);
+
+    if (enemies[index].position.X == target.X && enemies[index].position.Y == target.Y) {
+        return &enemies[index];
+    }
+
+    // Continua procurando na próxima linha da mesma coluna
+    return localizarInimigoRecursivo(enemies, target, xIndex, yIndex + 1);
+}
+
 #endif

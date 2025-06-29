@@ -21,8 +21,23 @@ void printMap(Gamemap &mapCurrent, HANDLE hConsole)
                 SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
                 // cout<<types[1];
                 break;
-            case mapCurrent.entities::inimigo:
-                SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+            case mapCurrent.entities::inimigo:{
+                Enemy* inimigo = localizarInimigoRecursivo(enemiesLive,COORD {i,j});
+                if (inimigo != nullptr) {
+                    if (inimigo->life == 1) {
+                        SetConsoleTextAttribute(hConsole, Gamemap::verde);
+                    } else if (inimigo->life == 2) {
+                        SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
+                    } else if (inimigo->life == 3) {
+                        SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+                    } else {
+                        SetConsoleTextAttribute(hConsole, Gamemap::azul);
+                    }
+                } else {
+                    SetConsoleTextAttribute(hConsole, Gamemap::rosa); // fallback
+                }
+
+            }
                 break;
             case mapCurrent.entities::barreira:
                 SetConsoleTextAttribute(hConsole, Gamemap::verde);

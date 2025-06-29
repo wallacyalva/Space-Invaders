@@ -6,6 +6,7 @@
 Thumbs.db
 main.o
 main.exe
+gameSave.save
 
 # Ignorar binários e compilados
 *.exe

@@ -169,6 +169,19 @@ void aplicarDificuldade(Game &game) {
         // Fácil
         case 0:{
             for (int i = 0; i < maxEnemies; i++) {
+                int randN = rand() % maxColuns%11;
+                
+                if(randN <= 5){
+                    enemiesLive[i].life = 1;
+                    enemiesLive[i].level = 1;
+                }else if(randN > 5 && randN <= 8){
+                    enemiesLive[i].life = 2;
+                    enemiesLive[i].level = 2;
+                }else{
+                    enemiesLive[i].life = 3;
+                    enemiesLive[i].level = 3;
+                }
+                
                 if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
                     enemiesLive[i].active = false;
                 }else{
@@ -182,6 +195,19 @@ void aplicarDificuldade(Game &game) {
         // Médio
         case 1: {
             for (int i = 0; i < maxEnemies; i++) {
+                int randN = rand() % maxColuns%11;
+                
+                if(randN <= 3){
+                    enemiesLive[i].life = 1;
+                    enemiesLive[i].level = 1;
+                }else if(randN > 3 && randN <= 5){
+                    enemiesLive[i].life = 2;
+                    enemiesLive[i].level = 2;
+                }else{
+                    enemiesLive[i].life = 3;
+                    enemiesLive[i].level = 3;
+                }
+
                 if((1 + ((i/10) * 10)) == i || (4 + ((i/10) * 10)) == i || (7 + ((i/10) * 10)) == i){
                     enemiesLive[i].active = false;
                 }else{
@@ -195,6 +221,19 @@ void aplicarDificuldade(Game &game) {
         // Difícil
         case 2: {
             for (int i = 0; i < maxEnemies; i++) {
+                int randN = rand() % maxColuns%11;
+                
+                if(randN <= 2){
+                    enemiesLive[i].life = 1;
+                    enemiesLive[i].level = 1;
+                }else if(randN > 2 && randN <= 5){
+                    enemiesLive[i].life = 2;
+                    enemiesLive[i].level = 2;
+                }else{
+                    enemiesLive[i].life = 3;
+                    enemiesLive[i].level = 3;
+                }
+
                 enemiesLive[i].active = true;
             }
             game.player.health = 3;
@@ -203,6 +242,19 @@ void aplicarDificuldade(Game &game) {
         break;   
         default: {
             for (int i = 0; i < maxEnemies; i++) {
+                int randN = rand() % maxColuns%11;
+                
+                if(randN <= 5){
+                    enemiesLive[i].life = 1;
+                    enemiesLive[i].level = 1;
+                }else if(randN > 5 && randN <= 8){
+                    enemiesLive[i].life = 2;
+                    enemiesLive[i].level = 2;
+                }else{
+                    enemiesLive[i].life = 3;
+                    enemiesLive[i].level = 3;
+                }
+                
                 if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
                     enemiesLive[i].active = false;
                 }else{

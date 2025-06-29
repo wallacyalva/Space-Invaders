@@ -45,7 +45,7 @@ void visualExplosion(COORD position) {
             cout << "*";
         }
     }
-
+    SetConsoleTextAttribute(hConsole, (0 << 4) | 7); // Reseta para cor padrão
     // Pausa para o efeito ser visível
     Sleep(75);
 
@@ -93,7 +93,8 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
         }else{
             Enemy *enemy = searchEnemy(projectiles[i].position);
             if ((enemy != nullptr && enemy->active)){
-                    hit = true;
+                hit = true;
+                if(enemy->life == 1){
                     COORD enemyPos = enemy->position; // Salva a posição antes de desativar o inimigo
 
                     thread explosion(explosionSound);
@@ -108,12 +109,25 @@ void UpdateProjectiles(Projectile *projectiles, int &projectilesinGame, Gamemap 
                         Items::TypeofItems itemType = (Items::TypeofItems)(rand() % 6);
                         CreateItem(game, itemType, enemyPos);
                     }
-                    game.score[indexNick] += 10;
+                    game.score[indexNick] += (10 * enemy->level);
                     game.enemiesDie += 1;
                     // Apaga o inimigo da tela imediatamente para evitar "fantasmas"
                     SetConsoleCursorPosition(hConsole, enemyPos);
                     cout << " ";
                     enemy->active = false;
+                }else{
+                    SetConsoleCursorPosition(hConsole, enemy->position);
+                    enemy->life --;
+                    if(enemy->life == 1){
+                        SetConsoleTextAttribute(hConsole, Gamemap::verde);
+                    }else if(enemy->life == 2){
+                        SetConsoleTextAttribute(hConsole, Gamemap::amarelo);
+                    }else if(enemy->life == 3){
+                        SetConsoleTextAttribute(hConsole, Gamemap::vermelho);
+                    }
+                    cout << types[GameElements::enemy];
+                    SetConsoleTextAttribute(hConsole, Gamemap::branco);
+                }
             }else if(gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] == Gamemap::barreira){// Verifica colisão com barreira
                 hit = true;
                 gamemap.map[projectiles[i].position.Y][projectiles[i].position.X] = 0;// Limpa o caractere da barreira na tela

@@ -77,6 +77,111 @@ void hudPrint(Game &game, int indexNick)
     cout << (currentTime < game.freezeEnemiesEndTime ? "Enemies Frozen: " + to_string((game.freezeEnemiesEndTime - currentTime) / 1000) + "s   " : "                    ");
 
 }
+void handleInput(Input& input, Game& game, Player& player1, Player& player2, Projectile*& projectiles, int& projectilesInGame, bool& gameexit, int indexNick, bool infiniteShots = false)
+{
+    for (int i = 0; i < input.count; i++) {
+        int inputActual = input.inputs[i];
+
+        switch (inputActual) {
+        // Movimento Player 1
+        case 'a': case 'A': {
+            int moveAmount = (timeMillis() < player1.speedBoostEndTime) ? 2 : 1;
+            player1.setRelativePosition(-moveAmount, 0);
+            break;
+        }
+        case 'd': case 'D': {
+            int moveAmount = (timeMillis() < player1.speedBoostEndTime) ? 2 : 1;
+            player1.setRelativePosition(moveAmount, 0);
+            break;
+        }
+
+        // Movimento Player 2
+        case VK_LEFT: {
+            int moveAmount = (timeMillis() < player2.speedBoostEndTime) ? 2 : 1;
+            player2.setRelativePosition(-moveAmount, 0);
+            break;
+        }
+        case VK_RIGHT: {
+            int moveAmount = (timeMillis() < player2.speedBoostEndTime) ? 2 : 1;
+            player2.setRelativePosition(moveAmount, 0);
+            break;
+        }
+
+        // Ataque Player 1 (espaço)
+        case 32: {
+            bool canFire = (projectilesInGame < 1 || infiniteShots || timeMillis() < player1.extraShotsEndTime);
+
+            if (canFire) {
+                std::thread fire(laserSound);
+                fire.detach();
+
+                if (timeMillis() < player1.multiShotEndTime) {
+                    Projectile p1 = {{player1.position.X, SHORT(player1.position.Y - 1)}};
+                    Projectile p2 = {{SHORT(player1.position.X - 2), SHORT(player1.position.Y - 1)}};
+                    Projectile p3 = {{SHORT(player1.position.X + 2), SHORT(player1.position.Y - 1)}};
+                    CreateProjectiles(projectiles, p1, projectilesInGame);
+                    CreateProjectiles(projectiles, p2, projectilesInGame);
+                    CreateProjectiles(projectiles, p3, projectilesInGame);
+                } else {
+                    Projectile p = {{player1.position.X, SHORT(player1.position.Y - 1)}};
+                    CreateProjectiles(projectiles, p, projectilesInGame);
+                }
+            }
+            break;
+        }
+
+        // Ataque Player 2 (Enter)
+        case VK_RETURN: {
+            bool canFire = (projectilesInGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
+
+            if (canFire) {
+                std::thread fire(fireSound);
+                fire.detach();
+
+                if (timeMillis() < player2.multiShotEndTime) {
+                    Projectile p1 = {{player2.position.X, SHORT(player2.position.Y - 1)}};
+                    Projectile p2 = {{SHORT(player2.position.X - 2), SHORT(player2.position.Y - 1)}};
+                    Projectile p3 = {{SHORT(player2.position.X + 2), SHORT(player2.position.Y - 1)}};
+                    CreateProjectiles(projectiles, p1, projectilesInGame);
+                    CreateProjectiles(projectiles, p2, projectilesInGame);
+                    CreateProjectiles(projectiles, p3, projectilesInGame);
+                } else {
+                    Projectile p = {{player2.position.X, SHORT(player2.position.Y - 1)}};
+                    CreateProjectiles(projectiles, p, projectilesInGame);
+                }
+            }
+            break;
+        }
+
+        // Escape: sair do jogo
+        case VK_ESCAPE:
+            gameexit = false;
+            break;
+
+        // Cheats
+        case 'c': case 'C': {
+            int cheatCode = getch();
+            switch (cheatCode) {
+                case 'g': case 'G':
+                    gameexit = false;
+                    showGameOverScreen(game, indexNick);
+                    break;
+                case 'k': case 'K':
+                    game.player.health--;
+                    break;
+                case 'i': case 'I':
+                    infiniteShots = true;
+                    break;
+                case 's': case 'S':
+                    cout << game.score;
+                    break;
+            }
+            break;
+        }
+        }
+    }
+}
+
 bool infiniteShots = false;
 void GameLoop(int &indexNick,Game &game)
 {
@@ -101,6 +206,7 @@ void GameLoop(int &indexNick,Game &game)
     uint64_t timeAttack = (timeMillis()) + (1000 / 60) * 400;
     uint64_t nextUpdateItems = 0;
     uint64_t nextUpdateAttack = 0;
+    uint64_t nextUpdateHud = 0;
     Gamemap gamemap;
     system("cls");
     mapa(gamemap, 1);
@@ -137,16 +243,11 @@ void GameLoop(int &indexNick,Game &game)
                             break;
                         }
                         case 1:{
-                            input.inputs[input.count - 1] = 32;
+                            input.inputs[input.count - 1] = 'd';
                             indexAutoPlay++;
                             break;
                         }
                         case 2:{
-                            input.inputs[input.count - 1] = 32;
-                            indexAutoPlay++;
-                            break;
-                        }
-                        case 3:{
                             input.inputs[input.count - 1] = 32;
                             indexAutoPlay++;
                             break;
@@ -311,7 +412,7 @@ void GameLoop(int &indexNick,Game &game)
             if (nextUpdateEnemy <= (timeMillis())){
                 // Só move os inimigos se o power-up de congelar não estiver ativo
                 if (timeMillis() > game.freezeEnemiesEndTime) {
-                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - game.enemiesDie);
+                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie * ((game.difficulty + 1) * game.timeMoveMod)));
                     moveEnemies(gamemap,game);
                 }
             }
@@ -334,7 +435,11 @@ void GameLoop(int &indexNick,Game &game)
                     UpdateItems(game, *player, player2, indexNick);
                 }
             }
-
+            if (nextUpdateHud <= (timeMillis()))
+            {
+                nextUpdateHud = timeMillis() + 300;
+                hudPrint(game,indexNick);
+            }
             timeDelay = (timeMillis() + timeMillis());
         }
     } while ((game.player.health > 0 || player2.health > 0) && gameexit);
