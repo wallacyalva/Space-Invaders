@@ -60,12 +60,11 @@ struct Player
     uint64_t speedBoostEndTime = 0;
     uint64_t extraShotsEndTime = 0;
     uint64_t multiShotEndTime = 0;
-    bool extraShots = false;
-    bool multiShot =  false;
-    DWORD white = (0 << 4) | 7;    /*Player comum*/
+    bool extraShots = true;
+    bool multiShot =  true;
     DWORD blue = (0 << 4) | 9; /*Player com tiro extra*/
     DWORD red = (0 << 4) | 12; /*Player com tiros múltiplos*/
-    DWORD playerColor = white; /*Cor do player que será usada para imprimir na tela*/
+    DWORD playerColor = (0 << 4) | 7; ; /*Cor do player que será usada para imprimir na tela*/
     void setPosition(int x, int y)
     
     {

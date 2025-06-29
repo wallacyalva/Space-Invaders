@@ -24,14 +24,10 @@ int main()
         {
         case 0:
             /* Play Game*/
-            // game.nick[indexNick] = SetNick();
-            // system("cls");
-            // cout << indexNick;
-            // getch();
+            game.player = Player();
+
             aplicarDificuldade(game);
             aplicarNaves(game);
-            // game = Game(game.difficulty);
-            game.player = Player();
             initEnemies(game);
             game.enemiesDie = 0;
             // Limpa os itens e power-ups da partida anterior

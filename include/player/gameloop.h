@@ -223,7 +223,7 @@ void GameLoop(int &indexNick,Game &game)
     int timeDelay = 0;
     do
     {
-        if(timeDelay <= timeMillis()){
+       if(timeDelay <= timeMillis()){
             gameexit = !gameover(game);
             hudPrint(game, indexNick);
             // input.inputs = nullptr;
@@ -309,14 +309,14 @@ void GameLoop(int &indexNick,Game &game)
                         /*create projectile*/
                         Projectile actualProjectile;
 
-                        bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime || player->extraShots == true || player->multiShot == true);
+                        bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime || !player->extraShots);
 
                         if (canFire)
                         {
                             thread fire(laserSound);
                             fire.detach();
 
-                            if (timeMillis() < player->multiShotEndTime || player->multiShot == true) {
+                            if (timeMillis() < player->multiShotEndTime || !player->multiShot) {
                                 // Tiro triplo
                                 Projectile p1, p2, p3;
                                 p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};

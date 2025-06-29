@@ -334,7 +334,6 @@ void aplicarNaves(Game &game) {
         // Commum
         case 0:{
             game.player.projetil = '|';
-            game.player.playerColor = game.player.white;
             game.player.damage = 1;
             game.timeAttProject = 1;
             game.timeAttackEnemy = 400;
@@ -343,16 +342,16 @@ void aplicarNaves(Game &game) {
         break;
         // Extra Shot
         case 1: {
-            game.player.projetil = '|';
+            game.player.projetil = ':';
             game.player.playerColor = game.player.blue;
-            bool extraShots = true;
+            game.player.extraShots = false;
         }    
         break;
         // Multi Shot
         case 2: {
-            game.player.projetil = '|';
+            game.player.projetil = '.';
             game.player.playerColor = game.player.red;
-            bool multiShot =  true;
+            game.player.multiShot =  false;
         }
         break;   
         default: {
