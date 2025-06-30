@@ -24,6 +24,7 @@ int main()
         {
         case 0:
             /* Play Game*/
+            game.boss.active = false;
             game.player = Player();
             aplicarDificuldade(game);
             aplicarNaves(game);
@@ -32,17 +33,18 @@ int main()
             game.bosshasKilled = false;
             // Limpa os itens e power-ups da partida anterior
             game.itemsInGame = 0;
-            for (int i = 0; i < maxItems; ++i) {
+            for (int i = 0; i < maxItems; ++i)
+            {
                 game.activeItems[i].active = false;
             }
             game.enemyProjectilesInGame = 0;
-            GameLoop(indexNick,game);
+            GameLoop(indexNick, game);
             saveGame(game);
             indexNick++;
             break;
         case 1:
             system("cls");
-            cout<<indexNick;
+            cout << indexNick;
             cout << "Como Jogar:\n\n";
             cout << "Use as teclas 'A' e 'D' para mover o player.\n";
             cout << "Use a tecla 'ESPAÇO' para atirar.\n";
@@ -86,11 +88,12 @@ int main()
             game.enemiesDie = 0;
             // Limpa os itens e power-ups da partida anterior
             game.itemsInGame = 0;
-            for (int i = 0; i < maxItems; ++i) {
+            for (int i = 0; i < maxItems; ++i)
+            {
                 game.activeItems[i].active = false;
             }
             game.enemyProjectilesInGame = 0;
-            GameLoop(indexNick,game);
+            GameLoop(indexNick, game);
             game.autoPlay = false;
             saveGame(game);
             indexNick++;
@@ -101,7 +104,8 @@ int main()
             aplicarNaves(game);
             break;
 
-            case 7:
+        case 7:
+            game.boss.active = false;
             game.difficulty = 2;
             game.player = Player();
             aplicarDificuldade(game);
@@ -110,21 +114,22 @@ int main()
             game.enemiesDie = 0;
             // Limpa os itens e power-ups da partida anterior
             game.itemsInGame = 0;
-            for (int i = 0; i < maxItems; ++i) {
+            for (int i = 0; i < maxItems; ++i)
+            {
                 game.activeItems[i].active = false;
             }
             game.enemyProjectilesInGame = 0;
             game.infiniteGame = true;
-            GameLoop(indexNick,game);
+            GameLoop(indexNick, game);
             game.autoPlay = false;
             indexNick++;
             break;
         default:
             break;
         }
-    } while (option != (itensMenu-1));
+    } while (option != (itensMenu - 1));
     if (game.player.health <= 0)
-        game.player.health =  game.player.maxhealth;
+        game.player.health = game.player.maxhealth;
     // saveGame(game);
     system("cls");
     return 0;

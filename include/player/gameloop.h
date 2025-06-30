@@ -380,6 +380,7 @@ void GameLoop(int &indexNick, Game &game)
     startTime = timeMillis() / 1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
+    uint64_t nextUpdateBoss = 0;
     Player *player = &game.player;
     Player player2 = Player();
     player2.playerColor = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
@@ -428,7 +429,7 @@ void GameLoop(int &indexNick, Game &game)
             cout << game.player.playerChar;
             do
             {
-                if (gameover(game) && i >= 2)
+                if (gameover(game) && i >= 2 && game.infiniteGame == false)
                 {
                     game.boss.active = true;
                     game.bosshasKilled = false;
@@ -656,16 +657,16 @@ void GameLoop(int &indexNick, Game &game)
                         moveEnemies(gamemap, game);
                     }
                 }
-                if (game.boss.active)
+                if ((game.boss.active) && (nextUpdateBoss <= (timeMillis())))
                 {
-                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * 20;
+                    nextUpdateBoss = (timeMillis()) + (1000 / 60);
                     moveBoss(gamemap, game);
                 }
                 if (timeAttack <= (timeMillis()))
                 {
                     timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
                     makeAttackEnemy(gamemap, game);
-                    if (game.boss.active)
+                    if (game.boss.active && game.infiniteGame == false)
                     {
                         makeAttackBoss(gamemap, game);
                     }
@@ -694,7 +695,7 @@ void GameLoop(int &indexNick, Game &game)
                     hudPrint(game, indexNick);
                 }
                 timeDelay = (timeMillis() + timeMillis());
-            } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled);
+            } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled && game.infiniteGame);
             if ((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2)
             {
                 gameexit = true;
