@@ -9,137 +9,182 @@
 #include "../enemies/attack.h"
 #include "../boss/move.h"
 #include "../boss/attack.h"
-
+using namespace std;
 #include "./inputs.h"
 #include <thread>
-#include<chrono>
-#include<windows.h>
-void fireSound() {
+#include <chrono>
+#include <windows.h>
+void fireSound()
+{
     Beep(1200, 30);
     Beep(1000, 20);
 }
-void laserSound() {
+void laserSound()
+{
     Beep(1500, 20);
     Beep(1700, 15);
 }
 
 int startTime;
-string convertTimetoText(int seconds){
-    string segundos = to_string(seconds%60);
-    if (seconds%60 < 10)
+string convertTimetoText(int seconds)
+{
+    string segundos = to_string(seconds % 60);
+    if (seconds % 60 < 10)
     {
-        segundos = "0"+segundos;
+        segundos = "0" + segundos;
     }
-    string minutos = to_string(seconds/60);
-    if (seconds/60 < 10)
+    string minutos = to_string(seconds / 60);
+    if (seconds / 60 < 10)
     {
-        minutos = "0"+minutos;
+        minutos = "0" + minutos;
     }
-    return minutos+":"+segundos;
+    return minutos + ":" + segundos;
 }
 
-void rezetEnemys(Game &game){
-    switch (game.difficulty) {
-        // Fácil
-        case 0:{
-            for (int i = 0; i < maxEnemies; i++) {
-                int randN = rand() % maxColuns%11;
-                
-                if(randN <= 5){
-                    game.enemies[i].life = 1;
-                    game.enemies[i].level = 1;
-                }else if(randN > 5 && randN <= 8){
-                    game.enemies[i].life = 2;
-                    game.enemies[i].level = 2;
-                }else{
-                    game.enemies[i].life = 3;
-                    game.enemies[i].level = 3;
-                }
-                
-                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
-                    game.enemies[i].active = false;
-                }else{
-                    game.enemies[i].active = true;
-                }
+void rezetEnemys(Game &game)
+{
+    switch (game.difficulty)
+    {
+    // Fácil
+    case 0:
+    {
+        for (int i = 0; i < maxEnemies; i++)
+        {
+            int randN = rand() % maxColuns % 11;
 
-                game.enemies[i].position = enemiesLive[i].position;
+            if (randN <= 5)
+            {
+                game.enemies[i].life = 1;
+                game.enemies[i].level = 1;
             }
-        }
-        break;
-        // Médio
-        case 1: {
-            for (int i = 0; i < maxEnemies; i++) {
-                int randN = rand() % maxColuns%11;
-                
-                if(randN <= 3){
-                    game.enemies[i].life = 1;
-                    game.enemies[i].level = 1;
-                }else if(randN > 3 && randN <= 5){
-                    game.enemies[i].life = 2;
-                    game.enemies[i].level = 2;
-                }else{
-                    game.enemies[i].life = 3;
-                    game.enemies[i].level = 3;
-                }
+            else if (randN > 5 && randN <= 8)
+            {
+                game.enemies[i].life = 2;
+                game.enemies[i].level = 2;
+            }
+            else
+            {
+                game.enemies[i].life = 3;
+                game.enemies[i].level = 3;
+            }
 
-                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
-                    game.enemies[i].active = false;
-                }else{
-                    game.enemies[i].active = true;
-                }
-                game.enemies[i].position = enemiesLive[i].position;
+            if (((i / 10) * 10) == i || (1 + ((i / 10) * 10)) == i || (3 + ((i / 10) * 10)) == i || (5 + ((i / 10) * 10)) == i || (7 + ((i / 10) * 10)) == i || (9 + ((i / 10) * 10)) == i || (10 + ((i / 10) * 10)) == i)
+            {
+                game.enemies[i].active = false;
             }
-        }    
-        break;
-        // Difícil
-        case 2: {
-            for (int i = 0; i < maxEnemies; i++) {
-                int randN = rand() % maxColuns%11;
-                
-                if(randN <= 2){
-                    game.enemies[i].life = 1;
-                    game.enemies[i].level = 1;
-                }else if(randN > 2 && randN <= 5){
-                    game.enemies[i].life = 2;
-                    game.enemies[i].level = 2;
-                }else{
-                    game.enemies[i].life = 3;
-                    game.enemies[i].level = 3;
-                }
+            else
+            {
+                game.enemies[i].active = true;
+            }
 
-                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
-                    game.enemies[i].active = false;
-                }else{
-                    game.enemies[i].active = true;
-                }
-                game.enemies[i].position = enemiesLive[i].position;
-            }
+            game.enemies[i].position = enemiesLive[i].position;
         }
-        break;   
-        default: {
-            for (int i = 0; i < maxEnemies; i++) {
-                int randN = rand() % maxColuns%11;
-                
-                if(randN <= 5){
-                    game.enemies[i].life = 1;
-                    game.enemies[i].level = 1;
-                }else if(randN > 5 && randN <= 8){
-                    game.enemies[i].life = 2;
-                    game.enemies[i].level = 2;
-                }else{
-                    game.enemies[i].life = 3;
-                    game.enemies[i].level = 3;
-                }
-                
-                if(((i/10) * 10) == i || (1 + ((i/10) * 10)) == i || (3 + ((i/10) * 10)) == i || (5 + ((i/10) * 10)) == i|| (7 + ((i/10) * 10)) == i|| (9 + ((i/10) * 10)) == i || (10 + ((i/10) * 10)) == i){
-                    game.enemies[i].active = false;
-                }else{
-                    game.enemies[i].active = true;
-                }
-                game.enemies[i].position = enemiesLive[i].position;
+    }
+    break;
+    // Médio
+    case 1:
+    {
+        for (int i = 0; i < maxEnemies; i++)
+        {
+            int randN = rand() % maxColuns % 11;
+
+            if (randN <= 3)
+            {
+                game.enemies[i].life = 1;
+                game.enemies[i].level = 1;
             }
+            else if (randN > 3 && randN <= 5)
+            {
+                game.enemies[i].life = 2;
+                game.enemies[i].level = 2;
+            }
+            else
+            {
+                game.enemies[i].life = 3;
+                game.enemies[i].level = 3;
+            }
+
+            if (((i / 10) * 10) == i || (1 + ((i / 10) * 10)) == i || (3 + ((i / 10) * 10)) == i || (5 + ((i / 10) * 10)) == i || (7 + ((i / 10) * 10)) == i || (9 + ((i / 10) * 10)) == i || (10 + ((i / 10) * 10)) == i)
+            {
+                game.enemies[i].active = false;
+            }
+            else
+            {
+                game.enemies[i].active = true;
+            }
+            game.enemies[i].position = enemiesLive[i].position;
         }
-        break;
+    }
+    break;
+    // Difícil
+    case 2:
+    {
+        for (int i = 0; i < maxEnemies; i++)
+        {
+            int randN = rand() % maxColuns % 11;
+
+            if (randN <= 2)
+            {
+                game.enemies[i].life = 1;
+                game.enemies[i].level = 1;
+            }
+            else if (randN > 2 && randN <= 5)
+            {
+                game.enemies[i].life = 2;
+                game.enemies[i].level = 2;
+            }
+            else
+            {
+                game.enemies[i].life = 3;
+                game.enemies[i].level = 3;
+            }
+
+            if (((i / 10) * 10) == i || (1 + ((i / 10) * 10)) == i || (3 + ((i / 10) * 10)) == i || (5 + ((i / 10) * 10)) == i || (7 + ((i / 10) * 10)) == i || (9 + ((i / 10) * 10)) == i || (10 + ((i / 10) * 10)) == i)
+            {
+                game.enemies[i].active = false;
+            }
+            else
+            {
+                game.enemies[i].active = true;
+            }
+            game.enemies[i].position = enemiesLive[i].position;
+        }
+    }
+    break;
+    default:
+    {
+        for (int i = 0; i < maxEnemies; i++)
+        {
+            int randN = rand() % maxColuns % 11;
+
+            if (randN <= 5)
+            {
+                game.enemies[i].life = 1;
+                game.enemies[i].level = 1;
+            }
+            else if (randN > 5 && randN <= 8)
+            {
+                game.enemies[i].life = 2;
+                game.enemies[i].level = 2;
+            }
+            else
+            {
+                game.enemies[i].life = 3;
+                game.enemies[i].level = 3;
+            }
+
+            if (((i / 10) * 10) == i || (1 + ((i / 10) * 10)) == i || (3 + ((i / 10) * 10)) == i || (5 + ((i / 10) * 10)) == i || (7 + ((i / 10) * 10)) == i || (9 + ((i / 10) * 10)) == i || (10 + ((i / 10) * 10)) == i)
+            {
+                game.enemies[i].active = false;
+            }
+            else
+            {
+                game.enemies[i].active = true;
+            }
+            game.enemies[i].position = enemiesLive[i].position;
+        }
+    }
+    break;
     }
 }
 
@@ -160,8 +205,9 @@ void hudPrint(Game &game, int indexNick)
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 1});
     cout << "Score: " << game.score[indexNick];
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 2});
-    cout << "Time: " << convertTimetoText((timeMillis()/1000)-startTime);
-    if(game.boss.active){
+    cout << "Time: " << convertTimetoText((timeMillis() / 1000) - startTime);
+    if (game.boss.active)
+    {
         SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), 3});
         cout << "Boss Health: ";
         for (int i = 1; i <= 5 - (game.boss.life); i++)
@@ -173,12 +219,16 @@ void hudPrint(Game &game, int indexNick)
     }
     // Exibe os power-ups ativos
     int hudLine = 4;
-    auto print_powerup = [&](const char* name, uint64_t endTime) {
+    auto print_powerup = [&](const char *name, uint64_t endTime)
+    {
         SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), (SHORT)hudLine});
         uint64_t currentTime = timeMillis();
-        if (currentTime < endTime) {
+        if (currentTime < endTime)
+        {
             cout << name << ": " << (endTime - currentTime) / 1000 << "s   ";
-        } else {
+        }
+        else
+        {
             // Limpa a linha se o power-up expirou
             cout << "                    "; // Espaços para limpar a linha
         }
@@ -188,59 +238,71 @@ void hudPrint(Game &game, int indexNick)
     print_powerup("Speed Boost ", game.player.speedBoostEndTime);
     print_powerup("Extra Shots ", game.player.extraShotsEndTime);
     print_powerup("Multi-Shot  ", game.player.multiShotEndTime);
-    
+
     // Para o freeze, que é global
     SetConsoleCursorPosition(hConsole, {(SHORT)(GameElements::columnMap + 2), (SHORT)hudLine});
     uint64_t currentTime = timeMillis();
     cout << (currentTime < game.freezeEnemiesEndTime ? "Enemies Frozen: " + to_string((game.freezeEnemiesEndTime - currentTime) / 1000) + "s   " : "                    ");
-
 }
-void handleInput(Input& input, Game& game, Player& player1, Player& player2, Projectile*& projectiles, int& projectilesInGame, bool& gameexit, int indexNick, bool infiniteShots = false)
+void handleInput(Input &input, Game &game, Player &player1, Player &player2, Projectile *&projectiles, int &projectilesInGame, bool &gameexit, int indexNick, bool infiniteShots = false)
 {
-    for (int i = 0; i < input.count; i++) {
+    for (int i = 0; i < input.count; i++)
+    {
         int inputActual = input.inputs[i];
 
-        switch (inputActual) {
+        switch (inputActual)
+        {
         // Movimento Player 1
-        case 'a': case 'A': {
+        case 'a':
+        case 'A':
+        {
             int moveAmount = (timeMillis() < player1.speedBoostEndTime) ? 2 : 1;
             player1.setRelativePosition(-moveAmount, 0);
             break;
         }
-        case 'd': case 'D': {
+        case 'd':
+        case 'D':
+        {
             int moveAmount = (timeMillis() < player1.speedBoostEndTime) ? 2 : 1;
             player1.setRelativePosition(moveAmount, 0);
             break;
         }
 
         // Movimento Player 2
-        case VK_LEFT: {
+        case VK_LEFT:
+        {
             int moveAmount = (timeMillis() < player2.speedBoostEndTime) ? 2 : 1;
             player2.setRelativePosition(-moveAmount, 0);
             break;
         }
-        case VK_RIGHT: {
+        case VK_RIGHT:
+        {
             int moveAmount = (timeMillis() < player2.speedBoostEndTime) ? 2 : 1;
             player2.setRelativePosition(moveAmount, 0);
             break;
         }
 
         // Ataque Player 1 (espaço)
-        case 32: {
+        case 32:
+        {
             bool canFire = (projectilesInGame < 1 || infiniteShots || timeMillis() < player1.extraShotsEndTime);
 
-            if (canFire) {
+            if (canFire)
+            {
                 std::thread fire(laserSound);
                 fire.detach();
 
-                if (timeMillis() < player1.multiShotEndTime) {
+                if (timeMillis() < player1.multiShotEndTime)
+                {
                     Projectile p1 = {{player1.position.X, SHORT(player1.position.Y - 1)}};
                     Projectile p2 = {{SHORT(player1.position.X - 2), SHORT(player1.position.Y - 1)}};
                     Projectile p3 = {{SHORT(player1.position.X + 2), SHORT(player1.position.Y - 1)}};
                     CreateProjectiles(projectiles, p1, projectilesInGame);
                     CreateProjectiles(projectiles, p2, projectilesInGame);
                     CreateProjectiles(projectiles, p3, projectilesInGame);
-                } else {
+                }
+                else
+                {
                     Projectile p = {{player1.position.X, SHORT(player1.position.Y - 1)}};
                     CreateProjectiles(projectiles, p, projectilesInGame);
                 }
@@ -249,21 +311,26 @@ void handleInput(Input& input, Game& game, Player& player1, Player& player2, Pro
         }
 
         // Ataque Player 2 (Enter)
-        case VK_RETURN: {
+        case VK_RETURN:
+        {
             bool canFire = (projectilesInGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
 
-            if (canFire) {
+            if (canFire)
+            {
                 std::thread fire(fireSound);
                 fire.detach();
 
-                if (timeMillis() < player2.multiShotEndTime) {
+                if (timeMillis() < player2.multiShotEndTime)
+                {
                     Projectile p1 = {{player2.position.X, SHORT(player2.position.Y - 1)}};
                     Projectile p2 = {{SHORT(player2.position.X - 2), SHORT(player2.position.Y - 1)}};
                     Projectile p3 = {{SHORT(player2.position.X + 2), SHORT(player2.position.Y - 1)}};
                     CreateProjectiles(projectiles, p1, projectilesInGame);
                     CreateProjectiles(projectiles, p2, projectilesInGame);
                     CreateProjectiles(projectiles, p3, projectilesInGame);
-                } else {
+                }
+                else
+                {
                     Projectile p = {{player2.position.X, SHORT(player2.position.Y - 1)}};
                     CreateProjectiles(projectiles, p, projectilesInGame);
                 }
@@ -277,22 +344,29 @@ void handleInput(Input& input, Game& game, Player& player1, Player& player2, Pro
             break;
 
         // Cheats
-        case 'c': case 'C': {
+        case 'c':
+        case 'C':
+        {
             int cheatCode = getch();
-            switch (cheatCode) {
-                case 'g': case 'G':
-                    gameexit = false;
-                    showGameOverScreen(game, indexNick);
-                    break;
-                case 'k': case 'K':
-                    game.player.health--;
-                    break;
-                case 'i': case 'I':
-                    infiniteShots = true;
-                    break;
-                case 's': case 'S':
-                    cout << game.score;
-                    break;
+            switch (cheatCode)
+            {
+            case 'g':
+            case 'G':
+                gameexit = false;
+                showGameOverScreen(game, indexNick);
+                break;
+            case 'k':
+            case 'K':
+                game.player.health--;
+                break;
+            case 'i':
+            case 'I':
+                infiniteShots = true;
+                break;
+            case 's':
+            case 'S':
+                cout << game.score;
+                break;
             }
             break;
         }
@@ -301,9 +375,9 @@ void handleInput(Input& input, Game& game, Player& player1, Player& player2, Pro
 }
 
 bool infiniteShots = false;
-void GameLoop(int &indexNick,Game &game)
+void GameLoop(int &indexNick, Game &game)
 {
-    startTime = timeMillis()/1000;
+    startTime = timeMillis() / 1000;
     SetConsoleOutputCP(CP_UTF8);
     bool gameexit = true;
     Player *player = &game.player;
@@ -334,245 +408,279 @@ void GameLoop(int &indexNick,Game &game)
     int delay = 10;
     int timeDelay = 0;
     int difficulty = game.difficulty;
-    if(game.infiniteGame){
+    if (game.infiniteGame)
+    {
         difficulty = 2;
     }
     // infiniteShots = true;
     // int difficulty = 2;
     int i = 0;
-    do {
-        if((game.player.health > 0 || player2.health > 0)){
+    do
+    {
+        if ((game.player.health > 0 || player2.health > 0))
+        {
             GetConsoleCursorInfo(hConsole, &cursorInfo);
             cursorInfo.bVisible = false;
             SetConsoleCursorInfo(hConsole, &cursorInfo);
             mapa(gamemap, i);
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), game.player.position);
-            
+
             cout << game.player.playerChar;
-            do{
-                
-                if(timeDelay <= timeMillis()){
-                    if(gameover(game) && i>=2){
-                        game.boss.active = true;
-                        game.bosshasKilled = false;
-                    if(game.boss.position.Y >= player->position.Y){
+            do
+            {
+                if (gameover(game) && i >= 2)
+                {
+                    game.boss.active = true;
+                    game.bosshasKilled = false;
+                    if (game.boss.position.Y >= player->position.Y)
+                    {
                         gameexit = false;
                     }
-                }else{
+                }
+                else
+                {
                     gameexit = !gameover(game);
-                }hudPrint(game, indexNick);
-                    // input.inputs = nullptr;
-                    input.count = 0;
-                    if (inputUpdate <= (timeMillis()))
+                }
+                hudPrint(game, indexNick);
+                // input.inputs = nullptr;
+                input.count = 0;
+                if (inputUpdate <= (timeMillis()))
+                {
+                    if (!game.autoPlay)
                     {
-                        if(!game.autoPlay){
-                            inputUpdate = (timeMillis()) + (speedInputUpdate);
-                            inputGet(input);
-                        }else{
-                            inputUpdate = (timeMillis()) + (speedInputUpdate);
-                            input.count = 1;
-                            switch(indexAutoPlay){
-                                case 0:{
-                                    input.inputs[input.count - 1] = 'd';
-                                    indexAutoPlay++;
-                                    break;
-                                }
-                                case 1:{
-                                    input.inputs[input.count - 1] = 'd';
-                                    indexAutoPlay++;
-                                    break;
-                                }
-                                case 2:{
-                                    input.inputs[input.count - 1] = 32;
-                                    indexAutoPlay++;
-                                    break;
-                                }
-        
-                            }
+                        inputUpdate = (timeMillis()) + (speedInputUpdate);
+                        inputGet(input);
+                    }
+                    else
+                    {
+                        inputUpdate = (timeMillis()) + (speedInputUpdate);
+                        input.count = 1;
+                        switch (indexAutoPlay)
+                        {
+                        case 0:
+                        {
+                            input.inputs[input.count - 1] = 'd';
+                            indexAutoPlay++;
+                            break;
+                        }
+                        case 1:
+                        {
+                            input.inputs[input.count - 1] = 'd';
+                            indexAutoPlay++;
+                            break;
+                        }
+                        case 2:
+                        {
+                            input.inputs[input.count - 1] = 32;
+                            indexAutoPlay++;
+                            break;
+                        }
                         }
                     }
-        
-                    for (int i = 0; i < input.count; i++)
+                }
+
+                for (int i = 0; i < input.count; i++)
+                {
+                    int inputActual = input.inputs[i];
+
+                    switch (inputActual)
                     {
-                        int inputActual = input.inputs[i];
-        
-        
-                        switch (inputActual)
+                    case 'a':
+                    case 'A':
+                    {
+                        int moveAmount = 1;
+                        if (timeMillis() < player->speedBoostEndTime)
                         {
-                            case 'a':
-                            case 'A': {
-                                int moveAmount = 1;
-                                if (timeMillis() < player->speedBoostEndTime) {
-                                    moveAmount = 2; // Move mais rápido com o power-up
-                                }
-                                player->setRelativePosition(-moveAmount, 0);
-        
-                                // projectiles = nullptr;
-                                break;
-                            }
-                            case VK_LEFT: {
-                                int moveAmount = 1;
-                                if (timeMillis() < player2.speedBoostEndTime) {
-                                    moveAmount = 2; // Move mais rápido com o power-up
-                                }
-                                player2.setRelativePosition(-moveAmount, 0);
-                                break;
-                            }
-                            case VK_RIGHT: {
-                                int moveAmount = 1;
-                                if (timeMillis() < player2.speedBoostEndTime) {
-                                    moveAmount = 2; // Move mais rápido com o power-up
-                                }
-                                player2.setRelativePosition(moveAmount, 0);
-                                break;
-                            }
-                            case 'd':
-                            case 'D': {
-                                int moveAmount = 1;
-                                if (timeMillis() < player->speedBoostEndTime) {
-                                    moveAmount = 2; // Move mais rápido com o power-up
-                                }
-                                player->setRelativePosition(moveAmount, 0);
-                                // projectiles = nullptr;
-                                break;
-                            }
-                            /*spacebar*/
-                            case 32:
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player->setRelativePosition(-moveAmount, 0);
+
+                        // projectiles = nullptr;
+                        break;
+                    }
+                    case VK_LEFT:
+                    {
+                        int moveAmount = 1;
+                        if (timeMillis() < player2.speedBoostEndTime)
+                        {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player2.setRelativePosition(-moveAmount, 0);
+                        break;
+                    }
+                    case VK_RIGHT:
+                    {
+                        int moveAmount = 1;
+                        if (timeMillis() < player2.speedBoostEndTime)
+                        {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player2.setRelativePosition(moveAmount, 0);
+                        break;
+                    }
+                    case 'd':
+                    case 'D':
+                    {
+                        int moveAmount = 1;
+                        if (timeMillis() < player->speedBoostEndTime)
+                        {
+                            moveAmount = 2; // Move mais rápido com o power-up
+                        }
+                        player->setRelativePosition(moveAmount, 0);
+                        // projectiles = nullptr;
+                        break;
+                    }
+                    /*spacebar*/
+                    case 32:
+                    {
+                        /*atack*/
+
+                        /*create projectile*/
+                        Projectile actualProjectile;
+
+                        bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime || !player->extraShots);
+
+                        if (canFire)
+                        {
+                            thread fire(laserSound);
+                            fire.detach();
+
+                            if (timeMillis() < player->multiShotEndTime || !player->multiShot)
                             {
-                                /*atack*/
-        
-                                /*create projectile*/
+                                // Tiro triplo
+                                Projectile p1, p2, p3;
+                                p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};
+                                p2.position = {SHORT(player->position.X - 2), (SHORT)(player->position.Y - 1)};
+                                p3.position = {(SHORT)(player->position.X + 2), (SHORT)(player->position.Y - 1)};
+                                CreateProjectiles(projectiles, p1, projectilesinGame);
+                                CreateProjectiles(projectiles, p2, projectilesinGame);
+                                CreateProjectiles(projectiles, p3, projectilesinGame);
+                            }
+                            else
+                            {
+                                // Tiro único
+                                actualProjectile.position.X = player->position.X;
+                                actualProjectile.position.Y = player->position.Y - 1;
+                                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
+                            }
+                        }
+                        break;
+                    }
+                    case VK_RETURN:
+                    {
+                        // Verifica se o Player 2 pode atirar (tiro extra ou sem projéteis na tela)
+                        bool canFireP2 = (projectilesinGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
+
+                        if (canFireP2)
+                        {
+                            thread fire(fireSound);
+                            fire.detach();
+
+                            if (timeMillis() < player2.multiShotEndTime)
+                            {
+                                // Tiro triplo para o Player 2
+                                Projectile p1, p2, p3;
+                                p1.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                                p2.position = {SHORT(player2.position.X - 2), (SHORT)(player2.position.Y - 1)};
+                                p3.position = {(SHORT)(player2.position.X + 2), (SHORT)(player2.position.Y - 1)};
+                                CreateProjectiles(projectiles, p1, projectilesinGame);
+                                CreateProjectiles(projectiles, p2, projectilesinGame);
+                                CreateProjectiles(projectiles, p3, projectilesinGame);
+                            }
+                            else
+                            {
+                                // Tiro único para o Player 2
                                 Projectile actualProjectile;
-        
-                                bool canFire = (projectilesinGame < 1 || infiniteShots || timeMillis() < player->extraShotsEndTime || !player->extraShots);
-        
-                                if (canFire)
-                                {
-                                    thread fire(laserSound);
-                                    fire.detach();
-        
-                                    if (timeMillis() < player->multiShotEndTime || !player->multiShot) {
-                                        // Tiro triplo
-                                        Projectile p1, p2, p3;
-                                        p1.position = {player->position.X, (SHORT)(player->position.Y - 1)};
-                                        p2.position = {SHORT(player->position.X - 2), (SHORT)(player->position.Y - 1)};
-                                        p3.position = {(SHORT)(player->position.X + 2), (SHORT)(player->position.Y - 1)};
-                                        CreateProjectiles(projectiles, p1, projectilesinGame);
-                                        CreateProjectiles(projectiles, p2, projectilesinGame);
-                                        CreateProjectiles(projectiles, p3, projectilesinGame);
-                                    } else {
-                                        // Tiro único
-                                        actualProjectile.position.X = player->position.X;
-                                        actualProjectile.position.Y = player->position.Y - 1;
-                                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
-                                    }
-                                }
-                                break;
+                                actualProjectile.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
+                                CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
                             }
-                            case VK_RETURN:
-                            {
-                                // Verifica se o Player 2 pode atirar (tiro extra ou sem projéteis na tela)
-                                bool canFireP2 = (projectilesinGame < 1 || infiniteShots || timeMillis() < player2.extraShotsEndTime);
-        
-                                if (canFireP2) {
-                                    thread fire(fireSound);
-                                    fire.detach();
-        
-                                    if (timeMillis() < player2.multiShotEndTime) {
-                                        // Tiro triplo para o Player 2
-                                        Projectile p1, p2, p3;
-                                        p1.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
-                                        p2.position = {SHORT(player2.position.X - 2), (SHORT)(player2.position.Y - 1)};
-                                        p3.position = {(SHORT)(player2.position.X + 2), (SHORT)(player2.position.Y - 1)};
-                                        CreateProjectiles(projectiles, p1, projectilesinGame);
-                                        CreateProjectiles(projectiles, p2, projectilesinGame);
-                                        CreateProjectiles(projectiles, p3, projectilesinGame);
-                                    } else {
-                                        // Tiro único para o Player 2
-                                        Projectile actualProjectile;
-                                        actualProjectile.position = {player2.position.X, (SHORT)(player2.position.Y - 1)};
-                                        CreateProjectiles(projectiles, actualProjectile, projectilesinGame);
-                                    }
-                                }
-                                break;
-                            }
-                            /*escape*/
-                            /*game Exit*/
-                            case VK_ESCAPE:
-                                gameexit = false;
-                                /*escape*/
-                                break;
-                            /*game over screen test*/
-                            case 'c':
-                            case 'C':
-                            {
-                                int cheatCode = getch();
-                                switch (cheatCode)
-                                {
-                                /*game over*/
-                                case 'g':
-                                case 'G':
-                                    gameexit = false;
-                                    showGameOverScreen(game,indexNick);
-                                    break;
-                                case 'k':
-                                case 'K':
-                                    game.player.health--;
-                                    break;
-                                case 'i':
-                                case 'I':
-                                    infiniteShots = true;
-                                    break;
-                                case 's':
-                                case 'S':
-                                    cout << game.score;
-                                    break;
-                                }
-                                break;
-                            }
-                        }}
-                    if (projectiles != nullptr)
+                        }
+                        break;
+                    }
+                    /*escape*/
+                    /*game Exit*/
+                    case VK_ESCAPE:
+                        gameexit = false;
+                        /*escape*/
+                        break;
+                        /*game over screen test*/
+                    case 'c':
+                    case 'C':
                     {
-                        if (nextUpdate <= (timeMillis()))
+                        int cheatCode = getch();
+                        switch (cheatCode)
                         {
-                            // 60 fps test 1 second/60 frames * lowspeed
-                            nextUpdate = (timeMillis()) + (1000 / 60) * game.timeAttProject;
-                            if(game.autoPlay){
-                                inputUpdate = nextUpdate;
-                            }
-                            UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
+                        /*game over*/
+                        case 'g':
+                        case 'G':
+                            gameexit = false;
+                            showGameOverScreen(game, indexNick);
+                            break;
+                        case 'k':
+                        case 'K':
+                            game.player.health--;
+                            break;
+                        case 'i':
+                        case 'I':
+                            infiniteShots = true;
+                            break;
+                        case 's':
+                        case 'S':
+                            cout << game.score;
+                            break;
                         }
+                        break;
                     }
-                    
-                    if (nextUpdateEnemy <= (timeMillis())){
-                        // Só move os inimigos se o power-up de congelar não estiver ativo
-                        if (timeMillis() > game.freezeEnemiesEndTime) {
-                            nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie / 200));
-                            moveEnemies(gamemap,game);
+                    }
+                }
+                if (projectiles != nullptr)
+                {
+                    if (nextUpdate <= (timeMillis()))
+                    {
+                        // 60 fps test 1 second/60 frames * lowspeed
+                        nextUpdate = (timeMillis()) + (1000 / 60) * game.timeAttProject;
+                        if (game.autoPlay)
+                        {
+                            inputUpdate = nextUpdate;
                         }
+                        UpdateProjectiles(projectiles, projectilesinGame, gamemap, game, indexNick);
                     }
+                }
+
+                if (nextUpdateEnemy <= (timeMillis()))
+                {
+                    // Só move os inimigos se o power-up de congelar não estiver ativo
+                    if (timeMillis() > game.freezeEnemiesEndTime)
+                    {
+                        nextUpdateEnemy = (timeMillis()) + (1000 / 60) * (game.timeMoveEnemy - (game.enemiesDie / 200));
+                        moveEnemies(gamemap, game);
+                    }
+                }
+                if (game.boss.active)
+                {
+                    nextUpdateEnemy = (timeMillis()) + (1000 / 60) * 20;
+                    moveBoss(gamemap, game);
+                }
+                if (timeAttack <= (timeMillis()))
+                {
+                    timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
+                    makeAttackEnemy(gamemap, game);
                     if (game.boss.active)
                     {
-                        nextUpdateEnemy = (timeMillis()) + (1000 / 60) * 20;
-                        moveBoss(gamemap,game);
-                    }
-                
-                }
-                if(timeAttack <= (timeMillis())){
-                    timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
-                    makeAttackEnemy(gamemap,game);
-                    if(game.boss.active){
-                        makeAttackBoss(gamemap,game);
+                        makeAttackBoss(gamemap, game);
                     }
                 }
-                if(game.enemyProjectilesInGame > 0){
-                    if (nextUpdateAttack <= (timeMillis())){
+                if (game.enemyProjectilesInGame > 0)
+                {
+                    if (nextUpdateAttack <= (timeMillis()))
+                    {
                         // 60 fps test 1 second/60 frames * lowspeed
                         nextUpdateAttack = (timeMillis()) + (1000 / 60) * game.timeAttackPlayer;
                         updateEnemyProjectiles(gamemap, game);
                     }
                 }
-                if (game.itemsInGame > 0) {
+                if (game.itemsInGame > 0)
+                {
                     // Atualiza os itens em uma taxa um pouco mais lenta para não sobrecarregar
                     if (nextUpdateItems <= (timeMillis()))
                     {
@@ -583,32 +691,39 @@ void GameLoop(int &indexNick,Game &game)
                 if (nextUpdateHud <= (timeMillis()))
                 {
                     nextUpdateHud = timeMillis() + 300;
-                    hudPrint(game,indexNick);
+                    hudPrint(game, indexNick);
                 }
                 timeDelay = (timeMillis() + timeMillis());
             } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled);
-            if((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2){
+            if ((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2)
+            {
                 gameexit = true;
                 rezetEnemys(game);
-            }else if ((game.player.health > 0 || player2.health > 0) && (i >= 2 && game.infiniteGame)){
+            }
+            else if ((game.player.health > 0 || player2.health > 0) && (i >= 2 && game.infiniteGame))
+            {
                 difficulty++;
                 gameexit = true;
                 rezetEnemys(game);
-            }else if(game.player.health <= 0 || player2.health <= 0){
+            }
+            else if (game.player.health <= 0 || player2.health <= 0)
+            {
                 gameexit = false;
             }
         }
-     i++;
+        i++;
     } while ((i <= difficulty || game.infiniteGame));
-    
-    
-    //limpando entrada para não preencher sozinho o Nick
+
+    // limpando entrada para não preencher sozinho o Nick
     cleanBuffer();
-    if(!game.autoPlay){
-        showGameOverScreen(game,indexNick);
+    if (!game.autoPlay)
+    {
+        showGameOverScreen(game, indexNick);
         cursorInfo.bVisible = false;
         SetConsoleCursorInfo(hConsole, &cursorInfo);
-    }else{
+    }
+    else
+    {
         exit(0);
     }
 }
