@@ -429,7 +429,7 @@ void GameLoop(int &indexNick, Game &game)
             cout << game.player.playerChar;
             do
             {
-                if (gameover(game) && i >= 2 && game.infiniteGame == false)
+                if (gameover(game) && i >= 2 && !game.infiniteGame)
                 {
                     game.boss.active = true;
                     game.bosshasKilled = false;
@@ -659,14 +659,14 @@ void GameLoop(int &indexNick, Game &game)
                 }
                 if ((game.boss.active) && (nextUpdateBoss <= (timeMillis())))
                 {
-                    nextUpdateBoss = (timeMillis()) + (1000 / 60);
+                    nextUpdateBoss = (timeMillis()) + (1000 / 60) * 4;
                     moveBoss(gamemap, game);
                 }
                 if (timeAttack <= (timeMillis()))
                 {
                     timeAttack = (timeMillis()) + (1000 / 60) * game.timeAttackEnemy;
                     makeAttackEnemy(gamemap, game);
-                    if (game.boss.active && game.infiniteGame == false)
+                    if (game.boss.active)
                     {
                         makeAttackBoss(gamemap, game);
                     }
@@ -695,7 +695,7 @@ void GameLoop(int &indexNick, Game &game)
                     hudPrint(game, indexNick);
                 }
                 timeDelay = (timeMillis() + timeMillis());
-            } while ((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled && game.infiniteGame);
+            } while (((game.player.health > 0 || player2.health > 0) && gameexit && !game.bosshasKilled));
             if ((game.player.health > 0 || player2.health > 0) && difficulty != 0 && i != 2)
             {
                 gameexit = true;

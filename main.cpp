@@ -24,8 +24,9 @@ int main()
         {
         case 0:
             /* Play Game*/
-            game.boss.active = false;
             game.player = Player();
+            game.boss.active = false;
+            game.infiniteGame = false;
             aplicarDificuldade(game);
             aplicarNaves(game);
             initEnemies(game);
